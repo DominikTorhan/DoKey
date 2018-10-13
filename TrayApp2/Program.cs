@@ -143,24 +143,43 @@ namespace TrayApp2 {
 
     }
 
-    private bool IsToggleKey(Keys key) {
 
-      //if (!appState.isWin) return false;
-      //if (!appState.isAlt) return false;
-      if (!appState.isControl) return false;
-      //if (!cUtils.IsAlt(key)) return false;
-      if (key != Keys.Space) return false;
+    private bool IsUp(cKeyboardHook.KeyboardState keyState) {
 
-      return true;
+      switch (keyState) {
+        case cKeyboardHook.KeyboardState.KeyUp:
+        case cKeyboardHook.KeyboardState.SysKeyUp:
+          return true;
+        default:
+          return false;
+      }
 
     }
 
-    
+    cStateData mStateData = new cStateData();
 
     private void OnKeyPressed(object sender, cKeyboardHookEvent e) {
       //Debug.WriteLine(e.KeyboardData.VirtualCode);
 
       var key = (Keys)e.KeyboardData.VirtualCode;
+
+      Console.WriteLine(key);
+
+      cInput input = new cInput {
+        eventData = new cEventData {
+          keys = key,
+          isUp = IsUp(e.KeyboardState)
+        },
+        stateData = mStateData
+      };
+
+      var output = new cKeysEngine{input = input}.ProcessKey();
+
+      mStateData = output.StateData;
+
+      Console.WriteLine(output.StateData.ToString());
+
+      return;
 
       //ModifierKeys.
 
@@ -174,15 +193,15 @@ namespace TrayApp2 {
         return;
       }
 
-      if (IsToggleKey(key)) {
-        switch (State) {
-          case StateEnum.Off: SetNormalMode(); break;
-          case StateEnum.Normal: SetInsertMode(); break;
-          case StateEnum.Insert: SetOffMode(); break;
-        }
-        e.Handled = true;
-        return;
-      }
+      //if (IsToggleKey(key)) {
+      //  switch (State) {
+      //    case StateEnum.Off: SetNormalMode(); break;
+      //    case StateEnum.Normal: SetInsertMode(); break;
+      //    case StateEnum.Insert: SetOffMode(); break;
+      //  }
+      //  e.Handled = true;
+      //  return;
+      //}
 
       if (State == StateEnum.Off) return;
 
@@ -201,6 +220,8 @@ namespace TrayApp2 {
         e.Handled = true;
         return;
       }
+
+      var x = Control.ModifierKeys;
 
       if (State == StateEnum.Insert) {
         if (KeyPressedInsertMode(key)) {

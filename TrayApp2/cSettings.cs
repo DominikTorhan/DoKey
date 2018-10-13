@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TrayApp2 {
-  internal class cSettings {
+  public class cSettings {
 
     Dictionary<string, string> mDic;
 
@@ -17,7 +17,7 @@ namespace TrayApp2 {
 
     }
 
-    internal Dictionary<string,string> Load() {
+    public Dictionary<string,string> Load() {
 
       var lines = File.ReadLines("json1.json");
 
@@ -44,7 +44,7 @@ namespace TrayApp2 {
 
     private char[] TrimChars() => new[] { ' ', '\"', ',' };
 
-    internal string SendKeyNormal(string key) {
+    public string SendKeyNormal(string key) {
 
       var keyDic = "n." + key.ToLower();
 

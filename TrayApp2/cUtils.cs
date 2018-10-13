@@ -7,40 +7,40 @@ using System.Windows.Forms;
 
 namespace TrayApp2 {
 
-  internal enum StateEnum {
+  public enum StateEnum {
     Off = 0,
     Normal = 1,
     Insert = 2
   }
 
-  internal class SendKeysStrings {
-    internal static string ArrowUp = "{UP}";
-    internal static string ArrowDown = "{DOWN}";
-    internal static string ArrowLeft = "{LEFT}";
-    internal static string ArrowRight = "{RIGHT}";
-    internal static string Backspace = "{BKSP}";
-    internal static string Delete = "{DEL}";
-    internal static string End = "{END}";
-    internal static string CrtlEnd = "^{END}";
-    internal static string Enter = "{ENTER}";
-    internal static string EndSpaceEnter = "{End} {ENTER}";
-    internal static string UpEndEnter = "{UP}{End}{ENTER}";
-    internal static string Escape = "{ESC}";
-    internal static string Home = "{HOME}";
-    internal static string CrtlHome = "^{HOME}";
-    internal static string DoubleHome = "{HOME} 2";
-    internal static string PageDown = "{PGDN}";
-    internal static string PageUp = "{PGUP}";
-    internal static string HalfPageDown = "{Down 20}";
-    internal static string HalfPageUp = "{Up 20}";
-    internal static string Tab = "{TAB}";
-    internal static string CrtlZ = "^z";
+  public class SendKeysStrings {
+    public static string ArrowUp = "{UP}";
+    public static string ArrowDown = "{DOWN}";
+    public static string ArrowLeft = "{LEFT}";
+    public static string ArrowRight = "{RIGHT}";
+    public static string Backspace = "{BKSP}";
+    public static string Delete = "{DEL}";
+    public static string End = "{END}";
+    public static string CrtlEnd = "^{END}";
+    public static string Enter = "{ENTER}";
+    public static string EndSpaceEnter = "{End} {ENTER}";
+    public static string UpEndEnter = "{UP}{End}{ENTER}";
+    public static string Escape = "{ESC}";
+    public static string Home = "{HOME}";
+    public static string CrtlHome = "^{HOME}";
+    public static string DoubleHome = "{HOME} 2";
+    public static string PageDown = "{PGDN}";
+    public static string PageUp = "{PGUP}";
+    public static string HalfPageDown = "{Down 20}";
+    public static string HalfPageUp = "{Up 20}";
+    public static string Tab = "{TAB}";
+    public static string CrtlZ = "^z";
 
   }
 
-  internal class cUtils {
+  public class cUtils {
 
-    internal static bool IsIgnoredKey(Keys key) {
+    public static bool IsIgnoredKey(Keys key) {
 
       switch (key) {
         case Keys.Capital:
@@ -63,7 +63,7 @@ namespace TrayApp2 {
 
     }
 
-    internal static bool IsInsertKey(Keys keys) {
+    public static bool IsInsertKey(Keys keys) {
       switch (keys) {
         case Keys.A:
         case Keys.I:
@@ -76,7 +76,7 @@ namespace TrayApp2 {
       
     }
 
-    internal static bool IsLetterKey(Keys key) {
+    public static bool IsLetterKey(Keys key) {
 
       var chr = (char)key;
 
@@ -100,7 +100,24 @@ namespace TrayApp2 {
 
     }
 
-    internal static bool IsModifierKey(Keys key) {
+    public static bool IsToggleKey(bool isControl, Keys key) {
+
+      if (!isControl) return false;
+      if (key != Keys.Space) return false;
+
+      return true;
+
+    }
+
+    public static StateEnum GetNextState(StateEnum state) {
+
+      if (state == StateEnum.Insert) return StateEnum.Off;
+
+      return state + 1;
+
+    }
+
+    public static bool IsModifierKey(Keys key) {
 
       if (IsAlt(key)) return true;
       if (IsShift(key)) return true;
@@ -111,7 +128,7 @@ namespace TrayApp2 {
 
     }
 
-    internal static bool IsAlt(Keys key) {
+    public static bool IsAlt(Keys key) {
 
       switch (key) {
         case Keys.Alt:
@@ -124,7 +141,7 @@ namespace TrayApp2 {
 
     }
 
-    internal static bool IsShift(Keys key) {
+    public static bool IsShift(Keys key) {
 
       switch (key) {
         case Keys.LShiftKey:
@@ -138,7 +155,7 @@ namespace TrayApp2 {
 
     }
 
-    internal static bool IsControl(Keys key) {
+    public static bool IsControl(Keys key) {
 
       switch (key) {
         case Keys.Control:
@@ -152,7 +169,7 @@ namespace TrayApp2 {
 
     }
 
-    internal static bool IsWin(Keys key) {
+    public static bool IsWin(Keys key) {
 
       switch (key) {
         case Keys.LWin:
@@ -164,7 +181,17 @@ namespace TrayApp2 {
 
     }
 
-    internal static string GetSendKeyByKeyInsertModeWithControl(Keys key) {
+    public static bool IsEsc(Keys keys) {
+      switch (keys) {
+        case Keys.Escape:
+        case Keys.Capital:
+          return true;
+        default:
+          return false;
+      }
+    }
+
+    public static string GetSendKeyByKeyInsertModeWithControl(Keys key) {
 
       switch (key) {
         case Keys.H: return SendKeysStrings.Backspace;
@@ -179,7 +206,7 @@ namespace TrayApp2 {
       }
     }
 
-    internal static string GetSendKeyByKeyNormalMode(Keys key, cSettings settings) {
+    public static string GetSendKeyByKeyNormalMode(Keys key, cSettings settings) {
 
       return settings.SendKeyNormal(key.ToString());
 
@@ -198,7 +225,7 @@ namespace TrayApp2 {
 
     }
 
-    internal static string GetSendKeyByKeyNormalModeWithShift(Keys keys) {
+    public static string GetSendKeyByKeyNormalModeWithShift(Keys keys) {
 
       //shift
       switch (keys) {
@@ -216,7 +243,7 @@ namespace TrayApp2 {
 
     }
 
-    internal static string GetSendKeyByKeyNormalModeWithControl(Keys keys) {
+    public static string GetSendKeyByKeyNormalModeWithControl(Keys keys) {
 
       switch (keys) {
         case Keys.H: return SendKeysStrings.Home;
