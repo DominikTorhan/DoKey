@@ -19,7 +19,7 @@ namespace TrayApp2 {
     }
 
     private cAppState appState;
-    private StateEnum State;
+    //private StateEnum State;
     private NotifyIcon trayIcon;
     private ContextMenu trayMenu;
 
@@ -56,7 +56,7 @@ namespace TrayApp2 {
 
       appState = new cAppState();
 
-      State = StateEnum.Off;
+      //State = StateEnum.Off;
 
       // Create a simple tray menu with only one item.
       trayMenu = new ContextMenu();
@@ -96,36 +96,36 @@ namespace TrayApp2 {
       mKeyboardHook.KeyboardPressed += OnKeyPressed;
     }
 
-    private void PerformEscape() {
+    //private void PerformEscape() {
 
-      State = GetStateBackward(State);
-      SetIcon();
+    //  State = GetStateBackward(State);
+    //  SetIcon();
 
-    }
+    //}
 
-    private void SetIcon() => trayIcon.Icon = GetIcon(State);
+    private void SetIcon() => trayIcon.Icon = GetIcon(mStateData.state);
 
-    private StateEnum GetStateBackward(StateEnum xState) {
+    //private StateEnum GetStateBackward(StateEnum xState) {
       
-      if (xState == StateEnum.Insert) return StateEnum.Normal;
+    //  if (xState == StateEnum.Insert) return StateEnum.Normal;
 
-      return StateEnum.Off;
+    //  return StateEnum.Off;
 
-    }
+    //}
 
-    private void SetInsertMode() {
+    //private void SetInsertMode() {
 
-      State = StateEnum.Insert;
-      SetIcon();
+    //  State = StateEnum.Insert;
+    //  SetIcon();
 
-    }
+    //}
 
-    private void SetOffMode() {
+    //private void SetOffMode() {
 
-      State = StateEnum.Off;
-      SetIcon();
+    //  State = StateEnum.Off;
+    //  SetIcon();
 
-    }
+    //}
 
     private bool KeyPressedInsertMode(Keys key) {
 
@@ -163,6 +163,8 @@ namespace TrayApp2 {
 
       var key = (Keys)e.KeyboardData.VirtualCode;
 
+      if (cUtils.IsIgnoredKey(key)) return;
+
       Console.WriteLine(key);
 
       cInput input = new cInput {
@@ -173,11 +175,23 @@ namespace TrayApp2 {
         stateData = mStateData
       };
 
-      var output = new cKeysEngine{input = input}.ProcessKey();
+      var output = new cKeysEngine{
+        input = input,
+        settings = mSettings
+      }.ProcessKey();
 
       mStateData = output.StateData;
 
       Console.WriteLine(output.StateData.ToString());
+
+      if (output.PreventKeyProcess) {
+        Console.WriteLine("prevent");
+        e.Handled = true;
+      }
+
+      if (!string.IsNullOrEmpty(output.SendKeys)) SendKeys.Send(output.SendKeys);
+
+      SetIcon();
 
       return;
 
@@ -203,86 +217,86 @@ namespace TrayApp2 {
       //  return;
       //}
 
-      if (State == StateEnum.Off) return;
+      //if (State == StateEnum.Off) return;
 
-      if (cUtils.IsModifierKey(key)) {
-        if (State == StateEnum.Normal) e.Handled = true;
-        if (State == StateEnum.Insert) {
-          if (e.KeyboardState == cKeyboardHook.KeyboardState.SysKeyDown) return;
-          if (cUtils.IsControl(key)) e.Handled = true;
-          //if (cUtils.IsAlt(key)) e.Handled = true;
-        }
-        return;
-      }
-
-      if (key == Keys.Escape) {
-        SetOffMode();
-        e.Handled = true;
-        return;
-      }
-
-      var x = Control.ModifierKeys;
-
-      if (State == StateEnum.Insert) {
-        if (KeyPressedInsertMode(key)) {
-          e.Handled = true;
-        }
-        return;
-      }
-
-      if (cUtils.IsInsertKey(key)) {
-        SetInsertMode();
-        e.Handled = true;
-      }
-
-      Console.WriteLine("keyCode" + e.KeyboardData.VirtualCode + " " + e.KeyboardData.TimeStamp);
-      Console.WriteLine("keyStare" + e.KeyboardState.ToString());
-
-      string sendKey;
-
-      if (appState.isShift) {
-        sendKey = cUtils.GetSendKeyByKeyNormalModeWithShift(key);
-      } else if (appState.isControl) {
-        sendKey = cUtils.GetSendKeyByKeyNormalModeWithControl(key);
-      } else {
-        sendKey = cUtils.GetSendKeyByKeyNormalMode(key, mSettings);
-      }
-
-      if (sendKey != "") {
-        e.Handled = true;
-        SendKeys.Send(sendKey);
-        Console.WriteLine("SendKeys: " + sendKey);
-        return;
-      }
-
-      if (cUtils.IsLetterKey(key)){
-        e.Handled = true;
-      }
-
-      return;
-
-      if (e.KeyboardData.VirtualCode == 81) {
-        e.Handled = true;
-      }
-
-      if (e.KeyboardData.VirtualCode != cKeyboardHook.VkSnapshot)
-        return;
-
-      // seems, not needed in the life.
-      //if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.SysKeyDown &&
-      //    e.KeyboardData.Flags == GlobalKeyboardHook.LlkhfAltdown)
-      //{
-      //    MessageBox.Show("Alt + Print Screen");
-      //    e.Handled = true;
+      //if (cUtils.IsModifierKey(key)) {
+      //  if (State == StateEnum.Normal) e.Handled = true;
+      //  if (State == StateEnum.Insert) {
+      //    if (e.KeyboardState == cKeyboardHook.KeyboardState.SysKeyDown) return;
+      //    if (cUtils.IsControl(key)) e.Handled = true;
+      //    //if (cUtils.IsAlt(key)) e.Handled = true;
+      //  }
+      //  return;
       //}
-      //else
+
+      //if (key == Keys.Escape) {
+      //  SetOffMode();
+      //  e.Handled = true;
+      //  return;
+      //}
+
+      //var x = Control.ModifierKeys;
+
+      //if (State == StateEnum.Insert) {
+      //  if (KeyPressedInsertMode(key)) {
+      //    e.Handled = true;
+      //  }
+      //  return;
+      //}
+
+      //if (cUtils.IsInsertKey(key)) {
+      //  SetInsertMode();
+      //  e.Handled = true;
+      //}
+
+      //Console.WriteLine("keyCode" + e.KeyboardData.VirtualCode + " " + e.KeyboardData.TimeStamp);
+      //Console.WriteLine("keyStare" + e.KeyboardState.ToString());
+
+      //string sendKey;
+
+      //if (appState.isShift) {
+      //  sendKey = cUtils.GetSendKeyByKeyNormalModeWithShift(key);
+      //} else if (appState.isControl) {
+      //  sendKey = cUtils.GetSendKeyByKeyNormalModeWithControl(key);
+      //} else {
+      //  sendKey = cUtils.GetSendKeyByKeyNormalMode(key, mSettings);
+      //}
+
+      //if (sendKey != "") {
+      //  e.Handled = true;
+      //  SendKeys.Send(sendKey);
+      //  Console.WriteLine("SendKeys: " + sendKey);
+      //  return;
+      //}
+
+      //if (cUtils.IsLetterKey(key)){
+      //  e.Handled = true;
+      //}
+
+      //return;
+
+      //if (e.KeyboardData.VirtualCode == 81) {
+      //  e.Handled = true;
+      //}
+
+      //if (e.KeyboardData.VirtualCode != cKeyboardHook.VkSnapshot)
+      //  return;
+
+      //// seems, not needed in the life.
+      ////if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.SysKeyDown &&
+      ////    e.KeyboardData.Flags == GlobalKeyboardHook.LlkhfAltdown)
+      ////{
+      ////    MessageBox.Show("Alt + Print Screen");
+      ////    e.Handled = true;
+      ////}
+      ////else
 
 
 
-      if (e.KeyboardState == cKeyboardHook.KeyboardState.KeyDown) {
-        MessageBox.Show("Print Screen");
-        e.Handled = true;
-      }
+      //if (e.KeyboardState == cKeyboardHook.KeyboardState.KeyDown) {
+      //  MessageBox.Show("Print Screen");
+      //  e.Handled = true;
+      //}
     }
 
 
@@ -316,8 +330,7 @@ namespace TrayApp2 {
 
     private void SetNormalMode() {
 
-
-      State = StateEnum.Normal;
+      //State = StateEnum.Normal;
 
       WriteStateFile("1");
       trayIcon.Icon = GetIconNormalMode();
@@ -366,7 +379,7 @@ namespace TrayApp2 {
       var isProcessEnabled = IsModuleNameEnabledToUseVim(pActiveProcess);
 
       //State = isProcessEnabled ? StateEnum.Normal : StateEnum.Off;
-      State = StateEnum.Off;
+      //State = StateEnum.Off;
 
       //trayIcon.Icon = GetIcon(pActiveProcess);
       SetIcon();
