@@ -1,7 +1,53 @@
 {
-  "n.h": "{LEFT}",
-  "n.j": "{DOWN}",
-  "n.k": "{UP}",
-  "n.l": "{RIGHT}"
+    //ArrowUp = "{UP}";
+    //ArrowDown = "{DOWN}";
+    //ArrowLeft = "{LEFT}";
+    //ArrowRight = "{RIGHT}";
+    //Backspace = "{BKSP}";
+    //Delete = "{DEL}";
+    //End = "{END}";
+    //CrtlEnd = "^{END}";
+    //Enter = "{ENTER}";
+    //EndSpaceEnter = "{End} {ENTER}";
+    //UpEndEnter = "{UP}{End}{ENTER}";
+    //Escape = "{ESC}";
+    //Home = "{HOME}";
+    //CrtlHome = "^{HOME}";
+    //DoubleHome = "{HOME} 2";
+    //PageDown = "{PGDN}";
+    //PageUp = "{PGUP}";
+    //HalfPageDown = "{Down 20}";
+    //HalfPageUp = "{Up 20}";
+    //Tab = "{TAB}";
+    //CrtlZ = "^z";
+
+  //normal mode
+  {
+    "n.h": "{LEFT}",
+    "n.j": "{DOWN}",
+    "n.k": "{UP}",
+    "n.l": "{RIGHT}",
+    "n.oemcomma": "{HOME}",
+    "n.oemperiod": "{END}"
+
+  },
+
+  //normal mode with control
+  {
+    "nc.h": "{LEFT}",
+    "nc.j": "{DOWN}",
+    "nc.k": "{UP}",
+    "nc.l": "{RIGHT}"
+  },
+
+
+  //insert mode with control
+  {
+    "ic.h": "{BKSP}",
+    "ic.j": "{ENTER}",
+    "ic.i": "{TAB}",
+    "ic.o": "{UP}{End}{ENTER}"
+  }
 
 }
+

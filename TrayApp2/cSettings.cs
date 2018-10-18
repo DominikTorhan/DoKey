@@ -44,15 +44,20 @@ namespace TrayApp2 {
 
     private char[] TrimChars() => new[] { ' ', '\"', ',' };
 
-    public string SendKeyNormal(string key) {
+    public string SendKeyNormal(string key) => SendKey("n", key);
+    internal string SendKeyNormalWithControl(string key) => SendKey("nc", key);
+    internal string SendKeyInsert(string key) => SendKey("ic", key);
 
-      var keyDic = "n." + key.ToLower();
+
+    private string SendKey(string prefix, string key) {
+
+      var keyDic = prefix + "." + key.ToLower();
 
       if (!mDic.ContainsKey(keyDic)) return "";
 
       return mDic[keyDic];
 
-    }
 
+    }
   }
 }

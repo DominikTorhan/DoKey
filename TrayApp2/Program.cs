@@ -74,8 +74,8 @@ namespace TrayApp2 {
       trayIcon.ContextMenu = trayMenu;
       trayIcon.Visible = true;
 
-      var dele = new WinEventDelegate(WinEventProc);
-      IntPtr m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, dele, 0, 0, WINEVENT_OUTOFCONTEXT);
+      //var dele = new WinEventDelegate(WinEventProc);
+      //IntPtr m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, dele, 0, 0, WINEVENT_OUTOFCONTEXT);
 
       //var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
       //path += @"\AppData\Roaming\...DT\config\";
@@ -127,21 +127,21 @@ namespace TrayApp2 {
 
     //}
 
-    private bool KeyPressedInsertMode(Keys key) {
+    //private bool KeyPressedInsertMode(Keys key) {
 
-      if (!appState.isControl) return false;
+    //  if (!appState.isControl) return false;
 
-      if (key == Keys.Z) return true;
+    //  if (key == Keys.Z) return true;
 
-      var sendKey = cUtils.GetSendKeyByKeyInsertModeWithControl(key);
+    //  var sendKey = cUtils.GetSendKeyByKeyInsertModeWithControl(key, s);
 
-      if (sendKey == "") return false;
+    //  if (sendKey == "") return false;
 
-      SendKeys.Send(sendKey);
+    //  SendKeys.Send(sendKey);
 
-      return true;
+    //  return true;
 
-    }
+    //}
 
 
     private bool IsUp(cKeyboardHook.KeyboardState keyState) {
@@ -165,15 +165,18 @@ namespace TrayApp2 {
 
       if (cUtils.IsIgnoredKey(key)) return;
 
-      Console.WriteLine(key);
+      var isUp = IsUp(e.KeyboardState);
 
       cInput input = new cInput {
         eventData = new cEventData {
           keys = key,
-          isUp = IsUp(e.KeyboardState)
+          isUp = isUp
         },
         stateData = mStateData
       };
+
+      var upOrDown = isUp ? "up" : "down";
+      Console.WriteLine(key + " " + upOrDown);
 
       var output = new cKeysEngine{
         input = input,
@@ -185,7 +188,7 @@ namespace TrayApp2 {
       Console.WriteLine(output.StateData.ToString());
 
       if (output.PreventKeyProcess) {
-        Console.WriteLine("prevent");
+        Console.WriteLine("  prevent");
         e.Handled = true;
       }
 
@@ -368,28 +371,28 @@ namespace TrayApp2 {
 
     private string LastActiveProcess = "";
 
-    public void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime) {
+    //public void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime) {
 
-      Console.WriteLine(hWinEventHook);
+    //  Console.WriteLine(hWinEventHook);
 
-      var pActiveProcess = GetActiveProcessFileName();
+    //  var pActiveProcess = GetActiveProcessFileName();
 
-      if (LastActiveProcess == pActiveProcess) return;
+    //  if (LastActiveProcess == pActiveProcess) return;
 
-      var isProcessEnabled = IsModuleNameEnabledToUseVim(pActiveProcess);
+    //  var isProcessEnabled = IsModuleNameEnabledToUseVim(pActiveProcess);
 
-      //State = isProcessEnabled ? StateEnum.Normal : StateEnum.Off;
-      //State = StateEnum.Off;
+    //  //State = isProcessEnabled ? StateEnum.Normal : StateEnum.Off;
+    //  //State = StateEnum.Off;
 
-      //trayIcon.Icon = GetIcon(pActiveProcess);
-      SetIcon();
+    //  //trayIcon.Icon = GetIcon(pActiveProcess);
+    //  SetIcon();
 
-      //WriteStateFile(text);
+    //  //WriteStateFile(text);
 
-      LastActiveProcess = pActiveProcess;
+    //  LastActiveProcess = pActiveProcess;
 
-      //Log.Text += GetActiveWindowTitle() + "\r\n";
-    }
+    //  //Log.Text += GetActiveWindowTitle() + "\r\n";
+    //}
 
     private void WriteStateFile(string xText) {
 

@@ -20,7 +20,7 @@ namespace TrayApp2.Tests {
           isUp = isUp,
         },
         stateData = new cStateData {
-          isWin = isESC,
+          isControl = isESC,
           state = state,
         }
       };

@@ -43,7 +43,7 @@ namespace TrayApp2 {
     public static bool IsIgnoredKey(Keys key) {
 
       switch (key) {
-        case Keys.Capital:
+        //case Keys.Capital:
         case Keys.Down:
         case Keys.Left:
         case Keys.Up:
@@ -191,19 +191,21 @@ namespace TrayApp2 {
       }
     }
 
-    public static string GetSendKeyByKeyInsertModeWithControl(Keys key) {
+    public static string GetSendKeyByKeyInsertModeWithControl(Keys key, cSettings settings) {
 
-      switch (key) {
-        case Keys.H: return SendKeysStrings.Backspace;
-        case Keys.J: return SendKeysStrings.Enter;
-        case Keys.K: return SendKeysStrings.UpEndEnter;
-        case Keys.L: return SendKeysStrings.Delete;
-        case Keys.I: return SendKeysStrings.Tab;
-        case Keys.U: return SendKeysStrings.CrtlZ;
-        case Keys.Oemcomma: return SendKeysStrings.Home;
-        case Keys.OemPeriod: return SendKeysStrings.End;
-        default: return "";
-      }
+      return settings.SendKeyInsert(key.ToString());
+
+      //switch (key) {
+      //  case Keys.H: return SendKeysStrings.Backspace;
+      //  case Keys.J: return SendKeysStrings.Enter;
+      //  case Keys.K: return SendKeysStrings.UpEndEnter;
+      //  case Keys.L: return SendKeysStrings.Delete;
+      //  case Keys.I: return SendKeysStrings.Tab;
+      //  case Keys.U: return SendKeysStrings.CrtlZ;
+      //  case Keys.Oemcomma: return SendKeysStrings.Home;
+      //  case Keys.OemPeriod: return SendKeysStrings.End;
+      //  default: return "";
+      //}
     }
 
     public static string GetSendKeyByKeyNormalMode(Keys key, cSettings settings) {
