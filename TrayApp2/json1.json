@@ -23,10 +23,14 @@
 
   //normal mode
   {
+    "n.i": "{End} {ENTER}",
+    "n.o": "{UP}{End}{ENTER}",
     "n.h": "{LEFT}",
     "n.j": "{DOWN}",
     "n.k": "{UP}",
     "n.l": "{RIGHT}",
+    "n.n": "{PGUP}",
+    "n.m": "{PGDN}",
     "n.oemcomma": "{HOME}",
     "n.oemperiod": "{END}"
 
