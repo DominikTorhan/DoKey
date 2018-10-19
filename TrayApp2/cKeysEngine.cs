@@ -21,7 +21,8 @@ namespace TrayApp2 {
     public bool isControl { get; set; }
     public bool isCapital { get; set; }
     public StateEnum state { get; set; }
-    public bool PreventNextWinUp { get; set; }
+    public bool preventEscOnNextCapitalUp { get; set; }
+    //public bool PreventNextWinUp { get; set; }
 
     //public bool isShift { get; set; }
     //public bool isShift { get; set; }
@@ -30,12 +31,21 @@ namespace TrayApp2 {
       return "  isCapital: " + isCapital + " isControl: " + isControl + " state: " + state;
     }
 
+    public cStateData Clone() =>
+      new cStateData {
+        isCapital = isCapital,
+        isControl = isControl,
+        preventEscOnNextCapitalUp = preventEscOnNextCapitalUp,
+        state = state
+      };
+
   }
 
   public class cOutput {
     public cStateData StateData { get; set; }
     public bool PreventKeyProcess { get; set; }
     public string SendKeys { get; set; }
+
   }
 
   public class cKeysEngine {
@@ -46,6 +56,7 @@ namespace TrayApp2 {
     private cOutput outputOld => new cOutput { StateData = input.stateData };
     private Keys keys => input.eventData.keys;
     private bool isControl => input.stateData.isControl;
+    private bool isCapital => input.stateData.isCapital;
     private bool isUp => input.eventData.isUp;
     private StateEnum state => input.stateData.state;
 
@@ -54,10 +65,10 @@ namespace TrayApp2 {
       var output = ProcessCapital();
       if (output != null) return output;
 
-      output = ProcessControl();
-      if (output != null) return output;
+      //output = ProcessControl();
+      //if (output != null) return output;
 
-      output = ProcessWin();
+      output = ProcessModeChange();
       if (output != null) return output;
 
       output = ProcessEsc();
@@ -76,25 +87,29 @@ namespace TrayApp2 {
 
     private cOutput ProcessCapital() {
 
-      return null;
+      //return null;
 
       if (keys != Keys.Capital) return null;
       //if (state != StateEnum.Insert) return null;
 
-      var stateData = new cStateData {
-        isControl = outputOld.StateData.isControl,
-        isCapital = !isUp,
-        PreventNextWinUp = outputOld.StateData.PreventNextWinUp,
-        state = state,
-      };
+      var sendKeys = "";
+      var preventEscOnNextCapitalUp = input.stateData.preventEscOnNextCapitalUp;
 
-      var sendKeys = isUp ? "{ESC}" : "";
+      if (isUp) {
+        if (input.stateData.preventEscOnNextCapitalUp) {
+          preventEscOnNextCapitalUp = false;
+        } else {
+          sendKeys = "{ESC}";
 
-      return new cOutput {
-        StateData = stateData,
-        SendKeys = sendKeys,
-        PreventKeyProcess = true,
-      };
+        }
+      }
+
+      var r = NextOutput();
+      r.StateData.isCapital = !isUp;
+      r.PreventKeyProcess = true;
+      r.SendKeys = sendKeys;
+      r.StateData.preventEscOnNextCapitalUp = preventEscOnNextCapitalUp;
+      return r;
 
     }
 
@@ -104,17 +119,21 @@ namespace TrayApp2 {
       if (state == StateEnum.Off) return null;
       if (isUp) return null;
 
-      var stateData = new cStateData {
-        isControl = outputOld.StateData.isControl,
-        PreventNextWinUp = outputOld.StateData.PreventNextWinUp,
-        state = state - 1,
-      };
+      var r = NextOutput();
+      r.PreventKeyProcess = true;
+      r.StateData.state = state - 1;
+      return r;
 
-      return new cOutput {
-        StateData = stateData,
-        SendKeys = "",
-        PreventKeyProcess = true,
-      };
+      //var stateData = new cStateData {
+      //  isControl = outputOld.StateData.isControl,
+      //  state = state - 1,
+      //};
+
+      //return new cOutput {
+      //  StateData = stateData,
+      //  SendKeys = "",
+      //  PreventKeyProcess = true,
+      //};
 
     }
 
@@ -138,10 +157,18 @@ namespace TrayApp2 {
     private cOutput ProcessInsertMode() {
 
       if (state != StateEnum.Insert) return null;
-      if (!isControl) return null;
+      if (!isCapital) return null;
       if (isUp) return null;
 
       var sendKeys = cUtils.GetSendKeyByKeyInsertModeWithControl(keys, settings);
+
+      if (sendKeys == "") return null;
+
+      var r = NextOutput();
+      r.PreventKeyProcess = true;
+      r.StateData.preventEscOnNextCapitalUp = true;
+      r.SendKeys = sendKeys;
+      return r;
 
       var preventKeyProcess = sendKeys != "";
 
@@ -153,46 +180,63 @@ namespace TrayApp2 {
 
     }
 
-    private cOutput ProcessControl() {
+    //private cOutput ProcessControl() {
 
-      if (!cUtils.IsControl(keys)) return null;
+    //  if (!cUtils.IsControl(keys)) return null;
 
-      //var preventKeyProcess = state == StateEnum.Insert;
-      var preventKeyProcess = false;
+    //  //var preventKeyProcess = state == StateEnum.Insert;
+    //  var preventKeyProcess = false;
 
-      return new cOutput {
-        StateData = new cStateData {
-          state = state,
-          isControl = !isUp,
-          PreventNextWinUp = outputOld.StateData.PreventNextWinUp
-        },
-        PreventKeyProcess = preventKeyProcess
-      };
+    //  return new cOutput {
+    //    StateData = new cStateData {
+    //      state = state,
+    //      isControl = !isUp,
+    //      //PreventNextWinUp = outputOld.StateData.PreventNextWinUp
+    //    },
+    //    PreventKeyProcess = preventKeyProcess
+    //  };
 
-    }
+    //}
 
-    private cOutput ProcessWin() {
+    private cOutput ProcessModeChange() {
 
-      if (!cUtils.IsWin(keys)) return null;
-      //if (keys != Keys.Space) return null;
-      if (!isControl) return outputOld;
+      if (keys != settings.ModeChangeKey) return null;
+      if (!isCapital) return null;
+      if (isUp) return null;
 
-      if (!isUp) return new cOutput {
-        StateData = outputOld.StateData,
-        //PreventKeyProcess = true
-      };
-
-      return new cOutput {
-        StateData = new cStateData {
-          state = cUtils.GetNextState(state),
-          isControl = isControl,
-          //PreventNextWinUp = true,
-        },
-        //PreventKeyProcess = true,
-      };
-
+      var r = NextOutput();
+      r.StateData.state = cUtils.GetNextState(r.StateData.state);
+      r.StateData.preventEscOnNextCapitalUp = true;
+      r.PreventKeyProcess = true;
+      return r;
 
     }
+
+    private cOutput NextOutput() => new cOutput { StateData = NextState() };
+    private cStateData NextState() => input.stateData.Clone();
+
+    //private cOutput ProcessWin() {
+
+    //  if (!cUtils.IsWin(keys)) return null;
+    //  //if (keys != Keys.Space) return null;
+    //  if (!isControl) return outputOld;
+
+    //  if (!isUp) return new cOutput {
+    //    StateData = outputOld.StateData,
+    //    //PreventKeyProcess = true
+    //  };
+
+    //  return new cOutput {
+    //    StateData = new cStateData {
+    //      state = cUtils.GetNextState(state),
+    //      isControl = isControl,
+    //      //PreventNextWinUp = true,
+    //    },
+    //    //PreventKeyProcess = true,
+    //  };
+
+
+    //}
 
   }
 }

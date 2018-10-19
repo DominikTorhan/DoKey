@@ -9,7 +9,8 @@ using System.Windows.Forms;
 namespace TrayApp2 {
   public class cSettings {
 
-    Dictionary<string, string> mDic;
+    private Dictionary<string, string> mDic;
+    public Keys ModeChangeKey = Keys.F;
 
     public cSettings() {
 
