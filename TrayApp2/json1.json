@@ -14,7 +14,6 @@
     //Home = "{HOME}";
     //CrtlHome = "^{HOME}";
     //DoubleHome = "{HOME} 2";
-    //PageDown = "{PGDN}";
     //PageUp = "{PGUP}";
     //HalfPageDown = "{Down 20}";
     //HalfPageUp = "{Up 20}";
@@ -23,20 +22,72 @@
 
   //normal mode
   {
-    "n.i": "{End} {ENTER}",
-    "n.o": "{UP}{End}{ENTER}",
+    "2step": "m,i,n,d,f",
+
+    //
+    "n.y": "^{LEFT}",
+    "n.u": "^{RIGHT}",
+    //insert
+    "n.ii": "{End} {ENTER}",
+    "n.io": "{UP}{End}{ENTER}",
+    "n.ij": "{End} {ENTER}",
+    "n.ik": "{UP}{End}{ENTER}",
+    "n.ih": "\" \"",
+    "n.il": "\" \"",
+    //delete
+    "n.dd": "{END}+{HOME}+{HOME}\" \"{BKSP}{DEL}",
+    "n.df": "^{LEFT}+^{RIGHT}{DEL}",
+    "n.dh": "{BKSP}",
+    "n.dl": "{DEL}",
+    "n.doemcomma": "+{HOME}{DEL}",
+    "n.doemperiod": "+{END}{DEL}",
+    //func
+    "n.fd1": "{F1}",
+    "n.fd2": "{F2}",
+    "n.fd3": "{F3}",
+    "n.fd4": "{F4}",
+    "n.fd5": "{F5}",
+    "n.fd6": "{F6}",
+    "n.fq": "{F7}",
+    "n.fw": "{F8}",
+    "n.fe": "{F9}",
+    "n.fr": "{F10}",
+    "n.ft": "{F11}",
+    "n.ff": "{F12}",
+
+    //arrows
     "n.h": "{LEFT}",
     "n.j": "{DOWN}",
     "n.k": "{UP}",
     "n.l": "{RIGHT}",
-    "n.n": "{PGUP}",
-    "n.m": "{PGDN}",
+    //move
+    "n.mn": "^{END}",
+    "n.mm": "{PGDN}",
+    "n.moemcomma": "{HOME}",
+    "n.moemperiod": "{END}",
+    //"n.moemquestion": "",
+    "n.mh": "^{HOME}",
+    "n.mj": "{PGUP}",
+    "n.mk": "{DOWN 10}",
+    "n.ml": "{UP 10}",
+    "n.mi": "{DOWN 20}",
+    "n.mo": "{UP 20}",
+
+
     "n.oemcomma": "{HOME}",
-    "n.oemperiod": "{END}"
+    "n.oemperiod": "{END}",
+    //oemquestion
+
+    //control
+    "n.z": "^z",
+    "n.r": "^y",
+    "n.x": "^x",
+    "n.c": "^c",
+    "n.v": "^v"
 
   },
 
-  //normal mode with control
+  //normal mode with c
   {
     "nc.h": "{LEFT}",
     "nc.j": "{DOWN}",
@@ -45,13 +96,16 @@
   },
 
 
-  //insert mode with control
+  //insert mode with c
   {
-    "ic.h": "{BKSP}",
+    "ic.h": "{BKSP}", 
+    "ic.l": "{DEL}",
     "ic.j": "{ENTER}",
     "ic.i": "{TAB}",
-    "ic.o": "{UP}{End}{ENTER}"
+    "ic.o": "{UP}{End}{ENTER}",
+    "ic.u": "^z"
   }
 
 }
+
 

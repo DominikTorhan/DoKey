@@ -52,6 +52,7 @@
     <Compile Include="cKeysEngine.cs" />
     <Compile Include="cMessageFilter.cs" />
     <Compile Include="cSettings.cs" />
+    <Compile Include="cStateData.cs" />
     <Compile Include="cUtils.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

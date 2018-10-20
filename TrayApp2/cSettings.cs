@@ -12,15 +12,15 @@ namespace TrayApp2 {
     private Dictionary<string, string> mDic;
     public Keys ModeChangeKey = Keys.F;
 
-    public cSettings() {
+    public cSettings(string path) {
 
-      mDic = Load();
+      mDic = Load(path);
 
     }
 
-    public Dictionary<string,string> Load() {
+    public Dictionary<string,string> Load(string path) {
 
-      var lines = File.ReadLines("json1.json");
+      var lines = File.ReadLines(path);
 
       return lines
         .Select(ReadLine)
@@ -49,6 +49,13 @@ namespace TrayApp2 {
     internal string SendKeyNormalWithControl(string key) => SendKey("nc", key);
     internal string SendKeyInsert(string key) => SendKey("ic", key);
 
+    internal bool IsTwoStep(string key) {
+
+      if (!mDic.ContainsKey("2step")) return false;
+
+      return mDic["2step"].Contains(key.ToLower());
+
+    }
 
     private string SendKey(string prefix, string key) {
 

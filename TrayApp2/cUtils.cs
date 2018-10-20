@@ -56,6 +56,7 @@ namespace TrayApp2 {
         case Keys.Delete:
         case Keys.Enter:
         case Keys.Tab:
+        case Keys.LControlKey:
           return true;
       }
 
@@ -94,6 +95,10 @@ namespace TrayApp2 {
         case Keys.F11:
         case Keys.F12:
           return false;
+        case Keys.Oemcomma:
+        case Keys.OemPeriod:
+        case Keys.OemQuestion:
+          return true;
       }
 
       return char.IsLetterOrDigit(chr);
@@ -208,24 +213,6 @@ namespace TrayApp2 {
       //}
     }
 
-    public static string GetSendKeyByKeyNormalMode(Keys key, cSettings settings) {
-
-      return settings.SendKeyNormal(key.ToString());
-
-      //bez shifta
-      //switch (keys) {
-      //  case Keys.H: return SendKeysStrings.ArrowLeft;
-      //  case Keys.J: return SendKeysStrings.ArrowDown;
-      //  case Keys.K: return SendKeysStrings.ArrowUp;
-      //  case Keys.L: return SendKeysStrings.ArrowRight;
-      //  case Keys.A: return SendKeysStrings.ArrowRight;//insert mode
-      //  case Keys.X: return SendKeysStrings.Delete;
-      //  case Keys.U: return SendKeysStrings.CrtlZ;
-      //  default:
-      //    return "";
-      //}
-
-    }
 
     public static string GetSendKeyByKeyNormalModeWithShift(Keys keys) {
 

@@ -52,7 +52,7 @@ namespace TrayApp2 {
 
     public SysTrayApp() {
 
-      mSettings = new cSettings();
+      mSettings = new cSettings("json1.json");
 
       appState = new cAppState();
 
@@ -74,18 +74,6 @@ namespace TrayApp2 {
       trayIcon.ContextMenu = trayMenu;
       trayIcon.Visible = true;
 
-      //var dele = new WinEventDelegate(WinEventProc);
-      //IntPtr m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, dele, 0, 0, WINEVENT_OUTOFCONTEXT);
-
-      //var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-      //path += @"\AppData\Roaming\...DT\config\";
-      //
-      //FileSystemWatcher fileSystemWatcher = new FileSystemWatcher {
-      //  Path = path
-      //};
-      //fileSystemWatcher.Changed += FileSystemWatcher_Changed;
-      //fileSystemWatcher.EnableRaisingEvents = true;
-
       SetupKeyboardHooks();
 
     }
@@ -96,53 +84,7 @@ namespace TrayApp2 {
       mKeyboardHook.KeyboardPressed += OnKeyPressed;
     }
 
-    //private void PerformEscape() {
-
-    //  State = GetStateBackward(State);
-    //  SetIcon();
-
-    //}
-
     private void SetIcon() => trayIcon.Icon = GetIcon(mStateData.state);
-
-    //private StateEnum GetStateBackward(StateEnum xState) {
-      
-    //  if (xState == StateEnum.Insert) return StateEnum.Normal;
-
-    //  return StateEnum.Off;
-
-    //}
-
-    //private void SetInsertMode() {
-
-    //  State = StateEnum.Insert;
-    //  SetIcon();
-
-    //}
-
-    //private void SetOffMode() {
-
-    //  State = StateEnum.Off;
-    //  SetIcon();
-
-    //}
-
-    //private bool KeyPressedInsertMode(Keys key) {
-
-    //  if (!appState.isControl) return false;
-
-    //  if (key == Keys.Z) return true;
-
-    //  var sendKey = cUtils.GetSendKeyByKeyInsertModeWithControl(key, s);
-
-    //  if (sendKey == "") return false;
-
-    //  SendKeys.Send(sendKey);
-
-    //  return true;
-
-    //}
-
 
     private bool IsUp(cKeyboardHook.KeyboardState keyState) {
 
@@ -162,6 +104,16 @@ namespace TrayApp2 {
       //Debug.WriteLine(e.KeyboardData.VirtualCode);
 
       var key = (Keys)e.KeyboardData.VirtualCode;
+
+      var isCapsLockToggled = Control.IsKeyLocked(Keys.CapsLock);
+      if (isCapsLockToggled) {
+        var i = 0;
+        if (key == Keys.Capital) return;
+      }
+
+      if (Control.ModifierKeys == Keys.Control) return;
+      if (Control.ModifierKeys == Keys.Alt) return;
+
 
       if (cUtils.IsIgnoredKey(key)) return;
 
@@ -198,164 +150,24 @@ namespace TrayApp2 {
 
       return;
 
-      //ModifierKeys.
-
-      MutateStateByModifiKeys(key, e.KeyboardState);
-
-      if (cUtils.IsIgnoredKey(key)) return;
-
-      if (e.KeyboardState == cKeyboardHook.KeyboardState.SysKeyUp) return;
-      if (e.KeyboardState == cKeyboardHook.KeyboardState.KeyUp) {
-        //if (cUtils.IsWin(key) && State != StateEnum.Off) e.Handled = true;
-        return;
-      }
-
-      //if (IsToggleKey(key)) {
-      //  switch (State) {
-      //    case StateEnum.Off: SetNormalMode(); break;
-      //    case StateEnum.Normal: SetInsertMode(); break;
-      //    case StateEnum.Insert: SetOffMode(); break;
-      //  }
-      //  e.Handled = true;
-      //  return;
-      //}
-
-      //if (State == StateEnum.Off) return;
-
-      //if (cUtils.IsModifierKey(key)) {
-      //  if (State == StateEnum.Normal) e.Handled = true;
-      //  if (State == StateEnum.Insert) {
-      //    if (e.KeyboardState == cKeyboardHook.KeyboardState.SysKeyDown) return;
-      //    if (cUtils.IsControl(key)) e.Handled = true;
-      //    //if (cUtils.IsAlt(key)) e.Handled = true;
-      //  }
-      //  return;
-      //}
-
-      //if (key == Keys.Escape) {
-      //  SetOffMode();
-      //  e.Handled = true;
-      //  return;
-      //}
-
-      //var x = Control.ModifierKeys;
-
-      //if (State == StateEnum.Insert) {
-      //  if (KeyPressedInsertMode(key)) {
-      //    e.Handled = true;
-      //  }
-      //  return;
-      //}
-
-      //if (cUtils.IsInsertKey(key)) {
-      //  SetInsertMode();
-      //  e.Handled = true;
-      //}
-
-      //Console.WriteLine("keyCode" + e.KeyboardData.VirtualCode + " " + e.KeyboardData.TimeStamp);
-      //Console.WriteLine("keyStare" + e.KeyboardState.ToString());
-
-      //string sendKey;
-
-      //if (appState.isShift) {
-      //  sendKey = cUtils.GetSendKeyByKeyNormalModeWithShift(key);
-      //} else if (appState.isControl) {
-      //  sendKey = cUtils.GetSendKeyByKeyNormalModeWithControl(key);
-      //} else {
-      //  sendKey = cUtils.GetSendKeyByKeyNormalMode(key, mSettings);
-      //}
-
-      //if (sendKey != "") {
-      //  e.Handled = true;
-      //  SendKeys.Send(sendKey);
-      //  Console.WriteLine("SendKeys: " + sendKey);
-      //  return;
-      //}
-
-      //if (cUtils.IsLetterKey(key)){
-      //  e.Handled = true;
-      //}
-
-      //return;
-
-      //if (e.KeyboardData.VirtualCode == 81) {
-      //  e.Handled = true;
-      //}
-
-      //if (e.KeyboardData.VirtualCode != cKeyboardHook.VkSnapshot)
-      //  return;
-
-      //// seems, not needed in the life.
-      ////if (e.KeyboardState == GlobalKeyboardHook.KeyboardState.SysKeyDown &&
-      ////    e.KeyboardData.Flags == GlobalKeyboardHook.LlkhfAltdown)
-      ////{
-      ////    MessageBox.Show("Alt + Print Screen");
-      ////    e.Handled = true;
-      ////}
-      ////else
-
-
-
-      //if (e.KeyboardState == cKeyboardHook.KeyboardState.KeyDown) {
-      //  MessageBox.Show("Print Screen");
-      //  e.Handled = true;
-      //}
     }
 
+    //protected override void WndProc(ref Message msg) {
+    //  //if (aMessage.Msg == WM_AMESSAGE) {
+    //  //  //WM_AMESSAGE Dispatched
+    //  //  //Let’s do something here
+    //  //  //...
+    //  //}
 
+    //  Console.WriteLine(msg.ToString());
 
-    private void MutateStateByModifiKeys(Keys key, cKeyboardHook.KeyboardState state) {
+    //  if (msg.Msg == 0x401) {
+    //    MessageBox.Show(msg.ToString());
+    //  }
 
-      if (cUtils.IsShift(key)) appState.isShift = state == cKeyboardHook.KeyboardState.KeyDown;
-      if (cUtils.IsControl(key)) appState.isControl = state == cKeyboardHook.KeyboardState.KeyDown;
-      if (cUtils.IsWin(key)) appState.isWin = state == cKeyboardHook.KeyboardState.KeyDown;
-      if (cUtils.IsAlt(key)) appState.isAlt = state == cKeyboardHook.KeyboardState.SysKeyDown;
+    //  base.WndProc(ref msg);
 
-    }
-
-    private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e) {
-
-      return;
-
-      //if (e.FullPath != FullPath_Msg) return;
-      //
-      //var pText = File.ReadAllText(FullPath_Msg);
-      //
-      //var pLast = pText.Last();
-      //
-      //if (pLast == 'i') {
-      //  SetInsertMode();
-      //} else if (pLast == 'n') {
-      //  SetNormalMode();
-      //}
-
-    }
-
-    private void SetNormalMode() {
-
-      //State = StateEnum.Normal;
-
-      WriteStateFile("1");
-      trayIcon.Icon = GetIconNormalMode();
-
-    }
-
-    protected override void WndProc(ref Message msg) {
-      //if (aMessage.Msg == WM_AMESSAGE) {
-      //  //WM_AMESSAGE Dispatched
-      //  //Let’s do something here
-      //  //...
-      //}
-
-      Console.WriteLine(msg.ToString());
-
-      if (msg.Msg == 0x401) {
-        MessageBox.Show(msg.ToString());
-      }
-
-      base.WndProc(ref msg);
-
-    }
+    //}
 
     private Icon GetIconOff() {
       return new Icon(Resources.Off, 40, 40);
@@ -367,45 +179,6 @@ namespace TrayApp2 {
 
     private Icon GetIconInsertMode() {
       return new Icon(Resources.Insert, 40, 40);
-    }
-
-    private string LastActiveProcess = "";
-
-    //public void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime) {
-
-    //  Console.WriteLine(hWinEventHook);
-
-    //  var pActiveProcess = GetActiveProcessFileName();
-
-    //  if (LastActiveProcess == pActiveProcess) return;
-
-    //  var isProcessEnabled = IsModuleNameEnabledToUseVim(pActiveProcess);
-
-    //  //State = isProcessEnabled ? StateEnum.Normal : StateEnum.Off;
-    //  //State = StateEnum.Off;
-
-    //  //trayIcon.Icon = GetIcon(pActiveProcess);
-    //  SetIcon();
-
-    //  //WriteStateFile(text);
-
-    //  LastActiveProcess = pActiveProcess;
-
-    //  //Log.Text += GetActiveWindowTitle() + "\r\n";
-    //}
-
-    private void WriteStateFile(string xText) {
-
-      //File.WriteAllText(FullPath_State, xText);
-
-    }
-
-    private Icon GetIcon(string xModuleName) {
-
-      if (!IsModuleNameEnabledToUseVim(xModuleName)) return GetIconOff();
-
-      return GetIconNormalMode();
-
     }
 
     private Icon GetIcon(StateEnum xState) {
@@ -420,27 +193,27 @@ namespace TrayApp2 {
 
     }
 
-    private bool IsModuleNameEnabledToUseVim(string xModuleName) {
+    //private bool IsModuleNameEnabledToUseVim(string xModuleName) {
 
-      return cAplictations.Cln().Contains(xModuleName);
+    //  return cAplictations.Cln().Contains(xModuleName);
 
-    }
+    //}
 
-    private string GetActiveProcessFileName() {
-      IntPtr hwnd = GetForegroundWindow();
-      uint pid;
-      GetWindowThreadProcessId(hwnd, out pid);
-      Process p = Process.GetProcessById((int)pid);
+    //private string GetActiveProcessFileName() {
+    //  IntPtr hwnd = GetForegroundWindow();
+    //  uint pid;
+    //  GetWindowThreadProcessId(hwnd, out pid);
+    //  Process p = Process.GetProcessById((int)pid);
 
-      var name = p.ProcessName;
+    //  var name = p.ProcessName;
 
-      return name;
+    //  return name;
 
-      //p.MainModule.FileName.Dump();
-      return p.MainModule.ModuleName;
-      return p.MainModule.FileName;
+    //  //p.MainModule.FileName.Dump();
+    //  return p.MainModule.ModuleName;
+    //  return p.MainModule.FileName;
 
-    }
+    //}
 
 
     protected override void OnLoad(EventArgs e) {
