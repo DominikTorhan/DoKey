@@ -1,28 +1,28 @@
 {
-    //ArrowUp = "{UP}";
-    //ArrowDown = "{DOWN}";
-    //ArrowLeft = "{LEFT}";
-    //ArrowRight = "{RIGHT}";
-    //Backspace = "{BKSP}";
-    //Delete = "{DEL}";
-    //End = "{END}";
-    //CrtlEnd = "^{END}";
-    //Enter = "{ENTER}";
-    //EndSpaceEnter = "{End} {ENTER}";
-    //UpEndEnter = "{UP}{End}{ENTER}";
-    //Escape = "{ESC}";
-    //Home = "{HOME}";
-    //CrtlHome = "^{HOME}";
-    //DoubleHome = "{HOME} 2";
-    //PageUp = "{PGUP}";
-    //HalfPageDown = "{Down 20}";
-    //HalfPageUp = "{Up 20}";
-    //Tab = "{TAB}";
-    //CrtlZ = "^z";
+  //ArrowUp = "{UP}";
+  //ArrowDown = "{DOWN}";
+  //ArrowLeft = "{LEFT}";
+  //ArrowRight = "{RIGHT}";
+  //Backspace = "{BKSP}";
+  //Delete = "{DEL}";
+  //End = "{END}";
+  //CrtlEnd = "^{END}";
+  //Enter = "{ENTER}";
+  //EndSpaceEnter = "{End} {ENTER}";
+  //UpEndEnter = "{UP}{End}{ENTER}";
+  //Escape = "{ESC}";
+  //Home = "{HOME}";
+  //CrtlHome = "^{HOME}";
+  //DoubleHome = "{HOME} 2";
+  //PageUp = "{PGUP}";
+  //HalfPageDown = "{Down 20}";
+  //HalfPageUp = "{Up 20}";
+  //Tab = "{TAB}";
+  //CrtlZ = "^z";
 
   //normal mode
-  {
-    "2step": "m,i,n,d,f",
+  "normal mode": {
+    "2step": "m,i,n,d,f,s",
 
     //
     "n.y": "^{LEFT}",
@@ -34,6 +34,13 @@
     "n.ik": "{UP}{End}{ENTER}",
     "n.ih": "\" \"",
     "n.il": "\" \"",
+    //select / switch
+    "n.se": "%{UP}",
+    "n.sd": "%{DOWN}",
+    "n.ss": "{END}+{HOME}+{HOME}",
+    "n.sf": "^{LEFT}+^{RIGHT}",
+    "n.soemcomma": "+{HOME}",
+    "n.soemperiod": "+{END}",
     //delete
     "n.dd": "{END}+{HOME}+{HOME}\" \"{BKSP}{DEL}",
     "n.df": "^{LEFT}+^{RIGHT}{DEL}",
@@ -60,6 +67,12 @@
     "n.j": "{DOWN}",
     "n.k": "{UP}",
     "n.l": "{RIGHT}",
+    //navigate
+    "n.nn": "%{TAB}",
+    "n.nj": "^+{TAB}",
+    "n.nk": "^{TAB}",
+    "n.noemcomma": "%{LEFT}",
+    "n.noemperiod": "%{RIGHT}",
     //move
     "n.mn": "^{END}",
     "n.mm": "{PGDN}",
@@ -88,17 +101,17 @@
   },
 
   //normal mode with c
-  {
-    "nc.h": "{LEFT}",
-    "nc.j": "{DOWN}",
-    "nc.k": "{UP}",
-    "nc.l": "{RIGHT}"
-  },
+  //{
+  //  "nc.h": "{LEFT}",
+  //  "nc.j": "{DOWN}",
+  //  "nc.k": "{UP}",
+  //  "nc.l": "{RIGHT}"
+  //},
 
 
   //insert mode with c
-  {
-    "ic.h": "{BKSP}", 
+  "insert mode": {
+    "ic.h": "{BKSP}",
     "ic.l": "{DEL}",
     "ic.j": "{ENTER}",
     "ic.i": "{TAB}",
