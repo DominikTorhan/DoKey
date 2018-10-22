@@ -53,10 +53,10 @@ namespace TrayApp2 {
 
       if (state == StateEnum.Off) return outputOld;
 
-      output = ProcessNormalMode();
+      output = ProcessNormalAndInsertWithCapital();
       if (output != null) return output;
 
-      output = ProcessInsertMode();
+      output = ProcessNormalMode();
       if (output != null) return output;
 
       return outputOld;
@@ -128,9 +128,9 @@ namespace TrayApp2 {
 
     }
 
-    private cOutput ProcessInsertMode() {
+    private cOutput ProcessNormalAndInsertWithCapital() {
 
-      if (state != StateEnum.Insert) return null;
+      if (state == StateEnum.Off) return null;
       if (!isCapital) return null;
       if (isUp) return null;
 
