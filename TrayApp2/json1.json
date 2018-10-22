@@ -22,7 +22,7 @@
 
   //normal mode
   "normal mode": {
-    "2step": "m,i,n,d,f,s",
+    "2step": "i,n,d,f,s,m",
 
     //
     "n.y": "^{LEFT}",
@@ -74,21 +74,19 @@
     "n.noemcomma": "%{LEFT}",
     "n.noemperiod": "%{RIGHT}",
     //move
-    "n.mn": "^{END}",
-    "n.mm": "{PGDN}",
-    "n.moemcomma": "{HOME}",
-    "n.moemperiod": "{END}",
-    //"n.moemquestion": "",
+
+    //"m.n" "{PGUP}",
+    "n.mj": "{PGDN}",
+    "n.mk": "{PGUP}",
     "n.mh": "^{HOME}",
-    "n.mj": "{PGUP}",
-    "n.mk": "{DOWN 10}",
-    "n.ml": "{UP 10}",
-    "n.mi": "{DOWN 20}",
-    "n.mo": "{UP 20}",
-
-
+    "n.mn": "^{END}",
     "n.oemcomma": "{HOME}",
     "n.oemperiod": "{END}",
+    "n.oemquestion": "^f",
+    //"n.mk" "{DOWN 10}",
+    //"n.ml" "{UP 10}",
+    //"n.mi" "{DOWN 20}",
+    //"n.mo" "{UP 20}",
     //oemquestion
 
     //control
@@ -100,23 +98,14 @@
 
   },
 
-  //normal mode with c
-  //{
-  //  "nc.h": "{LEFT}",
-  //  "nc.j": "{DOWN}",
-  //  "nc.k": "{UP}",
-  //  "nc.l": "{RIGHT}"
-  //},
-
-
   //insert mode with c
   "insert mode": {
+    "ic.e": "{ESC}",
     "ic.h": "{BKSP}",
     "ic.l": "{DEL}",
     "ic.j": "{ENTER}",
-    "ic.i": "{TAB}",
-    "ic.o": "{UP}{End}{ENTER}",
-    "ic.u": "^z"
+    "ic.t": "{TAB}",
+    "ic.z": "^z"
   }
 
 }

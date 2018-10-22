@@ -76,7 +76,7 @@ namespace TrayApp2 {
           sendKeys = "{ESC}";
         }
       }
-
+      
       var r = NextOutput();
       r.StateData.isCapital = !isUp;
       r.PreventKeyProcess = true;
@@ -91,6 +91,7 @@ namespace TrayApp2 {
       if (!cUtils.IsEsc(keys)) return null;
       if (state == StateEnum.Off) return null;
       if (isUp) return null;
+      if (isCapital) return null;
 
       var r = NextOutput();
       r.PreventKeyProcess = true;

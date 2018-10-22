@@ -19,6 +19,7 @@ namespace TrayApp2.Tests {
     [TestCase("p  cap: True first: None state: Insert", Keys.F, false, StateEnum.Normal, true)]
     [TestCase("p {DOWN} cap: False first: None state: Normal", Keys.J, false, StateEnum.Normal, false)]
     [TestCase("p ^c cap: False first: None state: Normal", Keys.C, false, StateEnum.Normal, false)]
+    [TestCase("p {ESC} cap: True first: None state: Normal", Keys.E, false, StateEnum.Normal, true)]
     //insert
     [TestCase("p {BKSP} cap: True first: None state: Insert", Keys.H, false, StateEnum.Insert, true)]
     [TestCase(" cap: False first: None state: Insert", Keys.A, false, StateEnum.Insert, false)]

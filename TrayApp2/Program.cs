@@ -113,8 +113,8 @@ namespace TrayApp2 {
 
       if (Control.ModifierKeys == Keys.Control) return;
       if (Control.ModifierKeys == Keys.Alt) return;
-
-
+      //if (Control.ModifierKeys == Keys.Shift) return;
+      
       if (cUtils.IsIgnoredKey(key)) return;
 
       var isUp = IsUp(e.KeyboardState);
