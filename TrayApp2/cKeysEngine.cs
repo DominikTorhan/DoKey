@@ -82,6 +82,7 @@ namespace TrayApp2 {
       r.PreventKeyProcess = true;
       r.SendKeys = sendKeys;
       r.StateData.preventEscOnNextCapitalUp = preventEscOnNextCapitalUp;
+      r.StateData.firstStep = Keys.None;
       return r;
       
     }
@@ -96,6 +97,7 @@ namespace TrayApp2 {
       var r = NextOutput();
       r.PreventKeyProcess = true;
       r.StateData.state = state - 1;
+      r.StateData.firstStep = Keys.None;
       return r;
 
     }
@@ -143,6 +145,7 @@ namespace TrayApp2 {
       r.PreventKeyProcess = true;
       r.StateData.preventEscOnNextCapitalUp = true;
       r.SendKeys = sendKeys;
+      r.StateData.firstStep = Keys.None;
       return r;
 
     }
@@ -157,6 +160,7 @@ namespace TrayApp2 {
       r.StateData.state = cUtils.GetNextState(r.StateData.state);
       r.StateData.preventEscOnNextCapitalUp = true;
       r.PreventKeyProcess = true;
+      r.StateData.firstStep = Keys.None;
       return r;
 
     }

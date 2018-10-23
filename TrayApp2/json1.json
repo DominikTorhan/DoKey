@@ -69,8 +69,10 @@
     "n.l": "{RIGHT}",
     //navigate
     "n.nn": "%{TAB}",
-    "n.nj": "^+{TAB}",
-    "n.nk": "^{TAB}",
+    "n.ni": "^+{TAB}",
+    "n.no": "^{TAB}",
+    "n.nk": "^{PGUP}",
+    "n.nl": "^{PGDN}",
     "n.noemcomma": "%{LEFT}",
     "n.noemperiod": "%{RIGHT}",
     //move
@@ -83,6 +85,9 @@
     "n.oemcomma": "{HOME}",
     "n.oemperiod": "{END}",
     "n.oemquestion": "^f",
+    "n.mm": "^m^m",
+    "n.ma": "^m^a",
+    "n.me": "^+{F12}",
     //"n.mk" "{DOWN 10}",
     //"n.ml" "{UP 10}",
     //"n.mi" "{DOWN 20}",
