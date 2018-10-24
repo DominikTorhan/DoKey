@@ -45,6 +45,9 @@ namespace TrayApp2 {
       var output = ProcessCapital();
       if (output != null) return output;
 
+      output = ProcessSetModeOff();
+      if (output != null) return output;
+
       output = ProcessModeChange();
       if (output != null) return output;
 
@@ -96,7 +99,7 @@ namespace TrayApp2 {
 
       var r = NextOutput();
       r.PreventKeyProcess = true;
-      r.StateData.state = state - 1;
+      r.StateData.state = cUtils.GetPrevState(state);
       r.StateData.firstStep = Keys.None;
       return r;
 
@@ -128,6 +131,22 @@ namespace TrayApp2 {
       r.SendKeys = sendKeys;
       r.PreventKeyProcess = preventKeyProcess;
       return r;
+
+    }
+
+    private cOutput ProcessSetModeOff() {
+
+      if (!isCapital) return null;
+      if (isUp) return null;
+      if (keys != settings.ModeOffKey) return null;
+
+      var r = NextOutput();
+      r.StateData.state = StateEnum.Off;
+      r.StateData.preventEscOnNextCapitalUp = true;
+      r.PreventKeyProcess = true;
+      r.StateData.firstStep = Keys.None;
+      return r;
+
 
     }
 

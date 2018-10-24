@@ -22,11 +22,12 @@
 
   //normal mode
   "normal mode": {
-    "2step": "i,n,d,f,s,m",
+    "2step": "i,d,f,s,m",
 
     //
     "n.y": "^{LEFT}",
-    "n.u": "^{RIGHT}",
+    "n.u": "",
+    "n.o": "^{RIGHT}",
     //insert
     "n.ii": "{End} {ENTER}",
     "n.io": "{UP}{End}{ENTER}",
@@ -68,21 +69,28 @@
     "n.k": "{UP}",
     "n.l": "{RIGHT}",
     //navigate
-    "n.nn": "%{TAB}",
-    "n.ni": "^+{TAB}",
-    "n.no": "^{TAB}",
-    "n.nk": "^{PGUP}",
-    "n.nl": "^{PGDN}",
-    "n.noemcomma": "%{LEFT}",
-    "n.noemperiod": "%{RIGHT}",
+    //"n.nn" "%{TAB}",mh
+    //"n.ni" "^+{TAB}",
+    //"n.no" "^{TAB}",
+    //"n.nk" "^{PGUP}",
+    //"n.nl" "^{PGDN}",
+    //"n.noemcomma" "%{LEFT}",
+    //"n.noemperiod" "%{RIGHT}",
     //move
 
     //"m.n" "{PGUP}",
     "n.mj": "{PGDN}",
     "n.mk": "{PGUP}",
-    "n.mh": "^{HOME}",
-    "n.mn": "^{END}",
-    "n.oemcomma": "{HOME}",
+    "n.mi": "^{HOME}",
+    "n.mu": "^{END}",
+    "n.mh": "^{PGUP}",
+    "n.ml": "^{PGDN}",
+    "n.mn": "%{LEFT}",
+    "n.moemperiod": "%{RIGHT}",
+    //"n.nk" "^{PGUP}",
+    //"n.nl" "^{PGDN}",
+
+    "n.n": "{HOME}",
     "n.oemperiod": "{END}",
     "n.oemquestion": "^f",
     "n.mm": "^m^m",

@@ -11,6 +11,7 @@ namespace TrayApp2 {
 
     private Dictionary<string, string> mDic;
     public Keys ModeChangeKey = Keys.F;
+    public Keys ModeOffKey = Keys.Q;
 
     public cSettings(string path) {
 

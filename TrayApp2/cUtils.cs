@@ -128,9 +128,18 @@ namespace TrayApp2 {
 
     public static StateEnum GetNextState(StateEnum state) {
 
-      if (state == StateEnum.Insert) return StateEnum.Off;
+      if (state == StateEnum.Insert) return StateEnum.Insert;
 
       return state + 1;
+
+    }
+
+    public static StateEnum GetPrevState(StateEnum state) {
+
+      if (state == StateEnum.Insert) return StateEnum.Normal;
+      if (state == StateEnum.Normal) return StateEnum.Normal;
+
+      return StateEnum.Off;
 
     }
 
