@@ -22,7 +22,17 @@
 
   //normal mode
   "normal mode": {
-    "2step": "i,d,f,s,m",
+    "2step": "i,d,f,s,u",
+
+    //MAIN
+    "n.h": "{LEFT}",
+    "n.k": "{UP}",
+    "n.j": "{DOWN}",
+    "n.l": "{RIGHT}",
+    "n.n": "{HOME}",
+    "n.oemperiod": "{END}",
+    "n.m": "{PGDN}",
+    "n.oemcomma": "{PGUP}",
 
     //
     "n.y": "^{LEFT}",
@@ -63,11 +73,7 @@
     "n.ft": "{F11}",
     "n.ff": "{F12}",
 
-    //arrows
-    "n.h": "{LEFT}",
-    "n.j": "{DOWN}",
-    "n.k": "{UP}",
-    "n.l": "{RIGHT}",
+
     //navigate
     //"n.nn" "%{TAB}",mh
     //"n.ni" "^+{TAB}",
@@ -79,24 +85,23 @@
     //move
 
     //"m.n" "{PGUP}",
-    "n.mj": "{PGDN}",
-    "n.mk": "{PGUP}",
-    "n.mi": "^{HOME}",
-    "n.mu": "^{END}",
-    "n.mh": "^{PGUP}",
-    "n.ml": "^{PGDN}",
-    "n.mn": "%{LEFT}",
-    "n.moemperiod": "%{RIGHT}",
+
+    //"n.mi" "^{HOME}",
+    //"n.mu" "^{END}",
+    //"n.mh" "^{PGUP}",
+    //"n.ml" "^{PGDN}",
+    //"n.mn" "%{LEFT}",
+    //"n.moemperiod" "%{RIGHT}",
     //"n.nk" "^{PGUP}",
     //"n.nl" "^{PGDN}",
 
-    "n.n": "{HOME}",
-    "n.oemperiod": "{END}",
+
     "n.oemquestion": "^f",
-    "n.mm": "^m^m",
-    "n.ma": "^m^a",
-    "n.mo": "^m^o",
-    "n.me": "^+{F12}",
+
+    "n.uu": "^m^m",
+    "n.ua": "^m^a",
+    "n.uo": "^m^o",
+    "n.ue": "^+{F12}",
     //"n.mk" "{DOWN 10}",
     //"n.ml" "{UP 10}",
     //"n.mi" "{DOWN 20}",

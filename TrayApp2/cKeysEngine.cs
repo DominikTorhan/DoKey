@@ -10,6 +10,7 @@ namespace TrayApp2 {
   public class cInput {
     public cEventData eventData { get; set; }
     public cStateData stateData { get; set; }
+    public cModificators modificators { get; set; }
   }
 
   public class cEventData {
@@ -39,6 +40,7 @@ namespace TrayApp2 {
     private bool isCapital => input.stateData.isCapital;
     private bool isUp => input.eventData.isUp;
     private StateEnum state => input.stateData.state;
+    private cModificators modificators => input.modificators;
 
     public cOutput ProcessKey() {
 
@@ -125,6 +127,8 @@ namespace TrayApp2 {
       var firstStepNext = isDownFirstStep ? keys : Keys.None;
   
       var preventKeyProcess = cUtils.IsLetterKey(keys) || sendKeys != "";
+
+      sendKeys = cSendKeys.Create(sendKeys, modificators);
 
       var r = NextOutput();
       r.StateData.firstStep = firstStepNext;

@@ -51,6 +51,8 @@
     <Compile Include="cKeyboardHook.cs" />
     <Compile Include="cKeysEngine.cs" />
     <Compile Include="cMessageFilter.cs" />
+    <Compile Include="cModificators.cs" />
+    <Compile Include="cSendKeys.cs" />
     <Compile Include="cSettings.cs" />
     <Compile Include="cStateData.cs" />
     <Compile Include="cUtils.cs" />

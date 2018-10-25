@@ -100,6 +100,34 @@ namespace TrayApp2 {
 
     cStateData mStateData = new cStateData();
 
+    private cModificators CreateModificators() {
+
+      return new cModificators {
+        isAlt = Control.ModifierKeys == Keys.Alt,
+        isShift = Control.ModifierKeys == Keys.Shift,
+        isControl = Control.ModifierKeys == Keys.Control,
+      };
+
+    }
+
+    bool TempIgnoreWithModificators(cModificators modificators, Keys keys) {
+
+      if (keys == Keys.N) return false;
+      if (keys == Keys.M) return false;
+      if (keys == Keys.OemPeriod) return false;
+      if (keys == Keys.Oemcomma) return false;
+      if (keys == Keys.H) return false;
+      if (keys == Keys.J) return false;
+      if (keys == Keys.K) return false;
+      if (keys == Keys.L) return false;
+
+      if (modificators.isAlt) return true;
+      if (modificators.isControl) return true;
+
+      return false;
+
+    }
+
     private void OnKeyPressed(object sender, cKeyboardHookEvent e) {
       //Debug.WriteLine(e.KeyboardData.VirtualCode);
 
@@ -107,14 +135,13 @@ namespace TrayApp2 {
 
       var isCapsLockToggled = Control.IsKeyLocked(Keys.CapsLock);
       if (isCapsLockToggled) {
-        var i = 0;
         if (key == Keys.Capital) return;
       }
 
-      if (Control.ModifierKeys == Keys.Control) return;
-      if (Control.ModifierKeys == Keys.Alt) return;
-      //if (Control.ModifierKeys == Keys.Shift) return;
-      
+      var modificators = CreateModificators();
+
+      if (TempIgnoreWithModificators(modificators, key)) return;
+
       if (cUtils.IsIgnoredKey(key)) return;
 
       var isUp = IsUp(e.KeyboardState);
@@ -124,11 +151,13 @@ namespace TrayApp2 {
           keys = key,
           isUp = isUp
         },
-        stateData = mStateData
+        stateData = mStateData,
+        modificators = modificators
       };
 
       var upOrDown = isUp ? "up" : "down";
       Console.WriteLine(key + " " + upOrDown);
+      Console.WriteLine(input.modificators);
 
       var output = new cKeysEngine{
         input = input,
@@ -144,7 +173,10 @@ namespace TrayApp2 {
         e.Handled = true;
       }
 
-      if (!string.IsNullOrEmpty(output.SendKeys)) SendKeys.Send(output.SendKeys);
+      if (!string.IsNullOrEmpty(output.SendKeys)) {
+        Console.WriteLine(output.SendKeys);
+        SendKeys.Send(output.SendKeys);
+      }
 
       SetIcon();
 
