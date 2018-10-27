@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DoKey.FS;
 
 namespace TrayApp2 {
 
   public class cInput {
     public cEventData eventData { get; set; }
     public cStateData stateData { get; set; }
-    public cModificators modificators { get; set; }
   }
 
   public class cEventData {
@@ -18,14 +18,16 @@ namespace TrayApp2 {
     public bool isUp;
   }
 
-  public class cOutput {
+  public class cOutput { 
+    public SendDoKey sendDoKey { get; set; }
     public cStateData StateData { get; set; }
     public bool PreventKeyProcess { get; set; }
-    public string SendKeys { get; set; }
+    //public string SendKeys { get; set; }
 
     public override string ToString() {
       var prevent = PreventKeyProcess ? "p " : "";
-      return prevent + SendKeys + " " + StateData;
+      var send = sendDoKey != null ? sendDoKey.Send : "";
+      return prevent + send + " " + StateData;
     }
   }
 
@@ -36,15 +38,30 @@ namespace TrayApp2 {
 
     private cOutput outputOld => new cOutput { StateData = input.stateData };
     private Keys keys => input.eventData.keys;
+    private bool isUp => input.eventData.isUp;
     private Keys firstStep => input.stateData.firstStep;
     private bool isCapital => input.stateData.isCapital;
-    private bool isUp => input.eventData.isUp;
     private StateEnum state => input.stateData.state;
-    private cModificators modificators => input.modificators;
+    private Modificators modificators => input.stateData.modificators;
+
+    private Modificators NextModificators() {
+      bool alt = this.modificators.Alt;
+      bool control = this.modificators.Control;
+      bool shift = this.modificators.Shift;
+      bool win = this.modificators.Win;
+      if (cUtils.IsAlt(keys)) alt = !isUp;
+      if (cUtils.IsControl(keys)) control = !isUp;
+      if (cUtils.IsShift(keys)) shift = !isUp;
+      if (cUtils.IsWin(keys)) win = !isUp;
+      return new Modificators(alt, control, shift, win);
+    }
 
     public cOutput ProcessKey() {
 
-      var output = ProcessCapital();
+      var output = ProcessModificators();
+      if (output != null) return output;
+       
+      output = ProcessCapital();
       if (output != null) return output;
 
       output = ProcessSetModeOff();
@@ -65,6 +82,26 @@ namespace TrayApp2 {
       if (output != null) return output;
 
       return outputOld;
+    } 
+ 
+    private cOutput ProcessModificators() {
+
+      if (!cUtils.IsModifierKey(keys)) return null;
+
+      var modificators = NextModificators();
+
+      var r = NextOutput();
+
+      if (cUtils.IsAlt(keys) && isUp) {
+        if (input.stateData.preventNextAltUp) {
+          modificators = this.modificators;
+          r.StateData.preventNextAltUp = false;
+        }
+      }
+
+      r.StateData.modificators = modificators;
+
+      return r;
     }
 
     private cOutput ProcessCapital() {
@@ -85,7 +122,7 @@ namespace TrayApp2 {
       var r = NextOutput();
       r.StateData.isCapital = !isUp;
       r.PreventKeyProcess = true;
-      r.SendKeys = sendKeys;
+      r.sendDoKey = new SendDoKey(sendKeys);
       r.StateData.preventEscOnNextCapitalUp = preventEscOnNextCapitalUp;
       r.StateData.firstStep = Keys.None;
       return r;
@@ -120,20 +157,24 @@ namespace TrayApp2 {
 
       if (state != StateEnum.Normal) return null;
       if (isUp) return null;
+      if (modificators.Win) return null;
 
       var isDownFirstStep = IsDownFirstStep();
 
-      var sendKeys = isDownFirstStep ? "" : settings.SendKeyNormal(NormalModeKeysToString());
+      var sendKeys = isDownFirstStep ? "" : settings.GetSendKeyNormal(NormalModeKeysToString());
       var firstStepNext = isDownFirstStep ? keys : Keys.None;
   
       var preventKeyProcess = cUtils.IsLetterKey(keys) || sendKeys != "";
 
       sendKeys = cSendKeys.Create(sendKeys, modificators);
 
+      var preventNextAltUp = sendKeys.Contains("%");
+
       var r = NextOutput();
       r.StateData.firstStep = firstStepNext;
-      r.SendKeys = sendKeys;
+      r.sendDoKey = new SendDoKey(sendKeys);
       r.PreventKeyProcess = preventKeyProcess;
+      r.StateData.preventNextAltUp = preventNextAltUp;
       return r;
 
     }
@@ -160,14 +201,14 @@ namespace TrayApp2 {
       if (!isCapital) return null;
       if (isUp) return null;
 
-      var sendKeys = cUtils.GetSendKeyByKeyInsertModeWithControl(keys, settings);
+      var sendKeys = settings.GetSendKeyCaps(keys.ToString());
 
       if (sendKeys == "") return null;
 
       var r = NextOutput();
       r.PreventKeyProcess = true;
       r.StateData.preventEscOnNextCapitalUp = true;
-      r.SendKeys = sendKeys;
+      r.sendDoKey = new SendDoKey(sendKeys);
       r.StateData.firstStep = Keys.None;
       return r;
 

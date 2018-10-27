@@ -100,33 +100,24 @@ namespace TrayApp2 {
 
     cStateData mStateData = new cStateData();
 
-    private cModificators CreateModificators() {
+    //bool TempIgnoreWithModificators(cModificators modificators, Keys keys) {
 
-      return new cModificators {
-        isAlt = Control.ModifierKeys == Keys.Alt,
-        isShift = Control.ModifierKeys == Keys.Shift,
-        isControl = Control.ModifierKeys == Keys.Control,
-      };
+    //  if (modificators.isControl) return true;
 
-    }
+    //  if (keys == Keys.N) return false;
+    //  if (keys == Keys.M) return false;
+    //  if (keys == Keys.OemPeriod) return false;
+    //  if (keys == Keys.Oemcomma) return false;
+    //  if (keys == Keys.H) return false;
+    //  if (keys == Keys.J) return false;
+    //  if (keys == Keys.K) return false;
+    //  if (keys == Keys.L) return false;
 
-    bool TempIgnoreWithModificators(cModificators modificators, Keys keys) {
+    //  if (modificators.isAlt) return true;
 
-      if (keys == Keys.N) return false;
-      if (keys == Keys.M) return false;
-      if (keys == Keys.OemPeriod) return false;
-      if (keys == Keys.Oemcomma) return false;
-      if (keys == Keys.H) return false;
-      if (keys == Keys.J) return false;
-      if (keys == Keys.K) return false;
-      if (keys == Keys.L) return false;
+    //  return false;
 
-      if (modificators.isAlt) return true;
-      if (modificators.isControl) return true;
-
-      return false;
-
-    }
+    //}
 
     private void OnKeyPressed(object sender, cKeyboardHookEvent e) {
       //Debug.WriteLine(e.KeyboardData.VirtualCode);
@@ -138,9 +129,12 @@ namespace TrayApp2 {
         if (key == Keys.Capital) return;
       }
 
-      var modificators = CreateModificators();
+      if (Control.ModifierKeys == Keys.Control) return;
+      if (Control.ModifierKeys == Keys.LWin) return;
+      if (Control.ModifierKeys == Keys.RWin) return;
 
-      if (TempIgnoreWithModificators(modificators, key)) return;
+      //var modificators = CreateModificators();
+      //if (TempIgnoreWithModificators(modificators, key)) return;
 
       if (cUtils.IsIgnoredKey(key)) return;
 
@@ -152,17 +146,18 @@ namespace TrayApp2 {
           isUp = isUp
         },
         stateData = mStateData,
-        modificators = modificators
       };
 
       var upOrDown = isUp ? "up" : "down";
       Console.WriteLine(key + " " + upOrDown);
-      Console.WriteLine(input.modificators);
+      
 
       var output = new cKeysEngine{
         input = input,
         settings = mSettings
       }.ProcessKey();
+
+      if (output == null) return;
 
       mStateData = output.StateData;
 
@@ -173,9 +168,9 @@ namespace TrayApp2 {
         e.Handled = true;
       }
 
-      if (!string.IsNullOrEmpty(output.SendKeys)) {
-        Console.WriteLine(output.SendKeys);
-        SendKeys.Send(output.SendKeys);
+      if (output.sendDoKey != null && !string.IsNullOrEmpty(output.sendDoKey.Send)) {
+        Console.WriteLine(output.sendDoKey.Send);
+        SendKeys.Send(output.sendDoKey.Send);
       }
 
       SetIcon();

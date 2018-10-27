@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FSharp.Core, Version=4.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -51,7 +52,6 @@
     <Compile Include="cKeyboardHook.cs" />
     <Compile Include="cKeysEngine.cs" />
     <Compile Include="cMessageFilter.cs" />
-    <Compile Include="cModificators.cs" />
     <Compile Include="cSendKeys.cs" />
     <Compile Include="cSettings.cs" />
     <Compile Include="cStateData.cs" />
@@ -96,6 +96,12 @@
     <Content Include="Icons\Insert.ico" />
     <Content Include="Icons\Normal.ico" />
     <Content Include="Icons\Off.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DoKey.FS\DoKey.FS.fsproj">
+      <Project>{cb8a3534-65ca-40a8-8abd-6d0bab72cc4d}</Project>
+      <Name>DoKey.FS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions />
