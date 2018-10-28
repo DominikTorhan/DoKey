@@ -13,31 +13,6 @@ namespace TrayApp2 {
     Insert = 2
   }
 
-  public class SendKeysStrings {
-    public static string ArrowUp = "{UP}";
-    public static string ArrowDown = "{DOWN}";
-    public static string ArrowLeft = "{LEFT}";
-    public static string ArrowRight = "{RIGHT}";
-    public static string Backspace = "{BKSP}";
-    public static string Delete = "{DEL}";
-    public static string End = "{END}";
-    public static string CrtlEnd = "^{END}";
-    public static string Enter = "{ENTER}";
-    public static string EndSpaceEnter = "{End} {ENTER}";
-    public static string UpEndEnter = "{UP}{End}{ENTER}";
-    public static string Escape = "{ESC}";
-    public static string Home = "{HOME}";
-    public static string CrtlHome = "^{HOME}";
-    public static string DoubleHome = "{HOME} 2";
-    public static string PageDown = "{PGDN}";
-    public static string PageUp = "{PGUP}";
-    public static string HalfPageDown = "{Down 20}";
-    public static string HalfPageUp = "{Up 20}";
-    public static string Tab = "{TAB}";
-    public static string CrtlZ = "^z";
-
-  }
-
   public class cUtils {
 
     public static bool IsIgnoredKey(Keys key) {
@@ -76,19 +51,6 @@ namespace TrayApp2 {
 
     }
 
-    public static bool IsInsertKey(Keys keys) {
-      switch (keys) {
-        case Keys.A:
-        case Keys.I:
-        case Keys.O:
-        case Keys.C:
-          return true;
-        default:
-          return false;
-      }
-      
-    }
-
     public static bool IsLetterKey(Keys key) {
 
       var chr = (char)key;
@@ -117,15 +79,6 @@ namespace TrayApp2 {
 
     }
 
-    public static bool IsToggleKey(bool isControl, Keys key) {
-
-      if (!isControl) return false;
-      if (key != Keys.Space) return false;
-
-      return true;
-
-    }
-
     public static StateEnum GetNextState(StateEnum state) {
 
       if (state == StateEnum.Insert) return StateEnum.Insert;
@@ -143,115 +96,91 @@ namespace TrayApp2 {
 
     }
 
-    public static bool IsModifierKey(Keys key) {
+    //public static bool IsModifierKey(Keys key) {
 
-      if (IsAlt(key)) return true;
-      if (IsShift(key)) return true;
-      if (IsControl(key)) return true;
-      if (IsWin(key)) return true;
+    //  if (IsAlt(key)) return true;
+    //  if (IsShift(key)) return true;
+    //  if (IsControl(key)) return true;
+    //  if (IsWin(key)) return true;
+    //  if (IsCaps(key)) return true;
 
-      return false;
+    //  return false;
 
-    }
+    //} 
 
-    public static bool IsAlt(Keys key) {
+    //public static bool IsCaps(Keys key) {
 
-      switch (key) {
-        case Keys.Alt:
-        case Keys.LMenu:
-        case Keys.RMenu:
-          return true;
-        default:
-          return false;
-      }
+    //  switch (key) {
+    //    case Keys.Capital:
+    //      return true;
+    //    default:
+    //      return false;
+    //  }
 
-    }
+    //}
 
-    public static bool IsShift(Keys key) {
+    //public static bool IsAlt(Keys key) {
 
-      switch (key) {
-        case Keys.LShiftKey:
-        case Keys.ShiftKey:
-        case Keys.RShiftKey:
-        case Keys.Shift:
-          return true;
-        default:
-          return false;
-      }
+    //  switch (key) {
+    //    case Keys.Alt:
+    //    case Keys.LMenu:
+    //    case Keys.RMenu:
+    //      return true;
+    //    default:
+    //      return false;
+    //  }
 
-    }
+    //}
 
-    public static bool IsControl(Keys key) {
+    //public static bool IsShift(Keys key) {
 
-      switch (key) {
-        case Keys.Control:
-        case Keys.ControlKey:
-        case Keys.LControlKey:
-        case Keys.RControlKey:
-          return true;
-        default:
-          return false;
-      }
+    //  switch (key) {
+    //    case Keys.LShiftKey:
+    //    case Keys.ShiftKey:
+    //    case Keys.RShiftKey:
+    //    case Keys.Shift:
+    //      return true;
+    //    default:
+    //      return false;
+    //  }
 
-    }
+    //}
 
-    public static bool IsWin(Keys key) {
+    //public static bool IsControl(Keys key) {
 
-      switch (key) {
-        case Keys.LWin:
-        case Keys.RWin:
-          return true;
-        default:
-          return false;
-      }
+    //  switch (key) {
+    //    case Keys.Control:
+    //    case Keys.ControlKey:
+    //    case Keys.LControlKey:
+    //    case Keys.RControlKey:
+    //      return true;
+    //    default:
+    //      return false;
+    //  }
 
-    }
+    //}
 
-    public static bool IsEsc(Keys keys) {
-      switch (keys) {
-        case Keys.Escape:
-        case Keys.Capital:
-          return true;
-        default:
-          return false;
-      }
-    }
+    //public static bool IsWin(Keys key) {
 
-    public static string GetSendKeyByKeyNormalModeWithShift(Keys keys) {
+    //  switch (key) {
+    //    case Keys.LWin:
+    //    case Keys.RWin:
+    //      return true;
+    //    default:
+    //      return false;
+    //  }
 
-      //shift
-      switch (keys) {
-        case Keys.D4: return SendKeysStrings.End;
-        case Keys.D6: return SendKeysStrings.Home;
-        case Keys.D0: return SendKeysStrings.DoubleHome;
-        case Keys.I: return SendKeysStrings.Home;//insert mode
-        case Keys.A: return SendKeysStrings.End;//insert mode
-        case Keys.X: return SendKeysStrings.Backspace;
-        case Keys.G: return SendKeysStrings.CrtlEnd;
-        case Keys.J: return SendKeysStrings.EndSpaceEnter;
-        default:
-          return "";
-      }
+    //}
 
-    }
-
-    public static string GetSendKeyByKeyNormalModeWithControl(Keys keys) {
-
-      switch (keys) {
-        case Keys.H: return SendKeysStrings.Home;
-        case Keys.J: return SendKeysStrings.HalfPageDown;
-        case Keys.K: return SendKeysStrings.HalfPageUp;
-        case Keys.L: return SendKeysStrings.End;
-        case Keys.F: return SendKeysStrings.PageDown;
-        case Keys.B: return SendKeysStrings.PageUp;
-        case Keys.D: return SendKeysStrings.HalfPageDown;
-        case Keys.U: return SendKeysStrings.HalfPageUp;
-        default:
-          return "";
-      }
-
-    }
-
+    //public static bool IsEsc(Keys keys) {
+    //  switch (keys) {
+    //    case Keys.Escape:
+    //    case Keys.Capital:
+    //      return true;
+    //    default:
+    //      return false;
+    //  }
+    //}
 
   }
 }

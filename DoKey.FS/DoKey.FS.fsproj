@@ -5,8 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="KeyEventData.fs" />
+    <Compile Include="Modificators.fs" />
+    <Compile Include="AppState.fs" />
+    <Compile Include="InputKey.fs" />
+    <Compile Include="Configuration.fs" />
     <Compile Include="SendDoKey.fs" />
-    <Compile Include="Library.fs" />
   </ItemGroup>
 
 </Project>

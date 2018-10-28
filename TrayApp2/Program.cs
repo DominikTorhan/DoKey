@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoKey.FS;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -18,8 +19,6 @@ namespace TrayApp2 {
       Application.Run(new SysTrayApp());
     }
 
-    private cAppState appState;
-    //private StateEnum State;
     private NotifyIcon trayIcon;
     private ContextMenu trayMenu;
 
@@ -54,10 +53,6 @@ namespace TrayApp2 {
 
       mSettings = new cSettings("json1.json");
 
-      appState = new cAppState();
-
-      //State = StateEnum.Off;
-
       // Create a simple tray menu with only one item.
       trayMenu = new ContextMenu();
       trayMenu.MenuItems.Add("Exit", OnExit);
@@ -66,13 +61,14 @@ namespace TrayApp2 {
       // Create a tray icon. In this example we use a
       // standard system icon for simplicity, but you
       // can of course use your own custom icon too.
-      trayIcon = new NotifyIcon();
-      trayIcon.Text = "TrayApp2";
-      trayIcon.Icon = GetIconOff();
+      trayIcon = new NotifyIcon {
+        Text = "TrayApp2",
+        Icon = GetIconOff(),
 
-      // Add menu to tray icon and show it.
-      trayIcon.ContextMenu = trayMenu;
-      trayIcon.Visible = true;
+        // Add menu to tray icon and show it.
+        ContextMenu = trayMenu,
+        Visible = true
+      };
 
       SetupKeyboardHooks();
 
@@ -99,25 +95,12 @@ namespace TrayApp2 {
     }
 
     cStateData mStateData = new cStateData();
-
-    //bool TempIgnoreWithModificators(cModificators modificators, Keys keys) {
-
-    //  if (modificators.isControl) return true;
-
-    //  if (keys == Keys.N) return false;
-    //  if (keys == Keys.M) return false;
-    //  if (keys == Keys.OemPeriod) return false;
-    //  if (keys == Keys.Oemcomma) return false;
-    //  if (keys == Keys.H) return false;
-    //  if (keys == Keys.J) return false;
-    //  if (keys == Keys.K) return false;
-    //  if (keys == Keys.L) return false;
-
-    //  if (modificators.isAlt) return true;
-
-    //  return false;
-
-    //}
+     
+    KeyEventData CreateKetEventData(cKeyboardHookEvent e) {
+      var key = (Keys)e.KeyboardData.VirtualCode;
+      var x = IsUp(e.KeyboardState) ? KeyEventType.Up : KeyEventType.Down;
+      return new KeyEventData(key.ToString(), x);
+    }
 
     private void OnKeyPressed(object sender, cKeyboardHookEvent e) {
       //Debug.WriteLine(e.KeyboardData.VirtualCode);
@@ -130,11 +113,7 @@ namespace TrayApp2 {
       }
 
       if (Control.ModifierKeys == Keys.Control) return;
-      if (Control.ModifierKeys == Keys.LWin) return;
-      if (Control.ModifierKeys == Keys.RWin) return;
-
-      //var modificators = CreateModificators();
-      //if (TempIgnoreWithModificators(modificators, key)) return;
+      //if (Control.ModifierKeys == Keys.Shift) return;
 
       if (cUtils.IsIgnoredKey(key)) return;
 
@@ -169,7 +148,7 @@ namespace TrayApp2 {
       }
 
       if (output.sendDoKey != null && !string.IsNullOrEmpty(output.sendDoKey.Send)) {
-        Console.WriteLine(output.sendDoKey.Send);
+        Console.WriteLine(output.sendDoKey.ToLog);
         SendKeys.Send(output.sendDoKey.Send);
       }
 
@@ -178,23 +157,6 @@ namespace TrayApp2 {
       return;
 
     }
-
-    //protected override void WndProc(ref Message msg) {
-    //  //if (aMessage.Msg == WM_AMESSAGE) {
-    //  //  //WM_AMESSAGE Dispatched
-    //  //  //Let’s do something here
-    //  //  //...
-    //  //}
-
-    //  Console.WriteLine(msg.ToString());
-
-    //  if (msg.Msg == 0x401) {
-    //    MessageBox.Show(msg.ToString());
-    //  }
-
-    //  base.WndProc(ref msg);
-
-    //}
 
     private Icon GetIconOff() {
       return new Icon(Resources.Off, 40, 40);
@@ -219,29 +181,6 @@ namespace TrayApp2 {
       return null;
 
     }
-
-    //private bool IsModuleNameEnabledToUseVim(string xModuleName) {
-
-    //  return cAplictations.Cln().Contains(xModuleName);
-
-    //}
-
-    //private string GetActiveProcessFileName() {
-    //  IntPtr hwnd = GetForegroundWindow();
-    //  uint pid;
-    //  GetWindowThreadProcessId(hwnd, out pid);
-    //  Process p = Process.GetProcessById((int)pid);
-
-    //  var name = p.ProcessName;
-
-    //  return name;
-
-    //  //p.MainModule.FileName.Dump();
-    //  return p.MainModule.ModuleName;
-    //  return p.MainModule.FileName;
-
-    //}
-
 
     protected override void OnLoad(EventArgs e) {
       Visible = false; // Hide form window.

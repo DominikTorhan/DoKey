@@ -10,18 +10,10 @@ type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string)=
     member this.Send = send  
     member this.Name = name
     member this.KeyType = keyType
-    member this.Trigger = trigger
- 
-//type Modificators(alt: bool, control: bool, shift: bool) = 
-//    member this.Alt = alt 
-//    member this.Control = control 
-//    member this.Shift = shift 
- 
-type Modificators(alt:bool, control:bool, shift:bool, win:bool) = 
-    member this.Alt = alt
-    member this.Control = control 
-    member this.Shift = shift
-    member this.Win = win
+    member this.Trigger = trigger 
+    member this.IsAlt = send.Contains("%") 
+    member this.IsEmpty = send = "" 
+    member this.ToLog = name + " " + send
  
  type KeysList(keyList:list<SendDoKey>) = 
     member this.KeyList = keyList
@@ -36,7 +28,7 @@ type DoKeys =
  module DoKeyModule = 
 
     let GetList = 
-        let DoKeyList = [
+        let DoKeyList = [ 
             SendDoKey("{LEFT}", "Left", KeyType.Normal, "h");
             SendDoKey("{DOWN}", "Down", KeyType.Normal, "j");
             SendDoKey("{UP}", "Up", KeyType.Normal, "k");
@@ -45,6 +37,14 @@ type DoKeys =
             SendDoKey("{PGDN}", "PageDown", KeyType.Normal, "m");
             SendDoKey("{PGUP}", "PageUp", KeyType.Normal, "oemcomma");
             SendDoKey("{END}", "End", KeyType.Normal, "oemperiod"); 
+            SendDoKey("%{LEFT}", "AltLeft", KeyType.Normal, "%h");
+            SendDoKey("%{DOWN}", "AltDown", KeyType.Normal, "%j");
+            SendDoKey("%{UP}", "AltUp", KeyType.Normal, "%k");
+            SendDoKey("%{RIGHT}", "AltRight", KeyType.Normal, "%l");
+            SendDoKey("%{HOME}", "AltHome", KeyType.Normal, "%n");
+            SendDoKey("%{PGDN}", "AltPageDown", KeyType.Normal, "%m");
+            SendDoKey("%{PGUP}", "AltPageUp", KeyType.Normal, "%oemcomma");
+            SendDoKey("%{END}", "AltEnd", KeyType.Normal, "%oemperiod"); 
             SendDoKey("^{LEFT}", "CtrlLeft", KeyType.Normal, "y");
             SendDoKey("^{RIGHT}", "CtrlRight", KeyType.Normal, "o");
 
@@ -75,9 +75,10 @@ type DoKeys =
 
             SendDoKey("{End} {ENTER}", "Insert line below", KeyType.Normal, "ij");
             SendDoKey("{UP}{End}{ENTER}", "Insert line above", KeyType.Normal, "ik");
-            SendDoKey("^m^m", "VS ^m^m", KeyType.Normal, "uu");
-            SendDoKey("^m^o", "VS ^m^o", KeyType.Normal, "uo");
-            SendDoKey("^+{F12}", "VS ^F12", KeyType.Normal, "ue");
+            SendDoKey("^m^m", "VS ^m^m toggle outline", KeyType.Normal, "uu");
+            SendDoKey("^m^o", "VS ^m^o collapse to definition", KeyType.Normal, "uo");
+            SendDoKey("^+{F12}", "VS ^F12 go to next error", KeyType.Normal, "ue"); 
+            SendDoKey("^k^c", "VS ^k^c comment selection", KeyType.Normal, "uk"); 
 
             ] 
         DoKeyList
@@ -92,8 +93,8 @@ type DoKeys =
     let GetSendKey (keysList:KeysList, key:string, predicate:(SendDoKey -> bool)) =
         let result = List.tryFind predicate keysList.KeyList 
         match result with
-            | Some i -> i.Send
-            | None -> ""
+            | Some i -> i
+            | None -> new SendDoKey("")
  
     let GetPredicate (keyType:KeyType, key:string) =
         let predicate (sendKey:SendDoKey) = sendKey.Trigger = key.ToLower() && sendKey.KeyType = keyType
