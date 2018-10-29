@@ -12,8 +12,8 @@ namespace TrayApp2 {
 
     private KeysList KeysList; 
 
-    public Keys ModeChangeKey = Keys.F;
-    public Keys ModeOffKey = Keys.Q;
+    public string ModeChangeKey = "f";
+    public string ModeOffKey = "q";
 
     public cSettings(string path) {
 

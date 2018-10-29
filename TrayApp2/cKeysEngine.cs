@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using DoKey.FS;
 
 namespace TrayApp2 {
 
   public class cInput {
-    public cEventData eventData { get; set; }
+    public KeyEventData KeyEventData { get; set; }
+    //public cEventData eventData { get; set; }
     public cStateData stateData { get; set; }
   }
 
-  public class cEventData {
-    public Keys keys;
-    public bool isUp;
-  }
+  //public class cEventData {
+  //  public Keys keys;
+  //  public bool isUp;
+  //}
 
   public class cOutput { 
     public SendDoKey sendDoKey { get; set; }
@@ -36,12 +36,16 @@ namespace TrayApp2 {
     public cInput input { get; set; }
     public cSettings settings { get; set; }
 
-    private InputKey inputKey => new InputKey(input.eventData.keys.ToString());
+    //private InputKey inputKey => new InputKey(input.eventData.keys.ToString());
+    private InputKey inputKey => new InputKey(input.KeyEventData.Key);
     private cOutput outputOld => new cOutput { StateData = input.stateData };
-    private Keys keys => input.eventData.keys;
-    private bool isUp => input.eventData.isUp;
-    private Keys firstStep => input.stateData.firstStep;
+    private string keys => inputKey.Key;
+    //private Keys keys => input.eventData.keys;
+    //private bool isUp => input.eventData.isUp;
+    private bool isUp => input.KeyEventData.KeyEventType.IsUp;
+    private string firstStep => input.stateData.firstStep;
     private StateEnum state => input.stateData.state;
+    private State State => input.stateData.State;
     private Modificators modificators => input.stateData.modificators;
     private bool isCapital => input.stateData.modificators.Caps;
 
@@ -129,7 +133,7 @@ namespace TrayApp2 {
       r.PreventKeyProcess = true;
       r.sendDoKey = new SendDoKey(sendKeys);
       r.StateData.preventEscOnNextCapitalUp = preventEscOnNextCapitalUp;
-      r.StateData.firstStep = Keys.None;
+      r.StateData.firstStep = "";
       return r;
       
     }
@@ -144,31 +148,31 @@ namespace TrayApp2 {
       var r = NextOutput();
       r.PreventKeyProcess = true;
       r.StateData.state = cUtils.GetPrevState(state);
-      r.StateData.firstStep = Keys.None;
+      r.StateData.firstStep = "";
       return r;
 
     }
  
     private string NormalModeKeysToString() {
 
-      var firstKeyStr = firstStep != Keys.None ? firstStep.ToString() : "";
       var alt = (modificators.Alt) ? "%" : "";
-      return firstKeyStr + alt + keys.ToString();
+      return firstStep + alt + keys.ToString();
 
     }
 
-    private bool IsDownFirstStep() => firstStep == Keys.None && settings.IsTwoStep(keys.ToString());
+    private bool IsDownFirstStep() => firstStep == "" && settings.IsTwoStep(keys);
 
     private cOutput ProcessNormalMode() {
 
       if (state != StateEnum.Normal) return null;
       if (isUp) return null;
       if (modificators.Win) return null;
+      //if (modificators.Shift) return null;
 
       var isDownFirstStep = IsDownFirstStep();
 
       //var sendKeys = isDownFirstStep ? "" : settings.GetSendKeyNormal(NormalModeKeysToString());
-      var firstStepNext = isDownFirstStep ? keys : Keys.None;
+      var firstStepNext = isDownFirstStep ? keys : "";
   
 
       var sendDoKey = GetSendDoKey(isDownFirstStep);
@@ -176,7 +180,8 @@ namespace TrayApp2 {
 
       //var preventNextAltUp = sendKeys.Contains("%");
       var preventNextAltUp = sendDoKey.IsAlt;
-      var preventKeyProcess = cUtils.IsLetterKey(keys) || !sendDoKey.IsEmpty;
+      //var preventKeyProcess = cUtils.IsLetterKey(keys) || !sendDoKey.IsEmpty;
+      var preventKeyProcess = inputKey.IsLetterOrDigit || !sendDoKey.IsEmpty;
 
       var r = NextOutput();
       r.StateData.firstStep = firstStepNext;
@@ -207,7 +212,7 @@ namespace TrayApp2 {
       r.StateData.state = StateEnum.Off;
       r.StateData.preventEscOnNextCapitalUp = true;
       r.PreventKeyProcess = true;
-      r.StateData.firstStep = Keys.None;
+      r.StateData.firstStep = "";
       return r;
 
 
@@ -227,7 +232,7 @@ namespace TrayApp2 {
       r.PreventKeyProcess = true;
       r.StateData.preventEscOnNextCapitalUp = true;
       r.sendDoKey = sendKeys;
-      r.StateData.firstStep = Keys.None;
+      r.StateData.firstStep = "";
       return r;
 
     }
@@ -242,7 +247,7 @@ namespace TrayApp2 {
       r.StateData.state = cUtils.GetNextState(r.StateData.state);
       r.StateData.preventEscOnNextCapitalUp = true;
       r.PreventKeyProcess = true;
-      r.StateData.firstStep = Keys.None;
+      r.StateData.firstStep = "";
       return r;
 
     }

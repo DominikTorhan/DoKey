@@ -117,18 +117,19 @@ namespace TrayApp2 {
 
       if (cUtils.IsIgnoredKey(key)) return;
 
-      var isUp = IsUp(e.KeyboardState);
+      //var isUp = IsUp(e.KeyboardState);
 
-      cInput input = new cInput {
-        eventData = new cEventData {
-          keys = key,
-          isUp = isUp
-        },
+      cInput input = new cInput { 
+        KeyEventData = CreateKetEventData(e),
+        //eventData = new cEventData {
+        //  keys = key,
+        //  isUp = isUp
+        //},
         stateData = mStateData,
       };
 
-      var upOrDown = isUp ? "up" : "down";
-      Console.WriteLine(key + " " + upOrDown);
+      //var upOrDown = isUp ? "up" : "down";
+      //Console.WriteLine(key + " " + upOrDown);
       
 
       var output = new cKeysEngine{

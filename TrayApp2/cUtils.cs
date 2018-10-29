@@ -51,34 +51,6 @@ namespace TrayApp2 {
 
     }
 
-    public static bool IsLetterKey(Keys key) {
-
-      var chr = (char)key;
-
-      switch (key) {
-        case Keys.F1:
-        case Keys.F2:
-        case Keys.F3:
-        case Keys.F4:
-        case Keys.F5:
-        case Keys.F6:
-        case Keys.F7:
-        case Keys.F8:
-        case Keys.F9:
-        case Keys.F10:
-        case Keys.F11:
-        case Keys.F12:
-          return false;
-        case Keys.Oemcomma:
-        case Keys.OemPeriod:
-        case Keys.OemQuestion:
-          return true;
-      }
-
-      return char.IsLetterOrDigit(chr);
-
-    }
-
     public static StateEnum GetNextState(StateEnum state) {
 
       if (state == StateEnum.Insert) return StateEnum.Insert;
@@ -95,92 +67,6 @@ namespace TrayApp2 {
       return StateEnum.Off;
 
     }
-
-    //public static bool IsModifierKey(Keys key) {
-
-    //  if (IsAlt(key)) return true;
-    //  if (IsShift(key)) return true;
-    //  if (IsControl(key)) return true;
-    //  if (IsWin(key)) return true;
-    //  if (IsCaps(key)) return true;
-
-    //  return false;
-
-    //} 
-
-    //public static bool IsCaps(Keys key) {
-
-    //  switch (key) {
-    //    case Keys.Capital:
-    //      return true;
-    //    default:
-    //      return false;
-    //  }
-
-    //}
-
-    //public static bool IsAlt(Keys key) {
-
-    //  switch (key) {
-    //    case Keys.Alt:
-    //    case Keys.LMenu:
-    //    case Keys.RMenu:
-    //      return true;
-    //    default:
-    //      return false;
-    //  }
-
-    //}
-
-    //public static bool IsShift(Keys key) {
-
-    //  switch (key) {
-    //    case Keys.LShiftKey:
-    //    case Keys.ShiftKey:
-    //    case Keys.RShiftKey:
-    //    case Keys.Shift:
-    //      return true;
-    //    default:
-    //      return false;
-    //  }
-
-    //}
-
-    //public static bool IsControl(Keys key) {
-
-    //  switch (key) {
-    //    case Keys.Control:
-    //    case Keys.ControlKey:
-    //    case Keys.LControlKey:
-    //    case Keys.RControlKey:
-    //      return true;
-    //    default:
-    //      return false;
-    //  }
-
-    //}
-
-    //public static bool IsWin(Keys key) {
-
-    //  switch (key) {
-    //    case Keys.LWin:
-    //    case Keys.RWin:
-    //      return true;
-    //    default:
-    //      return false;
-    //  }
-
-    //}
-
-    //public static bool IsEsc(Keys keys) {
-    //  switch (keys) {
-    //    case Keys.Escape:
-    //    case Keys.Capital:
-    //      return true;
-    //    default:
-    //      return false;
-    //  }
-    //}
 
   }
 }
