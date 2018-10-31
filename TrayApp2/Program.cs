@@ -80,7 +80,7 @@ namespace TrayApp2 {
       mKeyboardHook.KeyboardPressed += OnKeyPressed;
     }
 
-    private void SetIcon() => trayIcon.Icon = GetIcon(mStateData.state);
+    private void SetIcon() => trayIcon.Icon = GetIcon(AppState.State);
 
     private bool IsUp(cKeyboardHook.KeyboardState keyState) {
 
@@ -94,7 +94,8 @@ namespace TrayApp2 {
 
     }
 
-    cStateData mStateData = new cStateData();
+    //cStateData mStateData = new cStateData(); 
+    AppState AppState = new AppState();
      
     KeyEventData CreateKetEventData(cKeyboardHookEvent e) {
       var key = (Keys)e.KeyboardData.VirtualCode;
@@ -103,59 +104,59 @@ namespace TrayApp2 {
     }
 
     private void OnKeyPressed(object sender, cKeyboardHookEvent e) {
-      //Debug.WriteLine(e.KeyboardData.VirtualCode);
 
       var key = (Keys)e.KeyboardData.VirtualCode;
 
-      var isCapsLockToggled = Control.IsKeyLocked(Keys.CapsLock);
-      if (isCapsLockToggled) {
-        if (key == Keys.Capital) return;
-      }
-
+      if (Control.IsKeyLocked(Keys.CapsLock) && key == Keys.Capital) return;
       if (Control.ModifierKeys == Keys.Control) return;
-      //if (Control.ModifierKeys == Keys.Shift) return;
 
       if (cUtils.IsIgnoredKey(key)) return;
 
-      //var isUp = IsUp(e.KeyboardState);
+      var keyEventData = CreateKetEventData(e);
 
-      cInput input = new cInput { 
-        KeyEventData = CreateKetEventData(e),
-        //eventData = new cEventData {
-        //  keys = key,
-        //  isUp = isUp
-        //},
-        stateData = mStateData,
-      };
-
-      //var upOrDown = isUp ? "up" : "down";
-      //Console.WriteLine(key + " " + upOrDown);
-      
-
-      var output = new cKeysEngine{
-        input = input,
-        settings = mSettings
-      }.ProcessKey();
+      var output = ProcessKey(keyEventData);
 
       if (output == null) return;
 
-      mStateData = output.StateData;
+      AppState = output.AppState;
 
-      Console.WriteLine(output.StateData.ToString());
+      Log(output.AppState.ToLog());
 
       if (output.PreventKeyProcess) {
-        Console.WriteLine("  prevent");
+        Log("  prevent");
         e.Handled = true;
       }
 
       if (output.sendDoKey != null && !string.IsNullOrEmpty(output.sendDoKey.Send)) {
-        Console.WriteLine(output.sendDoKey.ToLog);
+        Log(output.sendDoKey.ToLog);
         SendKeys.Send(output.sendDoKey.Send);
       }
 
       SetIcon();
 
       return;
+
+    }
+
+    private void Log(string xStr) {
+
+      Console.WriteLine(xStr);
+
+    }
+
+    private cOutput ProcessKey(KeyEventData keyEventData) {
+
+      Log(keyEventData.ToLog());
+
+      cInput input = new cInput {
+        KeyEventData = keyEventData,
+        AppState = AppState,
+      };
+
+      return new cKeysEngine {
+        input = input,
+        settings = mSettings
+      }.ProcessKey();
 
     }
 
@@ -171,13 +172,11 @@ namespace TrayApp2 {
       return new Icon(Resources.Insert, 40, 40);
     }
 
-    private Icon GetIcon(StateEnum xState) {
+    private Icon GetIcon(State xState) {
 
-      switch (xState) {
-        case StateEnum.Off: return GetIconOff();
-        case StateEnum.Normal: return GetIconNormalMode();
-        case StateEnum.Insert: return GetIconInsertMode();
-      }
+      if (xState.IsOff) return GetIconOff();
+      if (xState.IsNormal) return GetIconNormalMode();
+      if (xState.IsInsert) return GetIconInsertMode();
 
       return null;
 

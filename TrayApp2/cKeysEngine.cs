@@ -8,26 +8,19 @@ using DoKey.FS;
 namespace TrayApp2 {
 
   public class cInput {
-    public KeyEventData KeyEventData { get; set; }
-    //public cEventData eventData { get; set; }
-    public cStateData stateData { get; set; }
+    public KeyEventData KeyEventData { get; set; } 
+    public AppState AppState { get; set; }
   }
 
-  //public class cEventData {
-  //  public Keys keys;
-  //  public bool isUp;
-  //}
-
   public class cOutput { 
-    public SendDoKey sendDoKey { get; set; }
-    public cStateData StateData { get; set; }
+    public SendDoKey sendDoKey { get; set; } 
+    public AppState AppState { get; set; }
     public bool PreventKeyProcess { get; set; }
-    //public string SendKeys { get; set; }
 
     public override string ToString() {
       var prevent = PreventKeyProcess ? "p " : "";
       var send = sendDoKey != null ? sendDoKey.Send : "";
-      return prevent + send + " " + StateData;
+      return prevent + send + " " + AppState.ToLog();
     }
   }
 
@@ -36,27 +29,20 @@ namespace TrayApp2 {
     public cInput input { get; set; }
     public cSettings settings { get; set; }
 
-    //private InputKey inputKey => new InputKey(input.eventData.keys.ToString());
-    private InputKey inputKey => new InputKey(input.KeyEventData.Key);
-    private cOutput outputOld => new cOutput { StateData = input.stateData };
+    private InputKey inputKey => input.KeyEventData.InputKey;
+    private cOutput outputOld => new cOutput { AppState = input.AppState};
     private string keys => inputKey.Key;
-    //private Keys keys => input.eventData.keys;
-    //private bool isUp => input.eventData.isUp;
     private bool isUp => input.KeyEventData.KeyEventType.IsUp;
-    private string firstStep => input.stateData.firstStep;
-    private StateEnum state => input.stateData.state;
-    private State State => input.stateData.State;
-    private Modificators modificators => input.stateData.modificators;
-    private bool isCapital => input.stateData.modificators.Caps;
+    private string firstStep => input.AppState.FirstStep;
+    private State State => input.AppState.State;
+    private Modificators modificators => input.AppState.Modificators;
+    private bool isCapital => input.AppState.Modificators.Caps;
 
     public cOutput ProcessKey() {
 
       var output = ProcessModificators();
       if (output != null) return output;
        
-      //output = ProcessCapital();
-      //if (output != null) return output;
-
       output = ProcessSetModeOff();
       if (output != null) return output;
 
@@ -66,7 +52,7 @@ namespace TrayApp2 {
       output = ProcessEsc();
       if (output != null) return output;
 
-      if (state == StateEnum.Off) return outputOld;
+      if (State.IsOff) return outputOld;
 
       output = ProcessNormalAndInsertWithCapital();
       if (output != null) return output;
@@ -87,15 +73,17 @@ namespace TrayApp2 {
       var modificators = NextModificators();
 
       var r = NextOutput();
-
+      
       if (inputKey.IsAlt && isUp) {
-        if (input.stateData.preventNextAltUp) {
+        if (input.AppState.PreventAltUp) {
           modificators = this.modificators;
-          r.StateData.preventNextAltUp = false;
+          r.AppState = new AppState(r.AppState.State, modificators, r.AppState.FirstStep, false, r.AppState.PreventEscOnCapsUp);
+          //r.AppState.PreventAltUp = false;
         }
       }
 
-      r.StateData.modificators = modificators;
+      //r.AppState.Modificators = modificators;
+      r.AppState = new AppState(r.AppState.State, modificators, r.AppState.FirstStep, r.AppState.PreventAltUp, r.AppState.PreventEscOnCapsUp);
 
       return r;
     }
@@ -117,10 +105,10 @@ namespace TrayApp2 {
     private cOutput ProcessCapital() {
 
       var sendKeys = "";
-      var preventEscOnNextCapitalUp = input.stateData.preventEscOnNextCapitalUp;
+      var preventEscOnNextCapitalUp = input.AppState.PreventEscOnCapsUp;
 
       if (isUp) {
-        if (input.stateData.preventEscOnNextCapitalUp) {
+        if (input.AppState.PreventEscOnCapsUp) {
           preventEscOnNextCapitalUp = false;
         } else {
           sendKeys = "{ESC}";
@@ -128,12 +116,11 @@ namespace TrayApp2 {
       }
       
       var r = NextOutput();
-      r.StateData.modificators = NextModificators();
-      //r.StateData.isCapital = !isUp;
       r.PreventKeyProcess = true;
       r.sendDoKey = new SendDoKey(sendKeys);
-      r.StateData.preventEscOnNextCapitalUp = preventEscOnNextCapitalUp;
-      r.StateData.firstStep = "";
+
+      r.AppState = new AppState(r.AppState.State, NextModificators(), "", r.AppState.PreventAltUp, preventEscOnNextCapitalUp);
+
       return r;
       
     }
@@ -141,14 +128,14 @@ namespace TrayApp2 {
     private cOutput ProcessEsc() {
 
       if (!inputKey.IsEsc) return null;
-      if (state == StateEnum.Off) return null;
+      if (State.IsOff) return null;
       if (isUp) return null;
       if (isCapital) return null;
 
       var r = NextOutput();
       r.PreventKeyProcess = true;
-      r.StateData.state = cUtils.GetPrevState(state);
-      r.StateData.firstStep = "";
+      r.AppState = new AppState(cUtils.GetPrevState(State), r.AppState.Modificators, "", r.AppState.PreventAltUp, r.AppState.PreventEscOnCapsUp);
+
       return r;
 
     }
@@ -164,30 +151,24 @@ namespace TrayApp2 {
 
     private cOutput ProcessNormalMode() {
 
-      if (state != StateEnum.Normal) return null;
+      if (!State.IsNormal) return null;
       if (isUp) return null;
       if (modificators.Win) return null;
-      //if (modificators.Shift) return null;
 
       var isDownFirstStep = IsDownFirstStep();
 
-      //var sendKeys = isDownFirstStep ? "" : settings.GetSendKeyNormal(NormalModeKeysToString());
       var firstStepNext = isDownFirstStep ? keys : "";
   
 
       var sendDoKey = GetSendDoKey(isDownFirstStep);
-      //sendKeys = cSendKeys.Create(sendKeys, modificators);
 
-      //var preventNextAltUp = sendKeys.Contains("%");
       var preventNextAltUp = sendDoKey.IsAlt;
-      //var preventKeyProcess = cUtils.IsLetterKey(keys) || !sendDoKey.IsEmpty;
       var preventKeyProcess = inputKey.IsLetterOrDigit || !sendDoKey.IsEmpty;
 
       var r = NextOutput();
-      r.StateData.firstStep = firstStepNext;
       r.sendDoKey = sendDoKey;
       r.PreventKeyProcess = preventKeyProcess;
-      r.StateData.preventNextAltUp = preventNextAltUp;
+      r.AppState = new AppState(r.AppState.State, r.AppState.Modificators, firstStepNext, preventNextAltUp, r.AppState.PreventEscOnCapsUp);
       return r;
 
     } 
@@ -209,10 +190,9 @@ namespace TrayApp2 {
       if (keys != settings.ModeOffKey) return null;
 
       var r = NextOutput();
-      r.StateData.state = StateEnum.Off;
-      r.StateData.preventEscOnNextCapitalUp = true;
       r.PreventKeyProcess = true;
-      r.StateData.firstStep = "";
+      r.AppState = new AppState(State.Off, r.AppState.Modificators, "", r.AppState.PreventAltUp, true);
+
       return r;
 
 
@@ -220,7 +200,7 @@ namespace TrayApp2 {
 
     private cOutput ProcessNormalAndInsertWithCapital() {
 
-      if (state == StateEnum.Off) return null;
+      if (State.IsOff) return null;
       if (!isCapital) return null;
       if (isUp) return null;
 
@@ -230,9 +210,8 @@ namespace TrayApp2 {
 
       var r = NextOutput();
       r.PreventKeyProcess = true;
-      r.StateData.preventEscOnNextCapitalUp = true;
       r.sendDoKey = sendKeys;
-      r.StateData.firstStep = "";
+      r.AppState = new AppState(r.AppState.State, r.AppState.Modificators, "", r.AppState.PreventAltUp, true);
       return r;
 
     }
@@ -244,16 +223,14 @@ namespace TrayApp2 {
       if (isUp) return null;
 
       var r = NextOutput();
-      r.StateData.state = cUtils.GetNextState(r.StateData.state);
-      r.StateData.preventEscOnNextCapitalUp = true;
       r.PreventKeyProcess = true;
-      r.StateData.firstStep = "";
+      r.AppState = new AppState(cUtils.GetNextState(State), r.AppState.Modificators, "", r.AppState.PreventAltUp, true);
       return r;
 
     }
 
-    private cOutput NextOutput() => new cOutput { StateData = NextState() };
-    private cStateData NextState() => input.stateData.Clone();
+    private cOutput NextOutput() => new cOutput { AppState = NextState() };
+    private AppState NextState() => input.AppState;
 
   }
 }

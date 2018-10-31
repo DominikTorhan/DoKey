@@ -1,6 +1,7 @@
 ﻿namespace DoKey.FS
 
-type Modificators(alt:bool, control:bool, shift:bool, win:bool, caps:bool) = 
+type Modificators(alt:bool, control:bool, shift:bool, win:bool, caps:bool) =  
+    new () = Modificators(false,false,false,false,false)
     member this.Alt = alt
     member this.Control = control 
     member this.Shift = shift

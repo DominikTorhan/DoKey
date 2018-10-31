@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DoKey.FS;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TrayApp2 {
-
-  public enum StateEnum {
-    Off = 0,
-    Normal = 1,
-    Insert = 2
-  }
 
   public class cUtils {
 
@@ -51,22 +46,24 @@ namespace TrayApp2 {
 
     }
 
-    public static StateEnum GetNextState(StateEnum state) {
+    public static State GetNextState(State state) {
 
-      if (state == StateEnum.Insert) return StateEnum.Insert;
+      if (state == State.Insert) return State.Insert;
+      if (state == State.Normal) return State.Insert;
 
-      return state + 1;
+      return State.Normal;
 
     }
 
-    public static StateEnum GetPrevState(StateEnum state) {
+    public static State GetPrevState(State state) {
 
-      if (state == StateEnum.Insert) return StateEnum.Normal;
-      if (state == StateEnum.Normal) return StateEnum.Normal;
+      if (state == State.Insert) return State.Normal;
+      if (state == State.Normal) return State.Normal;
 
-      return StateEnum.Off;
+      return State.Off;
 
     }
 
   }
 }
+

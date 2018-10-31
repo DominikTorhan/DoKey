@@ -1,7 +1,5 @@
 ﻿namespace DoKey.FS
 
-open System
- 
 type InputKey(key:string) =  
 
     let GetIsCaps s = s = "capital"   
