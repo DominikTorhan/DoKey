@@ -5,12 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Settings.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Modificators.fs" />
     <Compile Include="AppState.fs" />
     <Compile Include="InputKey.fs" />
     <Compile Include="KeyEventData.fs" />
-    <Compile Include="Configuration.fs" />
     <Compile Include="SendDoKey.fs" />
+    <Compile Include="Configuration.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
 </Project>

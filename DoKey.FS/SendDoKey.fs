@@ -73,12 +73,12 @@ type DoKeys =
             SendDoKey("{F11}", "F11", KeyType.Normal, "ft");
             SendDoKey("{F12}", "F12", KeyType.Normal, "ff");
 
-            SendDoKey("{End} {ENTER}", "Insert line below", KeyType.Normal, "ij");
-            SendDoKey("{UP}{End}{ENTER}", "Insert line above", KeyType.Normal, "ik");
-            SendDoKey("^m^m", "VS ^m^m toggle outline", KeyType.Normal, "uu");
-            SendDoKey("^m^o", "VS ^m^o collapse to definition", KeyType.Normal, "uo");
-            SendDoKey("^+{F12}", "VS ^F12 go to next error", KeyType.Normal, "ue"); 
-            SendDoKey("^k^c", "VS ^k^c comment selection", KeyType.Normal, "uk"); 
+            //SendDoKey("{End} {ENTER}", "Insert line below", KeyType.Normal, "ij");
+            //SendDoKey("{UP}{End}{ENTER}", "Insert line above", KeyType.Normal, "ik");
+            //SendDoKey("^m^m", "VS ^m^m toggle outline", KeyType.Normal, "uu");
+            //SendDoKey("^m^o", "VS ^m^o collapse to definition", KeyType.Normal, "uo");
+            //SendDoKey("^+{F12}", "VS ^F12 go to next error", KeyType.Normal, "ue"); 
+            //SendDoKey("^k^c", "VS ^k^c comment selection", KeyType.Normal, "uk"); 
 
             ] 
         DoKeyList
@@ -90,8 +90,8 @@ type DoKeys =
         let x = new KeysList(GetList) 
         x 
 
-    let GetSendKey (keysList:KeysList, key:string, predicate:(SendDoKey -> bool)) =
-        let result = List.tryFind predicate keysList.KeyList 
+    let GetSendKey (keysList:list<SendDoKey>, key:string, predicate:(SendDoKey -> bool)) =
+        let result = List.tryFind predicate keysList 
         match result with
             | Some i -> i
             | None -> new SendDoKey("")
@@ -100,13 +100,17 @@ type DoKeys =
         let predicate (sendKey:SendDoKey) = sendKey.Trigger = key.ToLower() && sendKey.KeyType = keyType
         predicate
 
-    let GetSendKeyNormal (keysList:KeysList, key:string) = 
+    let GetSendKeyNormal (keysList:list<SendDoKey>, key:string) = 
         GetSendKey (keysList, key, GetPredicate(KeyType.Normal, key))
 
-    let GetSendKeyCaps (keysList:KeysList, key:string) = 
+    let GetSendKeyCaps (keysList:list<SendDoKey>, key:string) = 
         GetSendKey (keysList, key, GetPredicate(KeyType.Caps, key))
+ 
+    let CreateSendDoKeyByStr (str:string) =
+        //Insert line below: ij: {End} {ENTER} 
+        let split = str.Split(':')  
+        match split.Length with 
+            | 3 -> new SendDoKey(split.[2].Trim(), split.[0], KeyType.Normal, split.[1].Trim()) 
+            | _ -> new SendDoKey("")
 
-    //let GetSendKeyNormalTwoStep (keysList:KeysList, key:string) = 
-    //    GetSendKey (keysList, key, GetPredicate(KeyType.NormalTwoStep, key))
-        
         

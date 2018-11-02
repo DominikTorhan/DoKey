@@ -49,7 +49,6 @@
   <ItemGroup>
     <Compile Include="cKeyboardHook.cs" />
     <Compile Include="cKeysEngine.cs" />
-    <Compile Include="cSettings.cs" />
     <Compile Include="cUtils.cs" />
     <Compile Include="Program.cs">
       <SubType>Form</SubType>

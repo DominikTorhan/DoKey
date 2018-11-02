@@ -1,0 +1,9 @@
+﻿DoKey settings
+ 
+Insert line below: ij: {End} {ENTER}
+Insert line above: ik: {UP}{End}{ENTER}
+VS ^m^m toggle outline: uu: ^m^m
+VS ^m^o collapse to definition: uo: ^m^o
+VS ^F12 go to next error: ue: ^+{F12}
+VS ^k^c comment selection: uk: ^k^c  
+findTest: uy: ^FA{F3}{ESC}

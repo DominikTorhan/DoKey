@@ -21,42 +21,19 @@ namespace TrayApp2 {
 
     private NotifyIcon trayIcon;
     private ContextMenu trayMenu;
-
-
-    delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
-
-    [DllImport("user32.dll")]
-    static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
-
-    private const uint WINEVENT_OUTOFCONTEXT = 0;
-    private const uint EVENT_SYSTEM_FOREGROUND = 3;
-
-    [DllImport("user32.dll")]
-    static extern IntPtr GetForegroundWindow();
-
-    [DllImport("user32.dll")]
-    static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
-
-    [DllImport("user32.dll")]
-    public static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out uint ProcessId);
-
-    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern IntPtr SendMessage(IntPtr hwnd, uint Msg, IntPtr wParam, IntPtr lParam);
-
-    [DllImport("user32.dll")]
-    static extern bool PostMessage(IntPtr hWnd, uint Msg, int wParam, int lParam);
-
     private cKeyboardHook mKeyboardHook;
-    private cSettings mSettings;
+    private Configuration Configuration;
+    private StreamWriter LogStream;
 
     public SysTrayApp() {
 
-      mSettings = new cSettings("json1.json");
+      Configuration = new Configuration();
 
       // Create a simple tray menu with only one item.
       trayMenu = new ContextMenu();
-      trayMenu.MenuItems.Add("Exit", OnExit);
-      trayMenu.MenuItems.Add("Test", Test);
+      trayMenu.MenuItems.Add("Exit", (s, e) => OnExit());
+      trayMenu.MenuItems.Add("Open Settings", (s, e) => OpenSettings());
+      trayMenu.MenuItems.Add("Reload Settings", (s,e) => ReloadSettings());
 
       // Create a tray icon. In this example we use a
       // standard system icon for simplicity, but you
@@ -69,6 +46,8 @@ namespace TrayApp2 {
         ContextMenu = trayMenu,
         Visible = true
       };
+
+      LogStream = CreateLogStream();
 
       SetupKeyboardHooks();
 
@@ -102,15 +81,17 @@ namespace TrayApp2 {
       var x = IsUp(e.KeyboardState) ? KeyEventType.Up : KeyEventType.Down;
       return new KeyEventData(key.ToString(), x);
     }
-
+    
     private void OnKeyPressed(object sender, cKeyboardHookEvent e) {
 
       var key = (Keys)e.KeyboardData.VirtualCode;
-
+      
       if (Control.IsKeyLocked(Keys.CapsLock) && key == Keys.Capital) return;
-      if (Control.ModifierKeys == Keys.Control) return;
+      if (Control.ModifierKeys == Keys.Control) {
+        var x = 0;
+      }
 
-      if (cUtils.IsIgnoredKey(key)) return;
+      if (cUtils.IsIgnoredKey(key, Control.ModifierKeys)) return;
 
       var keyEventData = CreateKetEventData(e);
 
@@ -138,9 +119,19 @@ namespace TrayApp2 {
 
     }
 
-    private void Log(string xStr) {
+    private void Log(string str) {
 
-      Console.WriteLine(xStr);
+      Console.WriteLine(str);
+      LogStream.WriteLine(str);
+
+    }
+
+    private StreamWriter CreateLogStream() {
+
+      var dt = DateTime.Now;
+      var path = $"{dt.Year}{dt.Month}{dt.Day}{dt.Hour}{dt.Minute}{dt.Second}"+ "log.txt";
+
+      return new StreamWriter(path);
 
     }
 
@@ -148,14 +139,10 @@ namespace TrayApp2 {
 
       Log(keyEventData.ToLog());
 
-      cInput input = new cInput {
+      return new cKeysEngine { 
+        AppState = AppState, 
         KeyEventData = keyEventData,
-        AppState = AppState,
-      };
-
-      return new cKeysEngine {
-        input = input,
-        settings = mSettings
+        Configuration = Configuration
       }.ProcessKey();
 
     }
@@ -189,14 +176,18 @@ namespace TrayApp2 {
       base.OnLoad(e);
     }
 
-    private void OnExit(object sender, EventArgs e) {
+    private void OnExit() {
       Application.Exit();
     }
 
-    private void Test(object sender, EventArgs e) {
-      var x = GetForegroundWindow();
+    private void OpenSettings() {
 
-      MessageBox.Show(x.ToString());
+      Process.Start(Configuration.FilePath);
+
+    }
+
+    private void ReloadSettings() {
+      Configuration = new Configuration();
     }
 
     protected override void Dispose(bool isDisposing) {
@@ -207,6 +198,7 @@ namespace TrayApp2 {
         // Release the icon resource.
         trayIcon.Dispose();
       }
+      LogStream?.Close();
 
       base.Dispose(isDisposing);
     }

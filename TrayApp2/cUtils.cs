@@ -10,7 +10,7 @@ namespace TrayApp2 {
 
   public class cUtils {
 
-    public static bool IsIgnoredKey(Keys key) {
+    public static bool IsIgnoredKey(Keys key, Keys modifiers) {
 
       switch (key) {
         //case Keys.Capital:
@@ -40,6 +40,19 @@ namespace TrayApp2 {
         case Keys.F11:
         case Keys.F12:
           return true;
+      }
+
+      if (modifiers == Keys.Control) {
+        switch (key) {
+          case Keys.C:
+          case Keys.X:
+          case Keys.Z:
+          case Keys.V:
+          case Keys.F:
+          case Keys.R:
+          case Keys.T:
+            return true;
+        }
       }
 
       return false;

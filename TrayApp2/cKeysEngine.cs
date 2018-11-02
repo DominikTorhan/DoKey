@@ -7,36 +7,26 @@ using DoKey.FS;
 
 namespace TrayApp2 {
 
-  public class cInput {
-    public KeyEventData KeyEventData { get; set; } 
-    public AppState AppState { get; set; }
-  }
-
   public class cOutput { 
     public SendDoKey sendDoKey { get; set; } 
     public AppState AppState { get; set; }
     public bool PreventKeyProcess { get; set; }
-
-    public override string ToString() {
-      var prevent = PreventKeyProcess ? "p " : "";
-      var send = sendDoKey != null ? sendDoKey.Send : "";
-      return prevent + send + " " + AppState.ToLog();
-    }
   }
 
   public class cKeysEngine {
 
-    public cInput input { get; set; }
-    public cSettings settings { get; set; }
+    public Configuration Configuration { get; set; }  
+    public KeyEventData KeyEventData { get; set; }
+    public AppState AppState { get; set; }
 
-    private InputKey inputKey => input.KeyEventData.InputKey;
-    private cOutput outputOld => new cOutput { AppState = input.AppState};
+    private InputKey inputKey => KeyEventData.InputKey;
+    private cOutput outputOld => new cOutput { AppState = AppState};
     private string keys => inputKey.Key;
-    private bool isUp => input.KeyEventData.KeyEventType.IsUp;
-    private string firstStep => input.AppState.FirstStep;
-    private State State => input.AppState.State;
-    private Modificators modificators => input.AppState.Modificators;
-    private bool isCapital => input.AppState.Modificators.Caps;
+    private bool isUp => KeyEventData.KeyEventType.IsUp;
+    private string firstStep => AppState.FirstStep;
+    private State State => AppState.State;
+    private Modificators modificators => AppState.Modificators;
+    private bool isCapital => AppState.Modificators.Caps;
 
     public cOutput ProcessKey() {
 
@@ -75,7 +65,7 @@ namespace TrayApp2 {
       var r = NextOutput();
       
       if (inputKey.IsAlt && isUp) {
-        if (input.AppState.PreventAltUp) {
+        if (AppState.PreventAltUp) {
           modificators = this.modificators;
           r.AppState = new AppState(r.AppState.State, modificators, r.AppState.FirstStep, false, r.AppState.PreventEscOnCapsUp);
           //r.AppState.PreventAltUp = false;
@@ -105,10 +95,10 @@ namespace TrayApp2 {
     private cOutput ProcessCapital() {
 
       var sendKeys = "";
-      var preventEscOnNextCapitalUp = input.AppState.PreventEscOnCapsUp;
+      var preventEscOnNextCapitalUp = AppState.PreventEscOnCapsUp;
 
       if (isUp) {
-        if (input.AppState.PreventEscOnCapsUp) {
+        if (AppState.PreventEscOnCapsUp) {
           preventEscOnNextCapitalUp = false;
         } else {
           sendKeys = "{ESC}";
@@ -147,7 +137,7 @@ namespace TrayApp2 {
 
     }
 
-    private bool IsDownFirstStep() => firstStep == "" && settings.IsTwoStep(keys);
+    private bool IsDownFirstStep() => firstStep == "" && Configuration.IsTwoStep(keys);
 
     private cOutput ProcessNormalMode() {
 
@@ -161,6 +151,10 @@ namespace TrayApp2 {
   
 
       var sendDoKey = GetSendDoKey(isDownFirstStep);
+
+      if (!isDownFirstStep && sendDoKey.IsEmpty) {
+        //return null;
+      }
 
       var preventNextAltUp = sendDoKey.IsAlt;
       var preventKeyProcess = inputKey.IsLetterOrDigit || !sendDoKey.IsEmpty;
@@ -178,8 +172,7 @@ namespace TrayApp2 {
       if (isDownFirstStep) return new SendDoKey("");
 
       var trigger = NormalModeKeysToString();
-
-      return settings.GetSendKeyNormal(trigger);
+      return Configuration.GetSendKeyNormal(trigger);
 
     }
 
@@ -187,7 +180,7 @@ namespace TrayApp2 {
 
       if (!isCapital) return null;
       if (isUp) return null;
-      if (keys != settings.ModeOffKey) return null;
+      if (keys != Configuration.ModeOffKey) return null;
 
       var r = NextOutput();
       r.PreventKeyProcess = true;
@@ -204,7 +197,7 @@ namespace TrayApp2 {
       if (!isCapital) return null;
       if (isUp) return null;
 
-      var sendKeys = settings.GetSendKeyCaps(keys.ToString());
+      var sendKeys = Configuration.GetSendKeyCaps(keys.ToString());
 
       if (sendKeys.IsEmpty) return null;
 
@@ -218,7 +211,7 @@ namespace TrayApp2 {
 
     private cOutput ProcessModeChange() {
 
-      if (keys != settings.ModeChangeKey) return null;
+      if (keys != Configuration.ModeChangeKey) return null;
       if (!isCapital) return null;
       if (isUp) return null;
 
@@ -230,7 +223,7 @@ namespace TrayApp2 {
     }
 
     private cOutput NextOutput() => new cOutput { AppState = NextState() };
-    private AppState NextState() => input.AppState;
+    private AppState NextState() => AppState;
 
   }
 }
