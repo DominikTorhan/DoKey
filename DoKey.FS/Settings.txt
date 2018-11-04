@@ -2,8 +2,12 @@
  
 Insert line below: ij: {End} {ENTER}
 Insert line above: ik: {UP}{End}{ENTER}
+
+u
 VS ^m^m toggle outline: uu: ^m^m
 VS ^m^o collapse to definition: uo: ^m^o
 VS ^F12 go to next error: ue: ^+{F12}
-VS ^k^c comment selection: uk: ^k^c  
-findTest: uy: ^FA{F3}{ESC}
+VS ^k^c comment selection: uk: ^k^c   
+VS ^k^c uncomment selection: ui: ^k^u  
+VS ^m^1 next method: ul: ^m^1 
+VS ^m^2 previous method: uh: ^m^2

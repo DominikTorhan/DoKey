@@ -8,6 +8,7 @@
     <Content Include="Settings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Compile Include="LowLevelKeyboardInputEvent.fs" />
     <Compile Include="Modificators.fs" />
     <Compile Include="AppState.fs" />
     <Compile Include="InputKey.fs" />
@@ -15,7 +16,5 @@
     <Compile Include="SendDoKey.fs" />
     <Compile Include="Configuration.fs" />
   </ItemGroup>
-
-  <ItemGroup />
 
 </Project>

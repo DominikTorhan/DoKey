@@ -7,20 +7,20 @@ using DoKey.FS;
 
 namespace TrayApp2 {
 
-  public class cOutput { 
-    public SendDoKey sendDoKey { get; set; } 
+  public class cOutput {
+    public SendDoKey sendDoKey { get; set; }
     public AppState AppState { get; set; }
     public bool PreventKeyProcess { get; set; }
   }
 
   public class cKeysEngine {
 
-    public Configuration Configuration { get; set; }  
+    public Configuration Configuration { get; set; }
     public KeyEventData KeyEventData { get; set; }
     public AppState AppState { get; set; }
 
     private InputKey inputKey => KeyEventData.InputKey;
-    private cOutput outputOld => new cOutput { AppState = AppState};
+    private cOutput outputOld => new cOutput { AppState = AppState };
     private string keys => inputKey.Key;
     private bool isUp => KeyEventData.KeyEventType.IsUp;
     private string firstStep => AppState.FirstStep;
@@ -32,7 +32,7 @@ namespace TrayApp2 {
 
       var output = ProcessModificators();
       if (output != null) return output;
-       
+
       output = ProcessSetModeOff();
       if (output != null) return output;
 
@@ -51,11 +51,11 @@ namespace TrayApp2 {
       if (output != null) return output;
 
       return outputOld;
-    } 
- 
+    }
+
     private cOutput ProcessModificators() {
 
-      if (!inputKey.IsModifier) return null;  
+      if (!inputKey.IsModifier) return null;
       //if (!cUtils.IsModifierKey(keys)) return null;
 
       if (inputKey.IsCapital) return ProcessCapital();
@@ -63,7 +63,7 @@ namespace TrayApp2 {
       var modificators = NextModificators();
 
       var r = NextOutput();
-      
+
       if (inputKey.IsAlt && isUp) {
         if (AppState.PreventAltUp) {
           modificators = this.modificators;
@@ -87,7 +87,7 @@ namespace TrayApp2 {
       if (inputKey.IsAlt) alt = !isUp;
       if (inputKey.IsControl) control = !isUp;
       if (inputKey.IsShift) shift = !isUp;
-      if (inputKey.IsWin) win = !isUp; 
+      if (inputKey.IsWin) win = !isUp;
       if (inputKey.IsCapital) caps = !isUp;
       return new Modificators(alt, control, shift, win, caps);
     }
@@ -104,7 +104,7 @@ namespace TrayApp2 {
           sendKeys = "{ESC}";
         }
       }
-      
+
       var r = NextOutput();
       r.PreventKeyProcess = true;
       r.sendDoKey = new SendDoKey(sendKeys);
@@ -112,13 +112,13 @@ namespace TrayApp2 {
       r.AppState = new AppState(r.AppState.State, NextModificators(), "", r.AppState.PreventAltUp, preventEscOnNextCapitalUp);
 
       return r;
-      
+
     }
 
     private cOutput ProcessEsc() {
 
       if (!inputKey.IsEsc) return null;
-      if (State.IsOff) return null;
+      if (!State.IsInsert) return null;
       if (isUp) return null;
       if (isCapital) return null;
 
@@ -129,7 +129,7 @@ namespace TrayApp2 {
       return r;
 
     }
- 
+
     private string NormalModeKeysToString() {
 
       var alt = (modificators.Alt) ? "%" : "";
@@ -148,7 +148,7 @@ namespace TrayApp2 {
       var isDownFirstStep = IsDownFirstStep();
 
       var firstStepNext = isDownFirstStep ? keys : "";
-  
+
 
       var sendDoKey = GetSendDoKey(isDownFirstStep);
 
@@ -165,8 +165,8 @@ namespace TrayApp2 {
       r.AppState = new AppState(r.AppState.State, r.AppState.Modificators, firstStepNext, preventNextAltUp, r.AppState.PreventEscOnCapsUp);
       return r;
 
-    } 
- 
+    }
+
     private SendDoKey GetSendDoKey(bool isDownFirstStep) {
 
       if (isDownFirstStep) return new SendDoKey("");

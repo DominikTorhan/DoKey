@@ -16,7 +16,11 @@ namespace TrayApp2 {
 
     [STAThread]
     public static void Main() {
-      Application.Run(new SysTrayApp());
+      try {
+        Application.Run(new SysTrayApp());
+      } catch {
+        Application.Exit();
+      }
     }
 
     private NotifyIcon trayIcon;
@@ -52,6 +56,7 @@ namespace TrayApp2 {
       SetupKeyboardHooks();
 
     }
+    AppState AppState = new AppState();
 
 
     public void SetupKeyboardHooks() {
@@ -61,34 +66,24 @@ namespace TrayApp2 {
 
     private void SetIcon() => trayIcon.Icon = GetIcon(AppState.State);
 
-    private bool IsUp(cKeyboardHook.KeyboardState keyState) {
-
-      switch (keyState) {
-        case cKeyboardHook.KeyboardState.KeyUp:
-        case cKeyboardHook.KeyboardState.SysKeyUp:
-          return true;
-        default:
-          return false;
-      }
-
-    }
-
-    //cStateData mStateData = new cStateData(); 
-    AppState AppState = new AppState();
      
-    KeyEventData CreateKetEventData(cKeyboardHookEvent e) {
+    KeyEventData CreateKetEventData(KeyboardHookEvent e) {
       var key = (Keys)e.KeyboardData.VirtualCode;
-      var x = IsUp(e.KeyboardState) ? KeyEventType.Up : KeyEventType.Down;
+      var x = e.IsUp ? KeyEventType.Up : KeyEventType.Down;
       return new KeyEventData(key.ToString(), x);
     }
-    
-    private void OnKeyPressed(object sender, cKeyboardHookEvent e) {
 
+    private bool IsSending = false;
+    
+    private void OnKeyPressed(object sender, KeyboardHookEvent e) {
+
+      if (IsSending) return;
+      
       var key = (Keys)e.KeyboardData.VirtualCode;
       
       if (Control.IsKeyLocked(Keys.CapsLock) && key == Keys.Capital) return;
       if (Control.ModifierKeys == Keys.Control) {
-        var x = 0;
+        return;
       }
 
       if (cUtils.IsIgnoredKey(key, Control.ModifierKeys)) return;
@@ -110,7 +105,9 @@ namespace TrayApp2 {
 
       if (output.sendDoKey != null && !string.IsNullOrEmpty(output.sendDoKey.Send)) {
         Log(output.sendDoKey.ToLog);
+        IsSending = true;
         SendKeys.Send(output.sendDoKey.Send);
+        IsSending = false;
       }
 
       SetIcon();

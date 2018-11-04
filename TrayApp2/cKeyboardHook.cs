@@ -1,24 +1,35 @@
-﻿using System;
+﻿using DoKey.FS;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace TrayApp2 {
-  class cKeyboardHookEvent : HandledEventArgs {
-    public cKeyboardHook.KeyboardState KeyboardState { get; private set; }
-    public cKeyboardHook.LowLevelKeyboardInputEvent KeyboardData { get; private set; }
 
-    public cKeyboardHookEvent(
-        cKeyboardHook.LowLevelKeyboardInputEvent keyboardData,
-        cKeyboardHook.KeyboardState keyboardState) {
-      KeyboardData = keyboardData;
-      KeyboardState = keyboardState;
-    }
-  }
+  //[StructLayout(LayoutKind.Sequential)]
+  //public struct LowLevelKeyboardInputEvent {
+  //  public int VirtualCode;
+  //  public int HardwareScanCode;
+  //  public int Flags;
+  //  public int TimeStamp;
+  //  public IntPtr AdditionalInformation;
+  //}
+
+  //class cKeyboardHookEvent : HandledEventArgs {
+  //  public KeyboardState KeyboardState { get; private set; }
+  //  public LowLevelKeyboardInputEvent KeyboardData { get; private set; }
+
+  //  public cKeyboardHookEvent(
+  //      LowLevelKeyboardInputEvent keyboardData,
+  //      KeyboardState keyboardState) {
+  //    KeyboardData = keyboardData;
+  //    KeyboardState = keyboardState;
+  //  }
+  //}
 
   //Based on https://gist.github.com/Stasonix
   class cKeyboardHook : IDisposable {
-    public event EventHandler<cKeyboardHookEvent> KeyboardPressed;
+    public event EventHandler<KeyboardHookEvent> KeyboardPressed;
 
     public cKeyboardHook() {
       _windowsHookHandle = IntPtr.Zero;
@@ -119,43 +130,17 @@ namespace TrayApp2 {
     [DllImport("USER32", SetLastError = true)]
     static extern IntPtr CallNextHookEx(IntPtr hHook, int code, IntPtr wParam, IntPtr lParam);
 
-    [StructLayout(LayoutKind.Sequential)]
-    public struct LowLevelKeyboardInputEvent {
-      /// <summary>
-      /// A virtual-key code. The code must be a value in the range 1 to 254.
-      /// </summary>
-      public int VirtualCode;
 
-      /// <summary>
-      /// A hardware scan code for the key. 
-      /// </summary>
-      public int HardwareScanCode;
-
-      /// <summary>
-      /// The extended-key flag, event-injected Flags, context code, and transition-state flag. This member is specified as follows. An application can use the following values to test the keystroke Flags. Testing LLKHF_INJECTED (bit 4) will tell you whether the event was injected. If it was, then testing LLKHF_LOWER_IL_INJECTED (bit 1) will tell you whether or not the event was injected from a process running at lower integrity level.
-      /// </summary>
-      public int Flags;
-
-      /// <summary>
-      /// The time stamp stamp for this message, equivalent to what GetMessageTime would return for this message.
-      /// </summary>
-      public int TimeStamp;
-
-      /// <summary>
-      /// Additional information associated with the message. 
-      /// </summary>
-      public IntPtr AdditionalInformation;
-    }
 
     public const int WH_KEYBOARD_LL = 13;
     //const int HC_ACTION = 0;
 
-    public enum KeyboardState {
-      KeyDown = 0x0100,
-      KeyUp = 0x0101,
-      SysKeyDown = 0x0104,
-      SysKeyUp = 0x0105
-    }
+    //public enum KeyboardState {
+    //  KeyDown = 0x0100,
+    //  KeyUp = 0x0101,
+    //  SysKeyDown = 0x0104,
+    //  SysKeyUp = 0x0105
+    //}
 
     public const int VkSnapshot = 0x2c;
     //const int VkLwin = 0x5b;
@@ -174,9 +159,9 @@ namespace TrayApp2 {
         object o = Marshal.PtrToStructure(lParam, typeof(LowLevelKeyboardInputEvent));
         LowLevelKeyboardInputEvent p = (LowLevelKeyboardInputEvent)o;
 
-        var eventArguments = new cKeyboardHookEvent(p, (KeyboardState)wparamTyped);
+        var eventArguments = new KeyboardHookEvent(p, (KeyboardState)wparamTyped);
 
-        EventHandler<cKeyboardHookEvent> handler = KeyboardPressed;
+        EventHandler<KeyboardHookEvent> handler = KeyboardPressed;
         handler?.Invoke(this, eventArguments);
 
         fEatKeyStroke = eventArguments.Handled;

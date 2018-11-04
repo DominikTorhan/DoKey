@@ -47,6 +47,8 @@ type DoKeys =
             SendDoKey("%{END}", "AltEnd", KeyType.Normal, "%oemperiod"); 
             SendDoKey("^{LEFT}", "CtrlLeft", KeyType.Normal, "y");
             SendDoKey("^{RIGHT}", "CtrlRight", KeyType.Normal, "o");
+            SendDoKey("^{DOWN}", "CtrlDown", KeyType.Normal, "b");
+            SendDoKey("^{UP}", "CtrlUp", KeyType.Normal, "g");
 
             SendDoKey("^x", "CtrlX", KeyType.Normal, "x");
             SendDoKey("^c", "CtrlC", KeyType.Normal, "c");
