@@ -77,9 +77,13 @@ namespace TrayApp2 {
     
     private void OnKeyPressed(object sender, KeyboardHookEvent e) {
 
-      if (IsSending) return;
+      //if (IsSending) return;
       
       var key = (Keys)e.KeyboardData.VirtualCode;
+
+      if (key == Keys.C) {
+        var x = 0;
+      }
       
       if (Control.IsKeyLocked(Keys.CapsLock) && key == Keys.Capital) return;
       if (Control.ModifierKeys == Keys.Control) {

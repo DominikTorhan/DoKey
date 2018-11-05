@@ -12,6 +12,7 @@ type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string)=
     member this.KeyType = keyType
     member this.Trigger = trigger 
     member this.IsAlt = send.Contains("%") 
+    member this.IsControl = send.Contains("^") 
     member this.IsEmpty = send = "" 
     member this.ToLog = name + " " + send
  
