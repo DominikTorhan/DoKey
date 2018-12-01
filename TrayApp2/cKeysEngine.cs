@@ -172,7 +172,17 @@ namespace TrayApp2 {
       if (isDownFirstStep) return new SendDoKey("");
 
       var trigger = NormalModeKeysToString();
-      return Configuration.GetSendKeyNormal(trigger);
+
+      var doKey = Configuration.GetSendKeyNormal(trigger);
+
+      if (modificators.Shift) {
+        if (!doKey.IsShiftAllowed) return new SendDoKey("");
+      }
+      //if (modificators.Alt) {
+      //  if (!doKey.IsAltAllowed) return new SendDoKey("");
+      //}
+
+      return doKey;
 
     }
 
