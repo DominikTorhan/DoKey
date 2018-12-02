@@ -132,6 +132,8 @@ namespace TrayApp2 {
 
     private string NormalModeKeysToString() {
 
+      return firstStep + keys.ToString();
+
       var alt = (modificators.Alt) ? "%" : "";
       return firstStep + alt + keys.ToString();
 
@@ -178,9 +180,9 @@ namespace TrayApp2 {
       if (modificators.Shift) {
         if (!doKey.IsShiftAllowed) return new SendDoKey("");
       }
-      //if (modificators.Alt) {
-      //  if (!doKey.IsAltAllowed) return new SendDoKey("");
-      //}
+      if (modificators.Alt) {
+        if (!doKey.IsAltAllowed) return new SendDoKey("");
+      }
 
       return doKey;
 

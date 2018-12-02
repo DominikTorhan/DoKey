@@ -36,14 +36,14 @@ type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string, modAl
             SendDoKey("{PGDN}", "PageDown", KeyType.Normal, "m", "+");
             SendDoKey("{PGUP}", "PageUp", KeyType.Normal, "oemcomma", "+");
             SendDoKey("{END}", "End", KeyType.Normal, "oemperiod", "+%"); 
-            SendDoKey("%{LEFT}", "AltLeft", KeyType.Normal, "%h");//chyba do wywalenia
-            SendDoKey("%{DOWN}", "AltDown", KeyType.Normal, "%j");
-            SendDoKey("%{UP}", "AltUp", KeyType.Normal, "%k");
-            SendDoKey("%{RIGHT}", "AltRight", KeyType.Normal, "%l");
-            SendDoKey("%{HOME}", "AltHome", KeyType.Normal, "%n");
-            SendDoKey("%{PGDN}", "AltPageDown", KeyType.Normal, "%m");
-            SendDoKey("%{PGUP}", "AltPageUp", KeyType.Normal, "%oemcomma");
-            SendDoKey("%{END}", "AltEnd", KeyType.Normal, "%oemperiod"); 
+            //SendDoKey("%{LEFT}", "AltLeft", KeyType.Normal, "%h");//chyba do wywalenia
+            //SendDoKey("%{DOWN}", "AltDown", KeyType.Normal, "%j");
+            //SendDoKey("%{UP}", "AltUp", KeyType.Normal, "%k");
+            //SendDoKey("%{RIGHT}", "AltRight", KeyType.Normal, "%l");
+            //SendDoKey("%{HOME}", "AltHome", KeyType.Normal, "%n");
+            //SendDoKey("%{PGDN}", "AltPageDown", KeyType.Normal, "%m");
+            //SendDoKey("%{PGUP}", "AltPageUp", KeyType.Normal, "%oemcomma");
+            //SendDoKey("%{END}", "AltEnd", KeyType.Normal, "%oemperiod"); 
             SendDoKey("^{LEFT}", "CtrlLeft", KeyType.Normal, "y", "+");
             SendDoKey("^{RIGHT}", "CtrlRight", KeyType.Normal, "o", "+");
             SendDoKey("^{DOWN}", "CtrlDown", KeyType.Normal, "b");

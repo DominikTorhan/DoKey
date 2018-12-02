@@ -43,7 +43,7 @@ namespace TrayApp2 {
       // standard system icon for simplicity, but you
       // can of course use your own custom icon too.
       trayIcon = new NotifyIcon {
-        Text = "TrayApp2",
+        Text = "DoKey",
         Icon = GetIconOff(),
 
         // Add menu to tray icon and show it.
