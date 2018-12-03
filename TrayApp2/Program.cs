@@ -81,7 +81,7 @@ namespace TrayApp2 {
       
       var key = (Keys)e.KeyboardData.VirtualCode;
 
-      if (key == Keys.J) {
+      if (key != Keys.LControlKey) {
         var x = 0;
       }
       

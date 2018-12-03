@@ -155,6 +155,7 @@ namespace TrayApp2 {
       var sendDoKey = GetSendDoKey(isDownFirstStep);
 
       if (!isDownFirstStep && sendDoKey.IsEmpty) {
+        var p = "";
         //return null;
       }
 

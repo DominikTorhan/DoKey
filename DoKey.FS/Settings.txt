@@ -2,6 +2,9 @@
  
 Insert line below: ij: {End} {ENTER}
 Insert line above: ik: {UP}{End}{ENTER}
+VS ^e^e Edit.SelectCurrentWord: ii: ^e^e
+VS ^m^3 Edit.ScrollLineCenter: im: ^m^3 
+VS ^k^d Edit.FormatDocument: io: ^k^d
 
 u
 VS ^m^m toggle outline: uu: ^m^m
