@@ -19,3 +19,6 @@ f
 VS +F5 StopDebuging: fb: +{f5}
 VS TestExplorer.DebugLastRun: fd: ^e^d
 VS TestExplorer.RepeatLastRun: fs: ^e^s
+
+s
+VS ^e^e Edit.SelectCurrentWord left: ss: ^e^e
