@@ -12,13 +12,9 @@ VS ^m^o collapse to definition: uo: ^m^o
 VS ^F12 go to next error: ue: ^+{F12}
 VS ^k^c comment selection: uk: ^k^c   
 VS ^k^c uncomment selection: ui: ^k^u  
-VS ^m^1 next method: ul: ^m^1 
-VS ^m^2 previous method: uh: ^m^2
 
 f
 VS +F5 StopDebuging: fb: +{f5}
 VS TestExplorer.DebugLastRun: fd: ^e^d
 VS TestExplorer.RepeatLastRun: fs: ^e^s
 
-s
-VS ^e^e Edit.SelectCurrentWord left: ss: ^e^e

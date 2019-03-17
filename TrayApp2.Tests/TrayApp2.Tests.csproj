@@ -56,9 +56,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TrayApp2\TrayApp2.csproj">
+    <ProjectReference Include="..\TrayApp2\DoKey.csproj">
       <Project>{446f9095-f793-4ad6-a1f5-8e9167420db1}</Project>
-      <Name>TrayApp2</Name>
+      <Name>DoKey</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

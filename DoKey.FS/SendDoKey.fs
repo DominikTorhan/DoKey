@@ -49,15 +49,19 @@ type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string, modAl
             SendDoKey("^{DOWN}", "CtrlDown", KeyType.Normal, "b");
             SendDoKey("^{UP}", "CtrlUp", KeyType.Normal, "g");
 
+            SendDoKey("^a", "CtrlA", KeyType.Normal, "a");
+            SendDoKey("^w", "CtrlW", KeyType.Normal, "w");
+            SendDoKey("^s", "CtrlS", KeyType.Normal, "s");
             SendDoKey("^x", "CtrlX", KeyType.Normal, "x");
             SendDoKey("^c", "CtrlC", KeyType.Normal, "c");
             SendDoKey("^v", "CtrlV", KeyType.Normal, "v");
             SendDoKey("^z", "CtrlZ", KeyType.Normal, "z");
-            SendDoKey("^y", "CtrlY", KeyType.Normal, "r");
+            SendDoKey("^y", "CtrlY", KeyType.Normal, "r");//redo
  
             SendDoKey("{ESC}", "Esc", KeyType.Caps, "e");
             SendDoKey("{BKSP}", "Backspace", KeyType.Caps, "h");
             SendDoKey("{DEL}", "Delete", KeyType.Caps, "l");
+            SendDoKey("{DEL}", "Delete LeftHand", KeyType.Caps, "d");
             SendDoKey("{ENTER}", "Enter", KeyType.Caps, "j");
             SendDoKey("{ENTER}", "Enter LeftHand", KeyType.Caps, "r");
             SendDoKey("{TAB}", "Tab", KeyType.Caps, "t");
