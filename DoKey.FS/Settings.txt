@@ -18,3 +18,7 @@ VS +F5 StopDebuging: fb: +{f5}
 VS TestExplorer.DebugLastRun: fd: ^e^d
 VS TestExplorer.RepeatLastRun: fs: ^e^s
 
+e
+VS find in all: et: ^t
+VS find all references: er: ^r
+common find: ef: ^f
