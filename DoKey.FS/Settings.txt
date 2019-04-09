@@ -22,3 +22,4 @@ e
 VS find in all: et: ^t
 VS find all references: er: ^r
 common find: ef: ^f
+VS find in files: ed: ^e^f
