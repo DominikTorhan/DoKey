@@ -23,3 +23,8 @@ VS find in all: et: ^t
 VS find all references: er: ^r
 common find: ef: ^f
 VS find in files: ed: ^e^f
+VS go to line: eg: ^e^l
+
+d
+VS delete all breakpoints: db ^e^b
+VS locals: dl ^e^k
