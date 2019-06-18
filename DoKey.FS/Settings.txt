@@ -12,19 +12,24 @@ VS ^m^o collapse to definition: uo: ^m^o
 VS ^F12 go to next error: ue: ^+{F12}
 VS ^k^c comment selection: uk: ^k^c   
 VS ^k^c uncomment selection: ui: ^k^u  
+VS Edit.MakeLowercase: ub: ^u^b
+VS Edit.MakeUppercase: ug: ^u^g
 
 f
 VS +F5 StopDebuging: fb: +{f5}
-VS TestExplorer.DebugLastRun: fd: ^e^d
-VS TestExplorer.RepeatLastRun: fs: ^e^s
+common %F4: fc : %{f4}
 
 e
-VS find in all: et: ^t
+VS find in all: et: ^tf6
 VS find all references: er: ^r
 common find: ef: ^f
 VS find in files: ed: ^e^f
 VS go to line: eg: ^e^l
+VS EditorContextMenus.CodeWindow.QuickActionsForPosition: ek: ^e^.
+VS View.SolutionExplorer: es: ^e^s
 
 d
 VS delete all breakpoints: db: ^e^b
 VS locals: dl: ^e^k
+VS Debug.CallStack: dk: ^d^k
+VS Window.PinTab: dn: ^d^n
