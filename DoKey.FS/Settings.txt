@@ -20,7 +20,7 @@ VS +F5 StopDebuging: fb: +{f5}
 common %F4: fc : %{f4}
 
 e
-VS find in all: et: ^tf6
+VS find in all: et: ^t
 VS find all references: er: ^r
 common find: ef: ^f
 VS find in files: ed: ^e^f
