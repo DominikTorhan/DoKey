@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="TestModificators.fs" />
     <Compile Include="TestKeysEngine.fs" />
     <Compile Include="KeyEventDataFactory.fs" />
     <Compile Include="AppStatesFactory.fs" />

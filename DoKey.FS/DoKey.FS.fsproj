@@ -9,9 +9,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="LowLevelKeyboardInputEvent.fs" />
+    <Compile Include="InputKey.fs" />
     <Compile Include="Modificators.fs" />
     <Compile Include="AppState.fs" />
-    <Compile Include="InputKey.fs" />
     <Compile Include="KeyEventData.fs" />
     <Compile Include="SendDoKey.fs" />
     <Compile Include="Configuration.fs" />
