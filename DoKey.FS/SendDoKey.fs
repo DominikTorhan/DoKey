@@ -66,6 +66,7 @@ type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string, modAl
             SendDoKey("{ENTER}", "Enter LeftHand", KeyType.Caps, "r");
             SendDoKey("{TAB}", "Tab", KeyType.Caps, "t");
             SendDoKey("+{F10}", "ContextMenu+F10", KeyType.Caps, "c");
+            SendDoKey("^+v", "CtrlShift+V", KeyType.Caps, "v");
 
             SendDoKey("{F1}", "F1", KeyType.Normal, "fd1");
             SendDoKey("{F2}", "F2", KeyType.Normal, "fd2");
