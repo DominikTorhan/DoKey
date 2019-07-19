@@ -17,7 +17,8 @@ namespace TrayApp2 {
 
     public Configuration Configuration { get; set; }
     public KeyEventData KeyEventData { get; set; }
-    public AppState AppState { get; set; }
+    public AppState AppState { get; set; } 
+    public SendDoKey SendDoKeyLast { get; set; }
 
     private InputKey inputKey => KeyEventData.InputKey;
     private cOutput outputOld => new cOutput { AppState = AppState };
@@ -64,33 +65,18 @@ namespace TrayApp2 {
 
       var r = NextOutput();
 
-      if (inputKey.IsAlt && isUp) {
-        if (AppState.PreventAltUp) {
-          modificators = this.modificators;
-          r.AppState = new AppState(r.AppState.State, modificators, r.AppState.FirstStep, false, r.AppState.PreventEscOnCapsUp);
-          //r.AppState.PreventAltUp = false;
-        }
-      }
+      //if (inputKey.IsAlt && isUp) { 
+      //  if (SendDoKeyLast.IsAlt)        {
+      //    modificators = this.modificators;
+      //    r.AppState = new AppState(r.AppState.State, modificators, r.AppState.FirstStep, r.AppState.PreventEscOnCapsUp);
+      //  }
+      //}
 
       //r.AppState.Modificators = modificators;
-      r.AppState = new AppState(r.AppState.State, modificators, r.AppState.FirstStep, r.AppState.PreventAltUp, r.AppState.PreventEscOnCapsUp);
+      r.AppState = new AppState(r.AppState.State, modificators, r.AppState.FirstStep, r.AppState.PreventEscOnCapsUp);
 
       return r;
     }
-
-    //private Modificators NextModificators() {
-    //  bool alt = this.modificators.Alt;
-    //  bool control = this.modificators.Control;
-    //  bool shift = this.modificators.Shift;
-    //  bool win = this.modificators.Win;
-    //  bool caps = this.modificators.Caps;
-    //  if (inputKey.IsAlt) alt = !isUp;
-    //  if (inputKey.IsControl) control = !isUp;
-    //  if (inputKey.IsShift) shift = !isUp;
-    //  if (inputKey.IsWin) win = !isUp;
-    //  if (inputKey.IsCapital) caps = !isUp;
-    //  return new Modificators(alt, control, shift, win, caps);
-    //}
 
     private cOutput ProcessCapital() {
 
@@ -111,7 +97,7 @@ namespace TrayApp2 {
 
       var modif = this.modificators.GetNextModificators(inputKey, isUp);
 
-      r.AppState = new AppState(r.AppState.State, modif, "", r.AppState.PreventAltUp, preventEscOnNextCapitalUp);
+      r.AppState = new AppState(r.AppState.State, modif, "", preventEscOnNextCapitalUp);
 
       return r;
 
@@ -126,21 +112,13 @@ namespace TrayApp2 {
 
       var r = NextOutput();
       r.PreventKeyProcess = true;
-      r.AppState = new AppState(cUtils.GetPrevState(State), r.AppState.Modificators, "", r.AppState.PreventAltUp, r.AppState.PreventEscOnCapsUp);
+      r.AppState = new AppState(cUtils.GetPrevState(State), r.AppState.Modificators, "", r.AppState.PreventEscOnCapsUp);
 
       return r;
 
     }
 
-    private string NormalModeKeysToString() {
-
-      return firstStep + keys.ToString();
-
-      var alt = (modificators.Alt) ? "%" : "";
-      return firstStep + alt + keys.ToString();
-
-    }
-
+    private string NormalModeKeysToString() => firstStep + keys.ToString();
     private bool IsDownFirstStep() => firstStep == "" && Configuration.IsTwoStep(keys);
 
     private cOutput ProcessNormalMode() {
@@ -153,13 +131,7 @@ namespace TrayApp2 {
 
       var firstStepNext = isDownFirstStep ? keys : "";
 
-
       var sendDoKey = GetSendDoKey(isDownFirstStep);
-
-      if (!isDownFirstStep && sendDoKey.IsEmpty) {
-        var p = "";
-        //return null;
-      }
 
       var preventNextAltUp = sendDoKey.IsAlt;
       var preventKeyProcess = inputKey.IsLetterOrDigit || !sendDoKey.IsEmpty;
@@ -167,7 +139,7 @@ namespace TrayApp2 {
       var r = NextOutput();
       r.sendDoKey = sendDoKey;
       r.PreventKeyProcess = preventKeyProcess;
-      r.AppState = new AppState(r.AppState.State, r.AppState.Modificators, firstStepNext, preventNextAltUp, r.AppState.PreventEscOnCapsUp);
+      r.AppState = new AppState(r.AppState.State, r.AppState.Modificators, firstStepNext, r.AppState.PreventEscOnCapsUp);
       return r;
 
     }
@@ -199,7 +171,7 @@ namespace TrayApp2 {
 
       var r = NextOutput();
       r.PreventKeyProcess = true;
-      r.AppState = new AppState(State.Off, r.AppState.Modificators, "", r.AppState.PreventAltUp, true);
+      r.AppState = new AppState(State.Off, r.AppState.Modificators, "", true);
 
       return r;
 
@@ -219,7 +191,7 @@ namespace TrayApp2 {
       var r = NextOutput();
       r.PreventKeyProcess = true;
       r.sendDoKey = sendKeys;
-      r.AppState = new AppState(r.AppState.State, r.AppState.Modificators, "", r.AppState.PreventAltUp, true);
+      r.AppState = new AppState(r.AppState.State, r.AppState.Modificators, "", true);
       return r;
 
     }
@@ -232,7 +204,7 @@ namespace TrayApp2 {
 
       var r = NextOutput();
       r.PreventKeyProcess = true;
-      r.AppState = new AppState(cUtils.GetNextState(State), r.AppState.Modificators, "", r.AppState.PreventAltUp, true);
+      r.AppState = new AppState(cUtils.GetNextState(State), r.AppState.Modificators, "", true);
       return r;
 
     }

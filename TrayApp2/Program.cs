@@ -11,14 +11,20 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TrayApp2.Properties;
 
-namespace TrayApp2 {
-  class SysTrayApp : Form {
+namespace TrayApp2
+{
+  class SysTrayApp : Form
+  {
 
     [STAThread]
-    public static void Main() {
-      try {
+    public static void Main()
+    {
+      try
+      {
         Application.Run(new SysTrayApp());
-      } catch {
+      }
+      catch
+      {
         Application.Exit();
       }
     }
@@ -29,7 +35,8 @@ namespace TrayApp2 {
     private Configuration Configuration;
     private StreamWriter LogStream;
 
-    public SysTrayApp() {
+    public SysTrayApp()
+    {
 
       Configuration = new Configuration();
 
@@ -37,12 +44,13 @@ namespace TrayApp2 {
       trayMenu = new ContextMenu();
       trayMenu.MenuItems.Add("Exit", (s, e) => OnExit());
       trayMenu.MenuItems.Add("Open Settings", (s, e) => OpenSettings());
-      trayMenu.MenuItems.Add("Reload Settings", (s,e) => ReloadSettings());
+      trayMenu.MenuItems.Add("Reload Settings", (s, e) => ReloadSettings());
 
       // Create a tray icon. In this example we use a
       // standard system icon for simplicity, but you
       // can of course use your own custom icon too.
-      trayIcon = new NotifyIcon {
+      trayIcon = new NotifyIcon
+      {
         Text = "DoKey",
         Icon = GetIconOff(),
 
@@ -59,36 +67,32 @@ namespace TrayApp2 {
     AppState AppState = new AppState();
 
 
-    public void SetupKeyboardHooks() {
+    public void SetupKeyboardHooks()
+    {
       mKeyboardHook = new cKeyboardHook();
       mKeyboardHook.KeyboardPressed += OnKeyPressed;
     }
 
     private void SetIcon() => trayIcon.Icon = GetIcon(AppState.State);
 
-     
-    KeyEventData CreateKetEventData(KeyboardHookEvent e) {
+
+    KeyEventData CreateKetEventData(KeyboardHookEvent e)
+    {
       var key = (Keys)e.KeyboardData.VirtualCode;
       var x = e.IsUp ? KeyEventType.Up : KeyEventType.Down;
       return new KeyEventData(key.ToString(), x);
     }
 
     private bool IsSending = false;
-    
-    private void OnKeyPressed(object sender, KeyboardHookEvent e) {
+    private SendDoKey mSendDoKeyLast;
 
-      //if (IsSending) return;
-      
+    private void OnKeyPressed(object sender, KeyboardHookEvent e)
+    {
+
       var key = (Keys)e.KeyboardData.VirtualCode;
 
-      if (key != Keys.LControlKey) {
-        var x = 0;
-      }
-      
       if (Control.IsKeyLocked(Keys.CapsLock) && key == Keys.Capital) return;
-      if (Control.ModifierKeys == Keys.Control) {
-        return;
-      }
+      if (Control.ModifierKeys == Keys.Control) return;
 
       if (cUtils.IsIgnoredKey(key, Control.ModifierKeys)) return;
 
@@ -102,13 +106,20 @@ namespace TrayApp2 {
 
       Log(output.AppState.ToLog());
 
-      if (output.PreventKeyProcess) {
+      if (output.PreventKeyProcess)
+      {
         Log("  prevent");
         e.Handled = true;
       }
 
-      if (output.sendDoKey != null && !string.IsNullOrEmpty(output.sendDoKey.Send)) {
+      if (output.sendDoKey != null && !string.IsNullOrEmpty(output.sendDoKey.Send))
+      {
         Log(output.sendDoKey.ToLog);
+        if (mSendDoKeyLast?.Send == "^+v")
+        {
+          int i = 0;
+        }
+        mSendDoKeyLast = output.sendDoKey;
         IsSending = true;
         SendKeys.Send(output.sendDoKey.Send);
         IsSending = false;
@@ -120,47 +131,56 @@ namespace TrayApp2 {
 
     }
 
-    private void Log(string str) {
+    private void Log(string str)
+    {
 
       Console.WriteLine(str);
       LogStream.WriteLine(str);
 
     }
 
-    private StreamWriter CreateLogStream() {
+    private StreamWriter CreateLogStream()
+    {
 
       var dt = DateTime.Now;
-      var path = $"{dt.Year}{dt.Month}{dt.Day}{dt.Hour}{dt.Minute}{dt.Second}"+ "log.txt";
+      var path = $"{dt.Year}{dt.Month}{dt.Day}{dt.Hour}{dt.Minute}{dt.Second}" + "log.txt";
 
       return new StreamWriter(path);
 
     }
 
-    private cOutput ProcessKey(KeyEventData keyEventData) {
+    private cOutput ProcessKey(KeyEventData keyEventData)
+    {
 
       Log(keyEventData.ToLog());
 
-      return new cKeysEngine { 
-        AppState = AppState, 
+      return new cKeysEngine
+      {
+        AppState = AppState,
         KeyEventData = keyEventData,
-        Configuration = Configuration
+        Configuration = Configuration,
+        SendDoKeyLast = mSendDoKeyLast
       }.ProcessKey();
 
     }
 
-    private Icon GetIconOff() {
+    private Icon GetIconOff()
+    {
       return new Icon(Resources.Off, 40, 40);
     }
 
-    private Icon GetIconNormalMode() {
+    private Icon GetIconNormalMode()
+    {
       return new Icon(Resources.Normal, 40, 40);
     }
 
-    private Icon GetIconInsertMode() {
+    private Icon GetIconInsertMode()
+    {
       return new Icon(Resources.Insert, 40, 40);
     }
 
-    private Icon GetIcon(State xState) {
+    private Icon GetIcon(State xState)
+    {
 
       if (xState.IsOff) return GetIconOff();
       if (xState.IsNormal) return GetIconNormalMode();
@@ -170,32 +190,38 @@ namespace TrayApp2 {
 
     }
 
-    protected override void OnLoad(EventArgs e) {
+    protected override void OnLoad(EventArgs e)
+    {
       Visible = false; // Hide form window.
       ShowInTaskbar = false; // Remove from taskbar.
 
       base.OnLoad(e);
     }
 
-    private void OnExit() {
+    private void OnExit()
+    {
       Application.Exit();
     }
 
-    private void OpenSettings() {
+    private void OpenSettings()
+    {
 
       Process.Start(Configuration.FilePath);
 
     }
 
-    private void ReloadSettings() {
+    private void ReloadSettings()
+    {
       Configuration = new Configuration();
     }
 
-    protected override void Dispose(bool isDisposing) {
+    protected override void Dispose(bool isDisposing)
+    {
 
       mKeyboardHook?.Dispose();
 
-      if (isDisposing) {
+      if (isDisposing)
+      {
         // Release the icon resource.
         trayIcon.Dispose();
       }

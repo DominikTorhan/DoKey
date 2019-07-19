@@ -6,4 +6,4 @@ let AppStateOff =
     new AppState()  
 
 let AppStateNormal =
-     new AppState(State.Normal, new Modificators(), "", false, false)
+     new AppState(State.Normal, new Modificators(), "", false)

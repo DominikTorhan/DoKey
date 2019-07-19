@@ -2,7 +2,6 @@
  
 type KeyType =
     | Normal
-    //| NormalTwoStep
     | Caps 
 
 type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string, modAllowed:string)=   
