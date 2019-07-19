@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="TestKeysEngine.fs" />
+    <Compile Include="KeyEventDataFactory.fs" />
+    <Compile Include="AppStatesFactory.fs" />
     <Compile Include="TestInputKey.fs" />
     <Compile Include="Tests.fs" />
   </ItemGroup>
@@ -19,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DoKey.FS\DoKey.FS.fsproj" />
+    <ProjectReference Include="..\TrayApp2\DoKey.csproj" />
   </ItemGroup>
 
 </Project>
