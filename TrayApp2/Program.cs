@@ -182,9 +182,9 @@ namespace TrayApp2
     private Icon GetIcon(State xState)
     {
 
-      if (xState.IsOff) return GetIconOff();
-      if (xState.IsNormal) return GetIconNormalMode();
-      if (xState.IsInsert) return GetIconInsertMode();
+      if (xState == State.Off) return GetIconOff();
+      if (xState == State.Normal) return GetIconNormalMode();
+      if (xState == State.Insert) return GetIconInsertMode();
 
       return null;
 

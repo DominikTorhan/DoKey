@@ -5,22 +5,32 @@ using System.Text;
 using System.Threading.Tasks;
 using DoKey.FS;
 
-namespace TrayApp2 {
+namespace TrayApp2
+{
 
-  public class cOutput {
+  public class cOutput
+  {
     public SendDoKey sendDoKey { get; set; }
     public AppState AppState { get; set; }
     public bool PreventKeyProcess { get; set; }
 
-    public string GetStr() => sendDoKey?.Send;
+    public string GetStr()
+    {
+      string pStr = sendDoKey?.Send ?? "";
+      string pModif = AppState.Modificators.ToStr;
+      if (!PreventKeyProcess) pStr += "{GO}";
+      if (pModif != "") pStr += "(" + AppState.Modificators.ToStr + ")";
+      return pStr;
+    }
 
   }
 
-  public class cKeysEngine {
+  public class cKeysEngine
+  {
 
     public Configuration Configuration { get; set; }
     public KeyEventData KeyEventData { get; set; }
-    public AppState AppState { get; set; } 
+    public AppState AppState { get; set; }
     public SendDoKey SendDoKeyLast { get; set; }
 
     private InputKey inputKey => KeyEventData.InputKey;
@@ -32,7 +42,8 @@ namespace TrayApp2 {
     private Modificators modificators => AppState.Modificators;
     private bool isCapital => AppState.Modificators.Caps;
 
-    public cOutput ProcessKey() {
+    public cOutput ProcessKey()
+    {
 
       var output = ProcessModificators();
       if (output != null) return output;
@@ -46,7 +57,7 @@ namespace TrayApp2 {
       output = ProcessEsc();
       if (output != null) return output;
 
-      if (State.IsOff) return outputOld;
+      if (State == State.Off) return outputOld;
 
       output = ProcessNormalAndInsertWithCapital();
       if (output != null) return output;
@@ -57,7 +68,8 @@ namespace TrayApp2 {
       return outputOld;
     }
 
-    private cOutput ProcessModificators() {
+    private cOutput ProcessModificators()
+    {
 
       if (!inputKey.IsModifier) return null;
       //if (!cUtils.IsModifierKey(keys)) return null;
@@ -81,15 +93,20 @@ namespace TrayApp2 {
       return r;
     }
 
-    private cOutput ProcessCapital() {
+    private cOutput ProcessCapital()
+    {
 
       var sendKeys = "";
       var preventEscOnNextCapitalUp = AppState.PreventEscOnCapsUp;
 
-      if (isUp) {
-        if (AppState.PreventEscOnCapsUp) {
+      if (isUp)
+      {
+        if (AppState.PreventEscOnCapsUp)
+        {
           preventEscOnNextCapitalUp = false;
-        } else {
+        }
+        else
+        {
           sendKeys = "{ESC}";
         }
       }
@@ -106,10 +123,11 @@ namespace TrayApp2 {
 
     }
 
-    private cOutput ProcessEsc() {
+    private cOutput ProcessEsc()
+    {
 
       if (!inputKey.IsEsc) return null;
-      if (!State.IsInsert) return null;
+      if (State != State.Insert) return null;
       if (isUp) return null;
       if (isCapital) return null;
 
@@ -124,9 +142,10 @@ namespace TrayApp2 {
     private string NormalModeKeysToString() => firstStep + keys.ToString();
     private bool IsDownFirstStep() => firstStep == "" && Configuration.IsTwoStep(keys);
 
-    private cOutput ProcessNormalMode() {
+    private cOutput ProcessNormalMode()
+    {
 
-      if (!State.IsNormal) return null;
+      if (State != State.Normal) return null;
       if (isUp) return null;
       if (modificators.Win) return null;
 
@@ -136,7 +155,7 @@ namespace TrayApp2 {
 
       var sendDoKey = GetSendDoKey(isDownFirstStep);
 
-      var preventNextAltUp = sendDoKey.IsAlt;
+      //var preventNextAltUp = sendDoKey.IsAlt;
       var preventKeyProcess = inputKey.IsLetterOrDigit || !sendDoKey.IsEmpty;
 
       var r = NextOutput();
@@ -147,7 +166,8 @@ namespace TrayApp2 {
 
     }
 
-    private SendDoKey GetSendDoKey(bool isDownFirstStep) {
+    private SendDoKey GetSendDoKey(bool isDownFirstStep)
+    {
 
       if (isDownFirstStep) return new SendDoKey("");
 
@@ -155,10 +175,12 @@ namespace TrayApp2 {
 
       var doKey = Configuration.GetSendKeyNormal(trigger);
 
-      if (modificators.Shift) {
+      if (modificators.Shift)
+      {
         if (!doKey.IsShiftAllowed) return new SendDoKey("");
       }
-      if (modificators.Alt) {
+      if (modificators.Alt)
+      {
         if (!doKey.IsAltAllowed) return new SendDoKey("");
       }
 
@@ -166,7 +188,8 @@ namespace TrayApp2 {
 
     }
 
-    private cOutput ProcessSetModeOff() {
+    private cOutput ProcessSetModeOff()
+    {
 
       if (!isCapital) return null;
       if (isUp) return null;
@@ -181,9 +204,10 @@ namespace TrayApp2 {
 
     }
 
-    private cOutput ProcessNormalAndInsertWithCapital() {
+    private cOutput ProcessNormalAndInsertWithCapital()
+    {
 
-      if (State.IsOff) return null;
+      if (State == State.Off) return null;
       if (!isCapital) return null;
       if (isUp) return null;
 
@@ -199,7 +223,8 @@ namespace TrayApp2 {
 
     }
 
-    private cOutput ProcessModeChange() {
+    private cOutput ProcessModeChange()
+    {
 
       if (keys != Configuration.ModeChangeKey) return null;
       if (!isCapital) return null;

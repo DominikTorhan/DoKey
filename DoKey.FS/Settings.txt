@@ -1,4 +1,4 @@
-﻿DoKey settings
+﻿DoKey settings v1
  
 Insert line below: ij: {End} {ENTER}
 Insert line above: ik: {UP}{End}{ENTER}
