@@ -11,6 +11,9 @@ namespace TrayApp2 {
     public SendDoKey sendDoKey { get; set; }
     public AppState AppState { get; set; }
     public bool PreventKeyProcess { get; set; }
+
+    public string GetStr() => sendDoKey?.Send;
+
   }
 
   public class cKeysEngine {
