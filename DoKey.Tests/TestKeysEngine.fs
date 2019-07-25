@@ -65,6 +65,22 @@ let TestStateNormal(expected:string, key:string) =
 [<Theory>]  
 [<InlineData("(c)", "f", "c")>]
 [<InlineData("{HOME}(%)", "n", "%")>]
+[<InlineData("{LEFT}(%)", "h", "%")>]
+[<InlineData("{DOWN}(%)", "j", "%")>]
+[<InlineData("{UP}(%)", "k", "%")>]
+[<InlineData("{RIGHT}(%)", "l", "%")>] 
+[<InlineData("{LEFT}(+)", "h", "+")>]
+[<InlineData("{DOWN}(+)", "j", "+")>]
+[<InlineData("{UP}(+)", "k", "+")>]
+[<InlineData("{RIGHT}(+)", "l", "+")>]
+[<InlineData("{LEFT}(^)", "h", "^")>]
+[<InlineData("{DOWN}(^)", "j", "^")>]
+[<InlineData("{UP}(^)", "k", "^")>]
+[<InlineData("{RIGHT}(^)", "l", "^")>]
+[<InlineData("{LEFT}(%+)", "h", "%+")>]
+[<InlineData("{DOWN}(%+)", "j", "%+")>]
+[<InlineData("{UP}(%+)", "k", "%+")>]
+[<InlineData("{RIGHT}(%+)", "l", "%+")>] 
 let TestStateNormalModif(expected:string, key:string, modif:string) =      
     let str = ProcessKey(key, modif, State.Normal, "").GetStr()
     Assert.Equal(expected, str)

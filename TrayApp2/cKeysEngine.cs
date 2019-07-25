@@ -175,14 +175,14 @@ namespace TrayApp2
 
       var doKey = Configuration.GetSendKeyNormal(trigger);
 
-      if (modificators.Shift)
-      {
-        if (!doKey.IsShiftAllowed) return new SendDoKey("");
-      }
-      if (modificators.Alt)
-      {
-        if (!doKey.IsAltAllowed) return new SendDoKey("");
-      }
+      //if (modificators.Shift)
+      //{
+      //  if (!doKey.IsShiftAllowed) return new SendDoKey("");
+      //}
+      //if (modificators.Alt)
+      //{
+      //  if (!doKey.IsAltAllowed) return new SendDoKey("");
+      //}
 
       return doKey;
 

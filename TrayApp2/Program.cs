@@ -94,7 +94,7 @@ namespace TrayApp2
       var key = (Keys)e.KeyboardData.VirtualCode;
 
       if (Control.IsKeyLocked(Keys.CapsLock) && key == Keys.Capital) return;
-      if (Control.ModifierKeys == Keys.Control) return;
+      //if (Control.ModifierKeys == Keys.Control) return;
 
       if (cUtils.IsIgnoredKey(key, Control.ModifierKeys)) return;
 
