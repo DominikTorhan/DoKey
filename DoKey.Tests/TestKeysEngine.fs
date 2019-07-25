@@ -6,9 +6,9 @@ open DoKey.FS
 open TrayApp2  
 
 
-let ProcessKey(key:string, modif:string, state:State) = 
+let ProcessKey(key:string, modif:string, state:State, firstStep:string) = 
     let modificators = new Modificators(modif)
-    let appState = AppState(state, modificators, "", false)
+    let appState = AppState(state, modificators, firstStep, false)
     let configuration = new Configuration()
     let eventData = new KeyEventData(key, KeyEventType.Down)
     let keysEngine = new cKeysEngine()
@@ -26,7 +26,7 @@ let ProcessKey(key:string, modif:string, state:State) =
 [<InlineData(State.Off, "q", "c", State.Normal)>]
 [<InlineData(State.Off, "q", "c", State.Insert)>]
 let TestChageState(expected:State, key:string, modif:string, state:State)=
-    let output = ProcessKey(key, modif, state)
+    let output = ProcessKey(key, modif, state, "")
     Assert.Equal(expected, output.AppState.State)
 
 [<Theory>]  
@@ -56,18 +56,17 @@ let TestChageState(expected:State, key:string, modif:string, state:State)=
 [<InlineData("", "u")>]
 [<InlineData("", "i")>]
 [<InlineData("", "e")>]
-
-
 let TestStateNormal(expected:string, key:string) =      
-    let str = ProcessKey(key, "", State.Normal).GetStr()
+    let str = ProcessKey(key, "", State.Normal, "").GetStr()
     Assert.Equal(expected, str)
 
  
  //normal with modif
 [<Theory>]  
 [<InlineData("(c)", "f", "c")>]
+[<InlineData("{HOME}(%)", "n", "%")>]
 let TestStateNormalModif(expected:string, key:string, modif:string) =      
-    let str = ProcessKey(key, modif, State.Normal).GetStr()
+    let str = ProcessKey(key, modif, State.Normal, "").GetStr()
     Assert.Equal(expected, str)
 
  
@@ -75,7 +74,7 @@ let TestStateNormalModif(expected:string, key:string, modif:string) =
 [<Theory>]  
 [<InlineData("{GO}", "f")>]
 let TestStateInsert(expected:string, key:string) =      
-    let str = ProcessKey(key, "", State.Insert).GetStr()
+    let str = ProcessKey(key, "", State.Insert, "").GetStr()
     Assert.Equal(expected, str)
     
 //insert with modif
@@ -95,7 +94,7 @@ let TestStateInsert(expected:string, key:string) =
 
 
 let TestStateInsertModif(expected:string, key:string, modif:string) =      
-    let str = ProcessKey(key, modif, State.Insert).GetStr()
+    let str = ProcessKey(key, modif, State.Insert, "").GetStr()
     Assert.Equal(expected, str)
 
 [<Theory>]   
@@ -110,6 +109,23 @@ let TestStateInsertModif(expected:string, key:string, modif:string) =
 [<InlineData("(c)", "capital", "")>]
 [<InlineData("(%c)", "capital", "%")>]
 let TestModif(expected:string, key:string, modif:string)=
-    let str = ProcessKey(key, modif, State.Insert).GetStr()
+    let str = ProcessKey(key, modif, State.Insert, "").GetStr()
     Assert.Equal(expected, str)
-  
+   
+[<Theory>]   
+[<InlineData("{F1}", "f", "d1")>] 
+[<InlineData("{F2}", "f", "d2")>] 
+[<InlineData("{F3}", "f", "d3")>] 
+[<InlineData("{F4}", "f", "d4")>] 
+[<InlineData("{F5}", "f", "d5")>] 
+[<InlineData("{F6}", "f", "d6")>] 
+[<InlineData("{F7}", "f", "q")>] 
+[<InlineData("{F8}", "f", "w")>] 
+[<InlineData("{F9}", "f", "e")>] 
+[<InlineData("{F10}", "f", "r")>] 
+[<InlineData("{F11}", "f", "t")>] 
+[<InlineData("{F12}", "f", "f")>] 
+let TestSecondStep(expected:string, firstStep:string, key:string)=
+    let str = ProcessKey(key, "", State.Normal, firstStep).GetStr()
+    Assert.Equal(expected, str)
+    

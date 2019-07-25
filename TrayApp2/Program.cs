@@ -89,6 +89,8 @@ namespace TrayApp2
     private void OnKeyPressed(object sender, KeyboardHookEvent e)
     {
 
+      if (IsSending) return;
+
       var key = (Keys)e.KeyboardData.VirtualCode;
 
       if (Control.IsKeyLocked(Keys.CapsLock) && key == Keys.Capital) return;
