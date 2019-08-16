@@ -123,10 +123,7 @@ namespace TrayApp2
       if (output.sendDoKey != null && !string.IsNullOrEmpty(output.sendDoKey.Send))
       {
         Log(output.sendDoKey.ToLog);
-        if (mSendDoKeyLast?.Send == "^+v")
-        {
-          int i = 0;
-        }
+
         mSendDoKeyLast = output.sendDoKey;
         IsSending = true;
         SendKeys.Send(output.sendDoKey.Send);

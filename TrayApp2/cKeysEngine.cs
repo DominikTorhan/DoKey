@@ -45,10 +45,10 @@ namespace TrayApp2
     public cOutput ProcessKey()
     {
 
-      var output = ProcessModificators();
-      if (output != null) return output;
+      if (inputKey.IsCapital) return ProcessCapital();
+      if (inputKey.IsModifier) return ProcessModificators();
 
-      output = ProcessSetModeOff();
+      var output = ProcessSetModeOff();
       if (output != null) return output;
 
       output = ProcessModeChange();
@@ -71,23 +71,10 @@ namespace TrayApp2
     private cOutput ProcessModificators()
     {
 
-      if (!inputKey.IsModifier) return null;
-      //if (!cUtils.IsModifierKey(keys)) return null;
-
-      if (inputKey.IsCapital) return ProcessCapital();
-
       var modificators = this.modificators.GetNextModificators(inputKey, isUp);
 
       var r = NextOutput();
 
-      //if (inputKey.IsAlt && isUp) { 
-      //  if (SendDoKeyLast.IsAlt)        {
-      //    modificators = this.modificators;
-      //    r.AppState = new AppState(r.AppState.State, modificators, r.AppState.FirstStep, r.AppState.PreventEscOnCapsUp);
-      //  }
-      //}
-
-      //r.AppState.Modificators = modificators;
       r.AppState = new AppState(r.AppState.State, modificators, r.AppState.FirstStep, r.AppState.PreventEscOnCapsUp);
 
       return r;
@@ -123,6 +110,21 @@ namespace TrayApp2
 
     }
 
+    private cOutput ProcessModeChange()
+    {
+
+      if (keys != Configuration.ModeChangeKey) return null;
+      if (!isCapital) return null;
+      if (isUp) return null;
+
+      var r = NextOutput();
+      r.PreventKeyProcess = true;
+      r.AppState = new AppState(cUtils.GetNextState(State), r.AppState.Modificators, "", true);
+      return r;
+
+    }
+
+
     private cOutput ProcessEsc()
     {
 
@@ -139,9 +141,6 @@ namespace TrayApp2
 
     }
 
-    private string NormalModeKeysToString() => firstStep + keys.ToString();
-    private bool IsDownFirstStep() => firstStep == "" && Configuration.IsTwoStep(keys);
-
     private cOutput ProcessNormalMode()
     {
 
@@ -149,13 +148,12 @@ namespace TrayApp2
       if (isUp) return null;
       if (modificators.Win) return null;
 
-      var isDownFirstStep = IsDownFirstStep();
+      var isDownFirstStep = firstStep == "" && Configuration.IsTwoStep(keys);
 
       var firstStepNext = isDownFirstStep ? keys : "";
 
       var sendDoKey = GetSendDoKey(isDownFirstStep);
 
-      //var preventNextAltUp = sendDoKey.IsAlt;
       var preventKeyProcess = inputKey.IsLetterOrDigit || !sendDoKey.IsEmpty;
 
       var r = NextOutput();
@@ -171,18 +169,9 @@ namespace TrayApp2
 
       if (isDownFirstStep) return new SendDoKey("");
 
-      var trigger = NormalModeKeysToString();
+      var trigger = firstStep + keys.ToString();
 
       var doKey = Configuration.GetSendKeyNormal(trigger);
-
-      //if (modificators.Shift)
-      //{
-      //  if (!doKey.IsShiftAllowed) return new SendDoKey("");
-      //}
-      //if (modificators.Alt)
-      //{
-      //  if (!doKey.IsAltAllowed) return new SendDoKey("");
-      //}
 
       return doKey;
 
@@ -200,7 +189,6 @@ namespace TrayApp2
       r.AppState = new AppState(State.Off, r.AppState.Modificators, "", true);
 
       return r;
-
 
     }
 
@@ -223,22 +211,7 @@ namespace TrayApp2
 
     }
 
-    private cOutput ProcessModeChange()
-    {
-
-      if (keys != Configuration.ModeChangeKey) return null;
-      if (!isCapital) return null;
-      if (isUp) return null;
-
-      var r = NextOutput();
-      r.PreventKeyProcess = true;
-      r.AppState = new AppState(cUtils.GetNextState(State), r.AppState.Modificators, "", true);
-      return r;
-
-    }
-
-    private cOutput NextOutput() => new cOutput { AppState = NextState() };
-    private AppState NextState() => AppState;
+    private cOutput NextOutput() => new cOutput { AppState = this.AppState };
 
   }
 }

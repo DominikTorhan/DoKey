@@ -18,6 +18,7 @@ VS Edit.MakeUppercase: ug: ^u^g
 f
 VS +F5 StopDebuging: fb: +{f5}
 common %F4: fc : %{f4}
+VS findAllReferences: fd: +{F12}
 
 e
 VS find in all: et: ^t
