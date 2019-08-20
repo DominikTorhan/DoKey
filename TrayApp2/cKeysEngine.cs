@@ -31,7 +31,6 @@ namespace TrayApp2
     public Configuration Configuration { get; set; }
     public KeyEventData KeyEventData { get; set; }
     public AppState AppState { get; set; }
-    public SendDoKey SendDoKeyLast { get; set; }
 
     private InputKey inputKey => KeyEventData.InputKey;
     private cOutput outputOld => new cOutput { AppState = AppState };
@@ -73,11 +72,11 @@ namespace TrayApp2
 
       var modificators = this.modificators.GetNextModificators(inputKey, isUp);
 
-      var r = NextOutput();
+      return new cOutput
+      {
+        AppState = new AppState(this.AppState.State, modificators, this.AppState.FirstStep, this.AppState.PreventEscOnCapsUp)
+      };
 
-      r.AppState = new AppState(r.AppState.State, modificators, r.AppState.FirstStep, r.AppState.PreventEscOnCapsUp);
-
-      return r;
     }
 
     private cOutput ProcessCapital()
@@ -98,15 +97,14 @@ namespace TrayApp2
         }
       }
 
-      var r = NextOutput();
-      r.PreventKeyProcess = true;
-      r.sendDoKey = new SendDoKey(sendKeys);
-
       var modif = this.modificators.GetNextModificators(inputKey, isUp);
 
-      r.AppState = new AppState(r.AppState.State, modif, "", preventEscOnNextCapitalUp);
-
-      return r;
+      return new cOutput
+      {
+        PreventKeyProcess = true,
+        sendDoKey = new SendDoKey(sendKeys),
+        AppState = new AppState(this.AppState.State, modif, "", preventEscOnNextCapitalUp)
+      };
 
     }
 
@@ -117,10 +115,11 @@ namespace TrayApp2
       if (!isCapital) return null;
       if (isUp) return null;
 
-      var r = NextOutput();
-      r.PreventKeyProcess = true;
-      r.AppState = new AppState(cUtils.GetNextState(State), r.AppState.Modificators, "", true);
-      return r;
+      return new cOutput
+      {
+        PreventKeyProcess = true,
+        AppState = new AppState(cUtils.GetNextState(State), this.AppState.Modificators, "", true)
+      };
 
     }
 
@@ -133,11 +132,11 @@ namespace TrayApp2
       if (isUp) return null;
       if (isCapital) return null;
 
-      var r = NextOutput();
-      r.PreventKeyProcess = true;
-      r.AppState = new AppState(cUtils.GetPrevState(State), r.AppState.Modificators, "", r.AppState.PreventEscOnCapsUp);
-
-      return r;
+      return new cOutput
+      {
+        PreventKeyProcess = true,
+        AppState = new AppState(cUtils.GetPrevState(State), this.AppState.Modificators, "", this.AppState.PreventEscOnCapsUp)
+      };
 
     }
 
@@ -156,11 +155,12 @@ namespace TrayApp2
 
       var preventKeyProcess = inputKey.IsLetterOrDigit || !sendDoKey.IsEmpty;
 
-      var r = NextOutput();
-      r.sendDoKey = sendDoKey;
-      r.PreventKeyProcess = preventKeyProcess;
-      r.AppState = new AppState(r.AppState.State, r.AppState.Modificators, firstStepNext, r.AppState.PreventEscOnCapsUp);
-      return r;
+      return new cOutput
+      {
+        sendDoKey = sendDoKey,
+        PreventKeyProcess = preventKeyProcess,
+        AppState = new AppState(this.AppState.State, this.AppState.Modificators, firstStepNext, this.AppState.PreventEscOnCapsUp)
+      };
 
     }
 
@@ -184,11 +184,11 @@ namespace TrayApp2
       if (isUp) return null;
       if (keys != Configuration.ModeOffKey) return null;
 
-      var r = NextOutput();
-      r.PreventKeyProcess = true;
-      r.AppState = new AppState(State.Off, r.AppState.Modificators, "", true);
-
-      return r;
+      return new cOutput
+      {
+        PreventKeyProcess = true,
+        AppState = new AppState(State.Off, this.AppState.Modificators, "", true)
+      };
 
     }
 
@@ -203,15 +203,14 @@ namespace TrayApp2
 
       if (sendKeys.IsEmpty) return null;
 
-      var r = NextOutput();
-      r.PreventKeyProcess = true;
-      r.sendDoKey = sendKeys;
-      r.AppState = new AppState(r.AppState.State, r.AppState.Modificators, "", true);
-      return r;
+      return new cOutput
+      {
+        PreventKeyProcess = true,
+        sendDoKey = sendKeys,
+        AppState = new AppState(this.AppState.State, this.AppState.Modificators, "", true),
+      };
 
     }
-
-    private cOutput NextOutput() => new cOutput { AppState = this.AppState };
 
   }
 }

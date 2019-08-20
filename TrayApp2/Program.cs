@@ -164,7 +164,6 @@ namespace TrayApp2
         AppState = AppState,
         KeyEventData = keyEventData,
         Configuration = Configuration,
-        SendDoKeyLast = mSendDoKeyLast
       }.ProcessKey();
 
     }

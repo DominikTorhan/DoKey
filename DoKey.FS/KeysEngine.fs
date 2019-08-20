@@ -2,5 +2,5 @@
 
 open DoKey.FS
 
-let Perform(appState:AppState, inputKey: InputKey) =
+let Perform(appState:AppState, inputKey: InputKey, configuration: Configuration) =
     appState
