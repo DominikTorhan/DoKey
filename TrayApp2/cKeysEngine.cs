@@ -33,6 +33,8 @@ namespace TrayApp2
     public AppState AppState { get; set; }
 
     private InputKey inputKey => KeyEventData.InputKey;
+
+
     private cOutput outputOld => new cOutput { AppState = AppState };
     private string keys => inputKey.Key;
     private bool isUp => KeyEventData.KeyEventType.IsUp;
