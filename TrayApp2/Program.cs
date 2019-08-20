@@ -33,7 +33,7 @@ namespace TrayApp2
     private ContextMenu trayMenu;
     private cKeyboardHook mKeyboardHook;
     private Configuration Configuration;
-    private StreamWriter LogStream;
+    //private StreamWriter LogStream;
 
     public SysTrayApp()
     {
@@ -59,7 +59,7 @@ namespace TrayApp2
         Visible = true
       };
 
-      LogStream = CreateLogStream();
+      //LogStream = CreateLogStream();
 
       SetupKeyboardHooks();
 
@@ -112,17 +112,17 @@ namespace TrayApp2
 
       AppState = output.AppState;
 
-      Log(output.AppState.ToLog());
+      //Log(output.AppState.ToLog());
 
       if (output.PreventKeyProcess)
       {
-        Log("  prevent");
+        //Log("  prevent");
         e.Handled = true;
       }
 
       if (output.sendDoKey != null && !string.IsNullOrEmpty(output.sendDoKey.Send))
       {
-        Log(output.sendDoKey.ToLog);
+        //Log(output.sendDoKey.ToLog);
 
         mSendDoKeyLast = output.sendDoKey;
         IsSending = true;
@@ -136,28 +136,28 @@ namespace TrayApp2
 
     }
 
-    private void Log(string str)
-    {
+    //private void Log(string str)
+    //{
 
-      Console.WriteLine(str);
-      LogStream.WriteLine(str);
+    //  Console.WriteLine(str);
+    //  LogStream.WriteLine(str);
 
-    }
+    //}
 
-    private StreamWriter CreateLogStream()
-    {
+    //private StreamWriter CreateLogStream()
+    //{
 
-      var dt = DateTime.Now;
-      var path = $"{dt.Year}{dt.Month}{dt.Day}{dt.Hour}{dt.Minute}{dt.Second}" + "log.txt";
+    //  var dt = DateTime.Now;
+    //  var path = $"{dt.Year}{dt.Month}{dt.Day}{dt.Hour}{dt.Minute}{dt.Second}" + "log.txt";
 
-      return new StreamWriter(path);
+    //  return new StreamWriter(path);
 
-    }
+    //}
 
     private cOutput ProcessKey(KeyEventData keyEventData)
     {
 
-      Log(keyEventData.ToLog());
+      //Log(keyEventData.ToLog());
 
       return new cKeysEngine
       {
@@ -229,7 +229,7 @@ namespace TrayApp2
         // Release the icon resource.
         trayIcon.Dispose();
       }
-      LogStream?.Close();
+      //LogStream?.Close();
 
       base.Dispose(isDisposing);
     }

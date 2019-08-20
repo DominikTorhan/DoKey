@@ -13,7 +13,6 @@ namespace TrayApp2
     public SendDoKey sendDoKey { get; set; }
     public AppState AppState { get; set; }
     public bool PreventKeyProcess { get; set; }
-
     public string GetStr()
     {
       string pStr = sendDoKey?.Send ?? "";
@@ -22,7 +21,6 @@ namespace TrayApp2
       if (pModif != "") pStr += "(" + AppState.Modificators.ToStr + ")";
       return pStr;
     }
-
   }
 
   public class cKeysEngine
@@ -33,8 +31,6 @@ namespace TrayApp2
     public AppState AppState { get; set; }
 
     private InputKey inputKey => KeyEventData.InputKey;
-
-
     private cOutput outputOld => new cOutput { AppState = AppState };
     private string keys => inputKey.Key;
     private bool isUp => KeyEventData.KeyEventType.IsUp;
@@ -73,6 +69,8 @@ namespace TrayApp2
     {
 
       var modificators = this.modificators.GetNextModificators(inputKey, isUp);
+
+      //return new KeysEngineResult(new AppState(this.AppState.State, modificators, this.AppState.FirstStep, this.AppState.PreventEscOnCapsUp));
 
       return new cOutput
       {
