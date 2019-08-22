@@ -34,7 +34,7 @@ type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string)=
             SendDoKey("^{RIGHT}", "CtrlRight", KeyType.Normal, "o");
 
             SendDoKey("^a", "CtrlA", KeyType.Normal, "a");
-            SendDoKey("^w", "CtrlW", KeyType.Normal, "w");
+            //SendDoKey("^w", "CtrlW", KeyType.Normal, "w");
             SendDoKey("^s", "CtrlS", KeyType.Normal, "s");
             SendDoKey("^x", "CtrlX", KeyType.Normal, "x");
             SendDoKey("^c", "CtrlC", KeyType.Normal, "c");

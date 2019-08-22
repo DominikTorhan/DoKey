@@ -26,11 +26,17 @@ VS find all references: er: ^r
 common find: ef: ^f
 VS find in files: ed: ^e^f
 VS go to line: eg: ^e^l
-VS EditorContextMenus.CodeWindow.QuickActionsForPosition: ek: ^e^.
+VS EditorContextMenus.CodeWindow.QuickActionsForPosition: ek: ^.
 VS View.SolutionExplorer: es: ^e^s
 
 d
 VS delete all breakpoints: db: ^e^b
 VS locals: dl: ^e^k
 VS Debug.CallStack: dk: ^d^k
-VS Window.PinTab: dn: ^d^n
+VS Window.PinTab: dn: ^d^n 
+VS_Build: dv: ^+b
+
+w
+CrtlW: ww: ^w
+ShiftEsc: we: +{ESC} 
+VS_Solution: ws: ^%l
