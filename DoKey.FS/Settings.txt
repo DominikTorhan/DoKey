@@ -2,7 +2,8 @@
  
 Insert line below: ij: {End} {ENTER}
 Insert line above: ik: {UP}{End}{ENTER}
-VS ^e^e Edit.SelectCurrentWord: ii: ^e^e
+VS_ExpandSelection: ii: +%=
+VS_EspandSelectionToBlock: il: +%]
 VS ^m^3 Edit.ScrollLineCenter: im: ^m^3 
 VS ^k^d Edit.FormatDocument: io: ^k^d
 
@@ -12,8 +13,8 @@ VS ^m^o collapse to definition: uo: ^m^o
 VS ^F12 go to next error: ue: ^+{F12}
 VS ^k^c comment selection: uk: ^k^c   
 VS ^k^c uncomment selection: ui: ^k^u  
-VS Edit.MakeLowercase: ub: ^u^b
-VS Edit.MakeUppercase: ug: ^u^g
+VS Edit.MakeLowercase: ub: ^u
+VS Edit.MakeUppercase: ug: ^+u
 
 f
 VS +F5 StopDebuging: fb: +{f5}
@@ -38,3 +39,4 @@ CrtlW: ww: ^w
 ShiftEsc: we: +{ESC} 
 VS_Solution: ws: ^%l
 VS_Locals: wl: ^%vl
+VS_ErrorList: wd: ^\e
