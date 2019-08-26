@@ -1,5 +1,19 @@
 ﻿DoKey settings v1
  
+common
+Left: h: {LEFT} 
+Down: j: {DOWN}
+Up: k: {UP}
+Right: l: {RIGHT}
+Home: n: {HOME}
+PageDown: m: {PGDN}
+PageUp: oemcomma: {PGUP}
+End: oemperiod: {END}
+CtrlLeft: y: ^{LEFT}
+CtrlRight: o: ^{RIGHT}
+
+
+ 
 Insert line below: ij: {End} {ENTER}
 Insert line above: ik: {UP}{End}{ENTER}
 VS_ExpandSelection: ii: +%=

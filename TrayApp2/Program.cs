@@ -95,7 +95,7 @@ namespace TrayApp2
 
       if (Control.IsKeyLocked(Keys.CapsLock) && key == Keys.Capital) return;
       if (Control.ModifierKeys == Keys.Control)
-      { 
+      {
         //do rozwiązania
         if (key == Keys.Q) return;
         if (key == Keys.K) return;
@@ -157,8 +157,6 @@ namespace TrayApp2
     private cOutput ProcessKey(KeyEventData keyEventData)
     {
 
-      //Log(keyEventData.ToLog());
-
       return new cKeysEngine
       {
         AppState = AppState,
@@ -168,20 +166,9 @@ namespace TrayApp2
 
     }
 
-    private Icon GetIconOff()
-    {
-      return new Icon(Resources.Off, 40, 40);
-    }
-
-    private Icon GetIconNormalMode()
-    {
-      return new Icon(Resources.Normal, 40, 40);
-    }
-
-    private Icon GetIconInsertMode()
-    {
-      return new Icon(Resources.Insert, 40, 40);
-    }
+    private Icon GetIconOff() => new Icon(Resources.Off, 40, 40);
+    private Icon GetIconNormalMode() => new Icon(Resources.Normal, 40, 40);
+    private Icon GetIconInsertMode() => new Icon(Resources.Insert, 40, 40);
 
     private Icon GetIcon(State xState)
     {

@@ -22,16 +22,16 @@ type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string)=
 
     let GetList = 
         let DoKeyList = [ 
-            SendDoKey("{LEFT}", "Left", KeyType.Normal, "h");
-            SendDoKey("{DOWN}", "Down", KeyType.Normal, "j");
-            SendDoKey("{UP}", "Up", KeyType.Normal, "k");
-            SendDoKey("{RIGHT}", "Right", KeyType.Normal, "l");
-            SendDoKey("{HOME}", "Home", KeyType.Normal, "n");
-            SendDoKey("{PGDN}", "PageDown", KeyType.Normal, "m");
-            SendDoKey("{PGUP}", "PageUp", KeyType.Normal, "oemcomma");
-            SendDoKey("{END}", "End", KeyType.Normal, "oemperiod"); 
-            SendDoKey("^{LEFT}", "CtrlLeft", KeyType.Normal, "y");
-            SendDoKey("^{RIGHT}", "CtrlRight", KeyType.Normal, "o");
+            //SendDoKey("{LEFT}", "Left", KeyType.Normal, "h");
+            //SendDoKey("{DOWN}", "Down", KeyType.Normal, "j");
+            //SendDoKey("{UP}", "Up", KeyType.Normal, "k");
+            //SendDoKey("{RIGHT}", "Right", KeyType.Normal, "l");
+            //SendDoKey("{HOME}", "Home", KeyType.Normal, "n");
+            //SendDoKey("{PGDN}", "PageDown", KeyType.Normal, "m");
+            //SendDoKey("{PGUP}", "PageUp", KeyType.Normal, "oemcomma");
+            //SendDoKey("{END}", "End", KeyType.Normal, "oemperiod"); 
+            //SendDoKey("^{LEFT}", "CtrlLeft", KeyType.Normal, "y");
+            //SendDoKey("^{RIGHT}", "CtrlRight", KeyType.Normal, "o");
 
             SendDoKey("^a", "CtrlA", KeyType.Normal, "a");
             //SendDoKey("^w", "CtrlW", KeyType.Normal, "w");
