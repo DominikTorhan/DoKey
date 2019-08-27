@@ -12,12 +12,31 @@ End: oemperiod: {END}
 CtrlLeft: y: ^{LEFT}
 CtrlRight: o: ^{RIGHT}
 
-
+CtrlQ: q: ^q
+CtrlA: a: ^a
+CtrlS: s: ^s
+CtrlX: x: ^x
+CtrlC: c: ^c
+CtrlV: v: ^v
+CtrlZ: z: ^z
+CtrlY: r: ^y 
  
+F1: fd: {F1}
+F2: fd: {F2}
+F3: fd: {F3}
+F4: fd: {F4}
+F5: fd: {F5}
+F6: fd: {F6}
+F7: fq: {F7}
+F8: fw: {F8}
+F9: fe: {F9}
+F10: fr: {F10} 
+F11: ft: {F11}
+F12: ff: {F12}
+
+i
 Insert line below: ij: {End} {ENTER}
 Insert line above: ik: {UP}{End}{ENTER}
-VS_ExpandSelection: ii: +%=
-VS_EspandSelectionToBlock: il: +%]
 VS ^m^3 Edit.ScrollLineCenter: im: ^m^3 
 VS ^k^d Edit.FormatDocument: io: ^k^d
 
@@ -29,11 +48,14 @@ VS ^k^c comment selection: uk: ^k^c
 VS ^k^c uncomment selection: ui: ^k^u  
 VS Edit.MakeLowercase: ub: ^u
 VS Edit.MakeUppercase: ug: ^+u
+VS_ExpandSelection: up: +%=
+VS_EspandSelectionToBlock: ul: +%]
 
 f
 VS +F5 StopDebuging: fb: +{f5}
 common %F4: fc : %{f4}
-VS findAllReferences: fd: +{F12}
+VS_findAllReferences: fd: +{F12} 
+VS_nextToolWindow: fa: %{F7}
 
 e
 VS find in all: et: ^t
@@ -41,7 +63,8 @@ CrtlR: er: ^r
 common find: ef: ^f
 VS find in files: ed: ^+f
 CrtlG_gotoLine: eg: ^g
-VS EditorContextMenus.CodeWindow.QuickActionsForPosition: ek: ^.
+VS EditorContextMenus.CodeWindow.QuickActionsForPosition: ek: ^. 
+Evernote_FindNotebook: en: %+n
 
 d
 VS delete all breakpoints: db: ^+{F9}
@@ -49,7 +72,9 @@ VS Window.PinTab: dn: ^d^n
 VS_Build: dv: ^+b
 
 w
-CrtlW: ww: ^w
+CrtlW: ww: ^w 
+CtrlTab: wn: ^{TAB}
+CtrlShiftTab: woemperiod: ^+{TAB}
 ShiftEsc: we: +{ESC} 
 VS_Solution: ws: ^%l
 VS_Locals: wl: ^%vl

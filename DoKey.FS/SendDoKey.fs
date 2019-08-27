@@ -22,26 +22,6 @@ type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string)=
 
     let GetList = 
         let DoKeyList = [ 
-            //SendDoKey("{LEFT}", "Left", KeyType.Normal, "h");
-            //SendDoKey("{DOWN}", "Down", KeyType.Normal, "j");
-            //SendDoKey("{UP}", "Up", KeyType.Normal, "k");
-            //SendDoKey("{RIGHT}", "Right", KeyType.Normal, "l");
-            //SendDoKey("{HOME}", "Home", KeyType.Normal, "n");
-            //SendDoKey("{PGDN}", "PageDown", KeyType.Normal, "m");
-            //SendDoKey("{PGUP}", "PageUp", KeyType.Normal, "oemcomma");
-            //SendDoKey("{END}", "End", KeyType.Normal, "oemperiod"); 
-            //SendDoKey("^{LEFT}", "CtrlLeft", KeyType.Normal, "y");
-            //SendDoKey("^{RIGHT}", "CtrlRight", KeyType.Normal, "o");
-
-            SendDoKey("^a", "CtrlA", KeyType.Normal, "a");
-            //SendDoKey("^w", "CtrlW", KeyType.Normal, "w");
-            SendDoKey("^s", "CtrlS", KeyType.Normal, "s");
-            SendDoKey("^x", "CtrlX", KeyType.Normal, "x");
-            SendDoKey("^c", "CtrlC", KeyType.Normal, "c");
-            SendDoKey("^v", "CtrlV", KeyType.Normal, "v");
-            SendDoKey("^z", "CtrlZ", KeyType.Normal, "z");
-            SendDoKey("^y", "CtrlY", KeyType.Normal, "r");//redo
- 
             SendDoKey("{ESC}", "Esc", KeyType.Caps, "e");
             SendDoKey("{BKSP}", "Backspace", KeyType.Caps, "h");
             SendDoKey("{DEL}", "Delete", KeyType.Caps, "l");
@@ -51,27 +31,6 @@ type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string)=
             SendDoKey("{TAB}", "Tab", KeyType.Caps, "t");
             SendDoKey("+{F10}", "ContextMenu+F10", KeyType.Caps, "c");
             SendDoKey("^+v", "CtrlShift+V", KeyType.Caps, "v");
-
-            SendDoKey("{F1}", "F1", KeyType.Normal, "fd1");
-            SendDoKey("{F2}", "F2", KeyType.Normal, "fd2");
-            SendDoKey("{F3}", "F3", KeyType.Normal, "fd3");
-            SendDoKey("{F4}", "F4", KeyType.Normal, "fd4");
-            SendDoKey("{F5}", "F5", KeyType.Normal, "fd5");
-            SendDoKey("{F6}", "F6", KeyType.Normal, "fd6");
-            SendDoKey("{F7}", "F7", KeyType.Normal, "fq");
-            SendDoKey("{F8}", "F8", KeyType.Normal, "fw");
-            SendDoKey("{F9}", "F9", KeyType.Normal, "fe");
-            SendDoKey("{F10}", "F10", KeyType.Normal, "fr"); 
-            SendDoKey("{F11}", "F11", KeyType.Normal, "ft");
-            SendDoKey("{F12}", "F12", KeyType.Normal, "ff");
-
-            //SendDoKey("{End} {ENTER}", "Insert line below", KeyType.Normal, "ij");
-            //SendDoKey("{UP}{End}{ENTER}", "Insert line above", KeyType.Normal, "ik");
-            //SendDoKey("^m^m", "VS ^m^m toggle outline", KeyType.Normal, "uu");
-            //SendDoKey("^m^o", "VS ^m^o collapse to definition", KeyType.Normal, "uo");
-            //SendDoKey("^+{F12}", "VS ^F12 go to next error", KeyType.Normal, "ue"); 
-            //SendDoKey("^k^c", "VS ^k^c comment selection", KeyType.Normal, "uk"); 
-
             ] 
         DoKeyList
                //Seq.toList DoKeyList
