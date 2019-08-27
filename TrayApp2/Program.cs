@@ -33,6 +33,10 @@ namespace TrayApp2
     private ContextMenu trayMenu;
     private cKeyboardHook mKeyboardHook;
     private Configuration Configuration;
+    private bool IsSending = false;
+    private SendDoKey mSendDoKeyLast;
+    private AppState AppState = new AppState();
+
     //private StreamWriter LogStream;
 
     public SysTrayApp()
@@ -64,8 +68,6 @@ namespace TrayApp2
       SetupKeyboardHooks();
 
     }
-    AppState AppState = new AppState();
-
 
     public void SetupKeyboardHooks()
     {
@@ -75,23 +77,37 @@ namespace TrayApp2
 
     private void SetIcon() => trayIcon.Icon = GetIcon(AppState.State);
 
-
-    KeyEventData CreateKetEventData(KeyboardHookEvent e)
+    private KeyEventData CreateKetEventData(KeyboardHookEvent e)
     {
       var key = (Keys)e.KeyboardData.VirtualCode;
       var x = e.IsUp ? KeyEventType.Up : KeyEventType.Down;
       return new KeyEventData(key.ToString(), x);
     }
+ 
+    private bool TryOpenSettingsFile(Keys key, AppState appState)
+    {
+      if (!appState.Modificators.Caps) return false;
+      if (key != Keys.OemPeriod) return false;
+      OpenSettings();
+      return true;
 
-    private bool IsSending = false;
-    private SendDoKey mSendDoKeyLast;
+    }
+
+    private bool TryExitApp(Keys key, AppState appState)
+    {
+      if (!appState.Modificators.Caps) return false;
+      if (key != Keys.Back) return false;
+      OnExit();
+      return true;
+
+    }
 
     private void OnKeyPressed(object sender, KeyboardHookEvent e)
     {
 
       if (IsSending) return;
 
-      var key = (Keys)e.KeyboardData.VirtualCode;
+      Keys key = (Keys)e.KeyboardData.VirtualCode;
 
       if (Control.IsKeyLocked(Keys.CapsLock) && key == Keys.Capital) return;
       if (Control.ModifierKeys == Keys.Control)
@@ -102,19 +118,22 @@ namespace TrayApp2
         if (key == Keys.I) return;
       }
 
+      if (TryOpenSettingsFile(key, AppState)) { e.Handled = true; return; }
+      if (TryExitApp(key, AppState)) { e.Handled = true; return; }
+      
       if (cUtils.IsIgnoredKey(key, Control.ModifierKeys)) return;
 
-      var keyEventData = CreateKetEventData(e);
+      KeyEventData keyEventData = CreateKetEventData(e);
 
       var output = ProcessKey(keyEventData);
 
       if (output == null) return;
 
-      AppState = output.AppState;
+      AppState = output.appState;
 
       //Log(output.AppState.ToLog());
 
-      if (output.PreventKeyProcess)
+      if (output.preventKeyProcess)
       {
         //Log("  prevent");
         e.Handled = true;
@@ -136,25 +155,7 @@ namespace TrayApp2
 
     }
 
-    //private void Log(string str)
-    //{
-
-    //  Console.WriteLine(str);
-    //  LogStream.WriteLine(str);
-
-    //}
-
-    //private StreamWriter CreateLogStream()
-    //{
-
-    //  var dt = DateTime.Now;
-    //  var path = $"{dt.Year}{dt.Month}{dt.Day}{dt.Hour}{dt.Minute}{dt.Second}" + "log.txt";
-
-    //  return new StreamWriter(path);
-
-    //}
-
-    private cOutput ProcessKey(KeyEventData keyEventData)
+    private KeysEngineResult ProcessKey(KeyEventData keyEventData)
     {
 
       return new cKeysEngine
@@ -219,6 +220,7 @@ namespace TrayApp2
       //LogStream?.Close();
 
       base.Dispose(isDisposing);
-    }
+    } 
+
   }
 }

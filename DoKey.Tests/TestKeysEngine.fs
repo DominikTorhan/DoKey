@@ -28,7 +28,7 @@ let ProcessKey(key:string, modif:string, state:State, firstStep:string) =
 [<InlineData(State.Normal, "escape", "", State.Insert)>]
 let TestChageState(expected:State, key:string, modif:string, state:State)=
     let output = ProcessKey(key, modif, state, "")
-    Assert.Equal(expected, output.AppState.State)
+    Assert.Equal(expected, output.appState.State)
 
 [<Theory>]  
 //[<InlineData("", "")>]
@@ -44,7 +44,6 @@ let TestChageState(expected:State, key:string, modif:string, state:State)=
 [<InlineData("^{LEFT}", "y")>]
 [<InlineData("^{RIGHT}", "o")>]
 [<InlineData("^a", "a")>]
-[<InlineData("^w", "w")>]
 [<InlineData("^s", "s")>]
 [<InlineData("^x", "x")>]
 [<InlineData("^c", "c")>]

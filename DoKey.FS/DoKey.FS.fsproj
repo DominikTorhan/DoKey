@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="config.txt" />
     <Content Include="Settings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

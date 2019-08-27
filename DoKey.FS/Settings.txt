@@ -21,12 +21,12 @@ CtrlV: v: ^v
 CtrlZ: z: ^z
 CtrlY: r: ^y 
  
-F1: fd: {F1}
-F2: fd: {F2}
-F3: fd: {F3}
-F4: fd: {F4}
-F5: fd: {F5}
-F6: fd: {F6}
+F1: fd1: {F1}
+F2: fd2: {F2}
+F3: fd3: {F3}
+F4: fd4: {F4}
+F5: fd5: {F5}
+F6: fd6: {F6}
 F7: fq: {F7}
 F8: fw: {F8}
 F9: fe: {F9}
@@ -55,7 +55,9 @@ f
 VS +F5 StopDebuging: fb: +{f5}
 common %F4: fc : %{f4}
 VS_findAllReferences: fd: +{F12} 
-VS_nextToolWindow: fa: %{F7}
+VS_nextToolWindow: fa: %{F7} 
+CtrlTab: foemperiod: ^{TAB}
+CtrlShiftTab: fn: ^+{TAB}
 
 e
 VS find in all: et: ^t
@@ -64,7 +66,7 @@ common find: ef: ^f
 VS find in files: ed: ^+f
 CrtlG_gotoLine: eg: ^g
 VS EditorContextMenus.CodeWindow.QuickActionsForPosition: ek: ^. 
-Evernote_FindNotebook: en: %+n
+Evernote_FindNotebook: en: %+n 
 
 d
 VS delete all breakpoints: db: ^+{F9}
@@ -73,8 +75,6 @@ VS_Build: dv: ^+b
 
 w
 CrtlW: ww: ^w 
-CtrlTab: wn: ^{TAB}
-CtrlShiftTab: woemperiod: ^+{TAB}
 ShiftEsc: we: +{ESC} 
 VS_Solution: ws: ^%l
 VS_Locals: wl: ^%vl
