@@ -87,7 +87,7 @@ namespace TrayApp2
     private bool TryOpenSettingsFile(Keys key, AppState appState)
     {
       if (!appState.Modificators.Caps) return false;
-      if (key != Keys.OemPeriod) return false;
+      if (key != Keys.Oem2) return false;
       OpenSettings();
       return true;
 

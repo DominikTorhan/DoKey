@@ -56,21 +56,28 @@ VS +F5 StopDebuging: fb: +{f5}
 common %F4: fc : %{f4}
 VS_findAllReferences: fd: +{F12} 
 VS_nextToolWindow: fa: %{F7} 
-CtrlTab: foemperiod: ^{TAB}
-CtrlShiftTab: fn: ^+{TAB}
 
 e
-VS find in all: et: ^t
-CrtlR: er: ^r
-common find: ef: ^f
+CtrlR: er: ^r
+CtrlT: et: ^t
+CtrlU: eu: ^u
+CtrlI: ei: ^i
+CtrlO: eo: ^o
+CtrlP: ep: ^p
+CtrlF: ef: ^f
+CtrlG: eg: ^g
+CtrlH: eh: ^h
+CtrlJ: ej: ^j
+CtrlK: ek: ^k
+CtrlL: el: ^l 
+CtrlN: en: ^n
+CtrlM: em: ^m
 VS find in files: ed: ^+f
-CrtlG_gotoLine: eg: ^g
 VS EditorContextMenus.CodeWindow.QuickActionsForPosition: ek: ^. 
-Evernote_FindNotebook: en: %+n 
 
 d
-VS delete all breakpoints: db: ^+{F9}
-VS Window.PinTab: dn: ^d^n 
+VS delete all breakpoints: db: ^+{F9} 
+Evernote_FindNotebook: dn: %+n 
 VS_Build: dv: ^+b
 
 w

@@ -19,7 +19,7 @@ type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string)=
  
 
  module DoKeyModule = 
-
+ 
     let GetList = 
         let DoKeyList = [ 
             SendDoKey("{ESC}", "Esc", KeyType.Caps, "e");
@@ -31,13 +31,15 @@ type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string)=
             SendDoKey("{TAB}", "Tab", KeyType.Caps, "t");
             SendDoKey("+{F10}", "ContextMenu+F10", KeyType.Caps, "c");
             SendDoKey("^+v", "CtrlShift+V", KeyType.Caps, "v");
+            SendDoKey("^{TAB}", "CtrlTab+V", KeyType.Caps, "oemperiod");
+            SendDoKey("^+{TAB}", "CtrlShiftTab", KeyType.Caps, "n");
             ] 
         DoKeyList
                //Seq.toList DoKeyList
         //ResizeArray<SendDoKey> DoKeyList
         //CSList 
  
-    let CreateKeysList = 
+    let bCreateKeysList = 
         let x = new KeysList(GetList) 
         x 
 
