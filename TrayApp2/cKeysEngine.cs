@@ -16,10 +16,8 @@ namespace TrayApp2
     public AppState AppState { get; set; }
 
     private InputKey inputKey => KeyEventData.InputKey;
-    private KeysEngineResult keysEngineResultOld => new KeysEngineResult(AppState);
     private string keys => inputKey.Key;
     private bool isUp => KeyEventData.KeyEventType.IsUp;
-    private string firstStep => AppState.FirstStep;
     private State State => AppState.State;
     private Modificators modificators => AppState.Modificators;
     private bool isCapital => AppState.Modificators.Caps;
@@ -39,8 +37,7 @@ namespace TrayApp2
       output = ProcessEsc();
       if (output != null) return output;
 
-      //if (State == State.Off) return outputOld;
-      if (State == State.Off) return keysEngineResultOld;
+      if (State == State.Off) return new KeysEngineResult(AppState);
 
       output = ProcessNormalAndInsertWithCapital();
       if (output != null) return output;
@@ -48,8 +45,7 @@ namespace TrayApp2
       output = ProcessNormalMode();
       if (output != null) return output;
 
-      //return outputOld;
-      return keysEngineResultOld;
+      return new KeysEngineResult(AppState);
     }
 
     private KeysEngineResult ProcessModificators()
@@ -96,7 +92,6 @@ namespace TrayApp2
 
     }
 
-
     private KeysEngineResult ProcessEsc()
     {
 
@@ -116,7 +111,7 @@ namespace TrayApp2
       if (isUp) return null;
       if (modificators.Win) return null;
 
-      var isDownFirstStep = firstStep == "" && Configuration.IsTwoStep(keys);
+      var isDownFirstStep = AppState.FirstStep == "" && Configuration.IsTwoStep(keys);
 
       var firstStepNext = isDownFirstStep ? keys : "";
 
@@ -134,7 +129,7 @@ namespace TrayApp2
 
       if (isDownFirstStep) return new SendDoKey("");
 
-      var trigger = firstStep + keys.ToString();
+      var trigger = AppState.FirstStep + keys.ToString();
 
       var doKey = Configuration.GetSendKeyNormal(trigger);
 

@@ -57,28 +57,45 @@ common %F4: fc : %{f4}
 VS_findAllReferences: fd: +{F12} 
 VS_nextToolWindow: fa: %{F7} 
 
-e
+e 
+CtrlF1: ed1: ^{F1}
+CtrlF2: ed2: ^{F2}
+CtrlF3: ed3: ^{F3}
+CtrlF4: ed4: ^{F4}
+CtrlF5: ed5: ^{F5}
+CtrlF6: ed6: ^{F6}
+CtrlF7: ed7: ^{F7}
+CtrlF8: ed8: ^{F8}
+CtrlF9: ed9: ^{F9}
+CtrlW: ew: ^w
+CtrlE: ee: ^w
 CtrlR: er: ^r
 CtrlT: et: ^t
+CtrlY: ey: ^y
 CtrlU: eu: ^u
 CtrlI: ei: ^i
 CtrlO: eo: ^o
 CtrlP: ep: ^p
+CtrlD: ed: ^d
 CtrlF: ef: ^f
 CtrlG: eg: ^g
 CtrlH: eh: ^h
 CtrlJ: ej: ^j
 CtrlK: ek: ^k
 CtrlL: el: ^l 
+CtrlB: eb: ^b
 CtrlN: en: ^n
-CtrlM: em: ^m
+CtrlM: em: ^m 
+Ctrl,: eoemcomma: ^,
+Ctrl.: eoemperiod: ^.
 VS find in files: ed: ^+f
-VS EditorContextMenus.CodeWindow.QuickActionsForPosition: ek: ^. 
 
 d
 VS delete all breakpoints: db: ^+{F9} 
 Evernote_FindNotebook: dn: %+n 
-VS_Build: dv: ^+b
+VS_Build: dv: ^+b 
+VSGoBack: dh: ^-
+VSGoForward: dl: ^+-
 
 w
 CrtlW: ww: ^w 
