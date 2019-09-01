@@ -43,19 +43,24 @@ let TestChageState(expected:State, key:string, modif:string, state:State)=
 [<InlineData("{END}", "oemperiod")>]//.
 [<InlineData("^{LEFT}", "y")>]
 [<InlineData("^{RIGHT}", "o")>]
-[<InlineData("^a", "a")>]
-[<InlineData("^s", "s")>]
 [<InlineData("^x", "x")>]
 [<InlineData("^c", "c")>]
 [<InlineData("^v", "v")>]
 [<InlineData("^z", "z")>]
-[<InlineData("^y", "r")>]
 //first step 
-[<InlineData("", "f")>]
+[<InlineData("", "q")>]
+[<InlineData("", "w")>]
+[<InlineData("", "e")>]
+[<InlineData("", "r")>]
+[<InlineData("", "t")>] 
+[<InlineData("", "a")>]
+[<InlineData("", "s")>]
 [<InlineData("", "d")>]
+[<InlineData("", "f")>]
+[<InlineData("", "g")>]
+[<InlineData("", "b")>]
 [<InlineData("", "u")>]
 [<InlineData("", "i")>]
-[<InlineData("", "e")>]
 let TestStateNormal(expected:string, key:string) =      
     let str = ProcessKey(key, "", State.Normal, "").GetStr()
     Assert.Equal(expected, str)
@@ -141,6 +146,19 @@ let TestModif(expected:string, key:string, modif:string)=
 [<InlineData("{F10}", "f", "r")>] 
 [<InlineData("{F11}", "f", "t")>] 
 [<InlineData("{F12}", "f", "f")>] 
+[<InlineData("^q", "e", "q")>] 
+[<InlineData("^s", "e", "s")>] 
+[<InlineData("^,", "e", "oemcomma")>] 
+[<InlineData("^.", "e", "oemperiod")>] 
+[<InlineData("^/", "e", "oem2")>] 
+[<InlineData("^-", "e", "oemminus")>] 
+[<InlineData("^=", "e", "oemplus")>] 
+[<InlineData("^]", "e", "oem6")>] 
+[<InlineData("^\\", "e", "oem5")>] 
+[<InlineData("^;", "e", "oem1")>] 
+[<InlineData("^'", "e", "oem7")>] 
+[<InlineData("^{F4}", "e", "d4")>] 
+[<InlineData("^[", "e", "oemopenbrackets")>] 
 let TestSecondStep(expected:string, firstStep:string, key:string)=
     let str = ProcessKey(key, "", State.Normal, firstStep).GetStr()
     Assert.Equal(expected, str)

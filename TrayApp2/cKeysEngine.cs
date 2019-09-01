@@ -18,8 +18,6 @@ namespace TrayApp2
     private InputKey inputKey => KeyEventData.InputKey;
     private string keys => inputKey.Key;
     private bool isUp => KeyEventData.KeyEventType.IsUp;
-    private State State => AppState.State;
-    private Modificators modificators => AppState.Modificators;
     private bool isCapital => AppState.Modificators.Caps;
 
     public KeysEngineResult ProcessKey()
@@ -37,7 +35,7 @@ namespace TrayApp2
       output = ProcessEsc();
       if (output != null) return output;
 
-      if (State == State.Off) return new KeysEngineResult(AppState);
+      if (AppState.State == State.Off) return new KeysEngineResult(AppState);
 
       output = ProcessNormalAndInsertWithCapital();
       if (output != null) return output;
@@ -51,7 +49,7 @@ namespace TrayApp2
     private KeysEngineResult ProcessModificators()
     {
 
-      var modificators = this.modificators.GetNextModificators(inputKey, isUp);
+      var modificators = this.AppState.Modificators.GetNextModificators(inputKey, isUp);
 
       return new KeysEngineResult(new AppState(this.AppState.State, modificators, this.AppState.FirstStep, this.AppState.PreventEscOnCapsUp));
 
@@ -75,7 +73,7 @@ namespace TrayApp2
         }
       }
 
-      var modif = this.modificators.GetNextModificators(inputKey, isUp);
+      var modif = this.AppState.Modificators.GetNextModificators(inputKey, isUp);
 
       return new KeysEngineResult(new AppState(this.AppState.State, modif, "", preventEscOnNextCapitalUp), new SendDoKey(sendKeys), true); 
 
@@ -88,7 +86,7 @@ namespace TrayApp2
       if (!isCapital) return null;
       if (isUp) return null;
 
-      return new KeysEngineResult(new AppState(cUtils.GetNextState(State), this.AppState.Modificators, "", true), new SendDoKey(""), true);
+      return new KeysEngineResult(new AppState(cUtils.GetNextState(AppState.State), this.AppState.Modificators, "", true), new SendDoKey(""), true);
 
     }
 
@@ -96,20 +94,20 @@ namespace TrayApp2
     {
 
       if (!inputKey.IsEsc) return null;
-      if (State != State.Insert) return null;
+      if (AppState.State != State.Insert) return null;
       if (isUp) return null;
       if (isCapital) return null; 
 
-      return new KeysEngineResult(new AppState(cUtils.GetPrevState(State), this.AppState.Modificators, "", this.AppState.PreventEscOnCapsUp), new SendDoKey(""), true);
+      return new KeysEngineResult(new AppState(cUtils.GetPrevState(AppState.State), this.AppState.Modificators, "", this.AppState.PreventEscOnCapsUp), new SendDoKey(""), true);
 
     }
 
     private KeysEngineResult ProcessNormalMode()
     {
 
-      if (State != State.Normal) return null;
+      if (AppState.State != State.Normal) return null;
       if (isUp) return null;
-      if (modificators.Win) return null;
+      if (AppState.Modificators.Win) return null;
 
       var isDownFirstStep = AppState.FirstStep == "" && Configuration.IsTwoStep(keys);
 
@@ -151,7 +149,7 @@ namespace TrayApp2
     private KeysEngineResult ProcessNormalAndInsertWithCapital()
     {
 
-      if (State == State.Off) return null;
+      if (AppState.State == State.Off) return null;
       if (!isCapital) return null;
       if (isUp) return null;
 

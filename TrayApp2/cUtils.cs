@@ -10,6 +10,17 @@ namespace TrayApp2 {
 
   public class cUtils {
 
+    //oemcomma    ,
+    //oemperiod   .
+    //oem2        / 
+    //oem1        ;
+    //oem7        '
+    //oem4        [
+    //oem6        ]
+    //oem5        \
+    //oemminus    -
+    //oemplus     =
+
     public static bool IsIgnoredKey(Keys key, Keys modifiers) {
 
       switch (key) {

@@ -24,4 +24,4 @@ type Configuration() =
  
     member this.GetSendKeyNormal (key) = DoKeyModule.GetSendKeyNormal(this.Keys, key)
     member this.GetSendKeyCaps (key) = DoKeyModule.GetSendKeyCaps(this.Keys, key)
-    member this.IsTwoStep (key) = "uifedw".Contains(key)
+    member this.IsTwoStep (key) = "qwertasdfgbui".Contains(key)
