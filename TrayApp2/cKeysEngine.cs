@@ -75,7 +75,7 @@ namespace TrayApp2
 
       var modif = this.AppState.Modificators.GetNextModificators(inputKey, isUp);
 
-      return new KeysEngineResult(new AppState(this.AppState.State, modif, "", preventEscOnNextCapitalUp), new SendDoKey(sendKeys), true); 
+      return new KeysEngineResult(new AppState(this.AppState.State, modif, "", preventEscOnNextCapitalUp), new SendDoKey(sendKeys), true);
 
     }
 
@@ -96,7 +96,7 @@ namespace TrayApp2
       if (!inputKey.IsEsc) return null;
       if (AppState.State != State.Insert) return null;
       if (isUp) return null;
-      if (isCapital) return null; 
+      if (isCapital) return null;
 
       return new KeysEngineResult(new AppState(cUtils.GetPrevState(AppState.State), this.AppState.Modificators, "", this.AppState.PreventEscOnCapsUp), new SendDoKey(""), true);
 

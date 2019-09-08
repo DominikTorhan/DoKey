@@ -29,6 +29,7 @@ type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string)=
             SendDoKey("{ENTER}", "Enter", KeyType.Caps, "j");
             SendDoKey("{ENTER}", "Enter LeftHand", KeyType.Caps, "r");
             SendDoKey("{TAB}", "Tab", KeyType.Caps, "t");
+            SendDoKey("+{TAB}", "ShiftTab", KeyType.Caps, "g");
             SendDoKey("+{F10}", "ContextMenu+F10", KeyType.Caps, "c");
             SendDoKey("^+v", "CtrlShift+V", KeyType.Caps, "v");
             SendDoKey("^{TAB}", "CtrlTab+V", KeyType.Caps, "oemperiod");

@@ -1,4 +1,4 @@
-﻿DoKey settings v1
+﻿DoKey settings v1   
  
 common
 Left: h: {LEFT} 
@@ -389,4 +389,5 @@ CtrlAltShift\:   boem5:            ^%+\
 d
 VsGoBack: dh: ^-
 VsGoForward: dl: ^+- 
-VsErrorList: de: ^\e
+VsErrorList: de: ^\e 
+EvernoteFocusListTrick: dz: ^{F7}^{F8}

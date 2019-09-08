@@ -9,6 +9,7 @@
     <Content Include="Settings.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Compile Include="ConfigFileReader.fs" />
     <Compile Include="LowLevelKeyboardInputEvent.fs" />
     <Compile Include="InputKey.fs" />
     <Compile Include="Modificators.fs" />
