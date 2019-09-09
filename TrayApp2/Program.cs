@@ -110,13 +110,13 @@ namespace TrayApp2
       Keys key = (Keys)e.KeyboardData.VirtualCode;
 
       if (Control.IsKeyLocked(Keys.CapsLock) && key == Keys.Capital) return;
-      if (Control.ModifierKeys == Keys.Control)
-      {
-        //do rozwiązania
-        if (key == Keys.Q) return;
-        if (key == Keys.K) return;
-        if (key == Keys.I) return;
-      }
+      //if (Control.ModifierKeys == Keys.Control)
+      //{
+      //  //do rozwiązania
+      //  if (key == Keys.Q) return;
+      //  if (key == Keys.K) return;
+      //  if (key == Keys.I) return;
+      //}
 
       if (TryOpenSettingsFile(key, AppState)) { e.Handled = true; return; }
       if (TryExitApp(key, AppState)) { e.Handled = true; return; }
