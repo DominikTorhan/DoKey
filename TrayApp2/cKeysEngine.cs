@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DoKey.FS;
+using static DoKey.FS.Domain;
 
 namespace TrayApp2
 {
@@ -75,10 +76,10 @@ namespace TrayApp2
 
       var modif = this.AppState.Modificators.GetNextModificators(inputKey, isUp);
 
-      return new KeysEngineResult(new AppState(this.AppState.State, modif, "", preventEscOnNextCapitalUp), new SendDoKey(sendKeys), true);
+      return new KeysEngineResult(new AppState(this.AppState.State, modif, "", preventEscOnNextCapitalUp), new SendKey("", sendKeys, false), true);
 
     }
-
+    
     private KeysEngineResult ProcessModeChange()
     {
 
@@ -86,7 +87,7 @@ namespace TrayApp2
       if (!isCapital) return null;
       if (isUp) return null;
 
-      return new KeysEngineResult(new AppState(cUtils.GetNextState(AppState.State), this.AppState.Modificators, "", true), new SendDoKey(""), true);
+      return new KeysEngineResult(new AppState(cUtils.GetNextState(AppState.State), this.AppState.Modificators, "", true), new SendKey("", "", false), true);
 
     }
 
@@ -98,7 +99,8 @@ namespace TrayApp2
       if (isUp) return null;
       if (isCapital) return null;
 
-      return new KeysEngineResult(new AppState(cUtils.GetPrevState(AppState.State), this.AppState.Modificators, "", this.AppState.PreventEscOnCapsUp), new SendDoKey(""), true);
+      return new KeysEngineResult(new AppState(cUtils.GetPrevState(AppState.State), this.AppState.Modificators, "", this.AppState.PreventEscOnCapsUp), 
+        new SendKey("", "", false), true);
 
     }
 
@@ -115,17 +117,17 @@ namespace TrayApp2
 
       var sendDoKey = GetSendDoKey(isDownFirstStep);
 
-      var preventKeyProcess = inputKey.IsLetterOrDigit || !sendDoKey.IsEmpty;
+      var preventKeyProcess = inputKey.IsLetterOrDigit || sendDoKey.send != "";
 
       return new KeysEngineResult(AppState = new AppState(this.AppState.State, this.AppState.Modificators, firstStepNext, this.AppState.PreventEscOnCapsUp),
         sendDoKey, preventKeyProcess);
 
     }
 
-    private SendDoKey GetSendDoKey(bool isDownFirstStep)
+    private SendKey GetSendDoKey(bool isDownFirstStep)
     {
 
-      if (isDownFirstStep) return new SendDoKey("");
+      if (isDownFirstStep) return new SendKey("", "", false);
 
       var trigger = AppState.FirstStep + keys.ToString();
 
@@ -142,7 +144,7 @@ namespace TrayApp2
       if (isUp) return null;
       if (keys != Configuration.ModeOffKey) return null;
 
-      return new KeysEngineResult(AppState = new AppState(State.Off, this.AppState.Modificators, "", true), new SendDoKey(""), true);
+      return new KeysEngineResult(AppState = new AppState(State.Off, this.AppState.Modificators, "", true), new SendKey("", "", false), true);
 
     }
 
@@ -155,7 +157,7 @@ namespace TrayApp2
 
       var sendKeys = Configuration.GetSendKeyCaps(keys.ToString());
 
-      if (sendKeys.IsEmpty) return null;
+      if (sendKeys.send == "") return null;
 
       return new KeysEngineResult(new AppState(this.AppState.State, this.AppState.Modificators, "", true), sendKeys, true);
 

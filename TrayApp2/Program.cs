@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TrayApp2.Properties;
+using static DoKey.FS.Domain;
 
 namespace TrayApp2
 {
@@ -34,7 +35,7 @@ namespace TrayApp2
     private cKeyboardHook mKeyboardHook;
     private Configuration Configuration;
     private bool IsSending = false;
-    private SendDoKey mSendDoKeyLast;
+    //private SendKey mSendDoKeyLast;
     private AppState AppState = new AppState();
 
     //private StreamWriter LogStream;
@@ -139,13 +140,13 @@ namespace TrayApp2
         e.Handled = true;
       }
 
-      if (output.sendDoKey != null && !string.IsNullOrEmpty(output.sendDoKey.Send))
+      if (output.sendKey != null && !string.IsNullOrEmpty(output.sendKey.send))
       {
         //Log(output.sendDoKey.ToLog);
 
-        mSendDoKeyLast = output.sendDoKey;
+        //mSendDoKeyLast = output.sendKey;
         IsSending = true;
-        SendKeys.Send(output.sendDoKey.Send);
+        SendKeys.Send(output.sendKey.send);
         IsSending = false;
       }
 

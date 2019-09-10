@@ -1,39 +1,23 @@
 ﻿namespace DoKey.FS
- 
-type KeyType =
-    | Normal
-    | Caps 
+  
+open DoKey.FS.Domain
 
-type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string)=   
-    new (send) = SendDoKey(send, "", KeyType.Normal, "")
-    member this.Send = send  
-    member this.Name = name
-    member this.KeyType = keyType
-    member this.Trigger = trigger 
-    member this.IsEmpty = send = "" 
-    member this.ToLog = name + " " + send
- 
- type KeysList(keyList:list<SendDoKey>) = 
-    member this.KeyList = keyList
-         
- 
-
- module DoKeyModule = 
+module DoKeyModule = 
  
     let GetList = 
-        let DoKeyList = [ 
-            SendDoKey("{ESC}", "Esc", KeyType.Caps, "e");
-            SendDoKey("{BKSP}", "Backspace", KeyType.Caps, "h");
-            SendDoKey("{DEL}", "Delete", KeyType.Caps, "l");
-            SendDoKey("{DEL}", "Delete LeftHand", KeyType.Caps, "d");
-            SendDoKey("{ENTER}", "Enter", KeyType.Caps, "j");
-            SendDoKey("{ENTER}", "Enter LeftHand", KeyType.Caps, "r");
-            SendDoKey("{TAB}", "Tab", KeyType.Caps, "t");
-            SendDoKey("+{TAB}", "ShiftTab", KeyType.Caps, "g");
-            SendDoKey("+{F10}", "ContextMenu+F10", KeyType.Caps, "c");
-            SendDoKey("^+v", "CtrlShift+V", KeyType.Caps, "v");
-            SendDoKey("^{TAB}", "CtrlTab+V", KeyType.Caps, "oemperiod");
-            SendDoKey("^+{TAB}", "CtrlShiftTab", KeyType.Caps, "n");
+        let DoKeyList = [   
+            { send = "{ESC}"; trigger = "e"; isCaps = true } 
+            { send = "{BKSP}"; trigger = "h"; isCaps = true } 
+            { send = "{DEL}"; trigger = "l"; isCaps = true } 
+            { send = "{DEL}"; trigger = "d"; isCaps = true } 
+            { send = "{ENTER}"; trigger = "j"; isCaps = true } 
+            { send = "{ENTER}"; trigger = "r"; isCaps = true } 
+            { send = "{TAB}"; trigger = "t"; isCaps = true } 
+            { send = "+{TAB}"; trigger = "g"; isCaps = true } 
+            { send = "+{F10}"; trigger = "c"; isCaps = true } 
+            { send = "^+v"; trigger = "v"; isCaps = true } 
+            { send = "^{TAB}"; trigger = "oemperiod"; isCaps = true } 
+            { send = "^+{TAB}"; trigger = "n"; isCaps = true } 
             ] 
         DoKeyList
                //Seq.toList DoKeyList
@@ -44,27 +28,27 @@ type SendDoKey(send: string, name:string, keyType:KeyType, trigger:string)=
         let x = new KeysList(GetList) 
         x 
 
-    let GetSendKey (keysList:list<SendDoKey>, key:string, predicate:(SendDoKey -> bool)) =
+    let GetSendKey (keysList:list<SendKey>, key:string, predicate:(SendKey -> bool)) =
         let result = List.tryFind predicate keysList 
         match result with
             | Some i -> i
-            | None -> new SendDoKey("")
+            | None -> { send = ""; trigger = ""; isCaps = false } 
  
-    let GetPredicate (keyType:KeyType, key:string) =
-        let predicate (sendKey:SendDoKey) = sendKey.Trigger = key.ToLower() && sendKey.KeyType = keyType
+    let GetPredicate (isCaps:bool, key:string) =
+        let predicate (sendKey:SendKey) = sendKey.trigger = key.ToLower() && sendKey.isCaps = isCaps
         predicate
 
-    let GetSendKeyNormal (keysList:list<SendDoKey>, key:string) = 
-        GetSendKey (keysList, key, GetPredicate(KeyType.Normal, key))
+    let GetSendKeyNormal (keysList:list<SendKey>, key:string) = 
+        GetSendKey (keysList, key, GetPredicate(false, key))
 
-    let GetSendKeyCaps (keysList:list<SendDoKey>, key:string) = 
-        GetSendKey (keysList, key, GetPredicate(KeyType.Caps, key))
+    let GetSendKeyCaps (keysList:list<SendKey>, key:string) = 
+        GetSendKey (keysList, key, GetPredicate(true, key))
  
     let CreateSendDoKeyByStr (str:string) =
         //Insert line below: ij: {End} {ENTER} 
         let split = str.Split(':')  
         match split.Length with 
-            | 3 -> new SendDoKey(split.[2].Trim(), split.[0], KeyType.Normal, split.[1].Trim()) 
-            | _ -> new SendDoKey("")
+            | 3 -> { send = split.[2].Trim(); trigger = split.[1].Trim(); isCaps = false } 
+            | _ -> { send = ""; trigger = ""; isCaps = false } 
 
         

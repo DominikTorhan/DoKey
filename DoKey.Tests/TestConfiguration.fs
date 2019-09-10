@@ -8,5 +8,5 @@ open DoKey.FS
 [<InlineData("{BKSP}", "h")>] 
 let TestGetSendKeyCaps (expected:string,key:string)=
     let conf = new Configuration ()  
-    let sendDoKey = conf.GetSendKeyCaps key
-    Assert.Equal(expected, sendDoKey.Send)
+    let sendKey = conf.GetSendKeyCaps key
+    Assert.Equal(expected, sendKey .send)

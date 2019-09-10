@@ -3,6 +3,7 @@
 open Xunit 
 
 open DoKey.FS
+open DoKey.FS.Domain
 open TrayApp2  
 
 
