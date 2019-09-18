@@ -5,7 +5,7 @@ open DoKey.FS.Domain
 module DoKeyModule = 
  
     let GetList = 
-        let DoKeyList = [   
+         [   
             { send = "{ESC}"; trigger = "e"; isCaps = true } 
             { send = "{BKSP}"; trigger = "h"; isCaps = true } 
             { send = "{DEL}"; trigger = "l"; isCaps = true } 
@@ -19,15 +19,7 @@ module DoKeyModule =
             { send = "^{TAB}"; trigger = "oemperiod"; isCaps = true } 
             { send = "^+{TAB}"; trigger = "n"; isCaps = true } 
             ] 
-        DoKeyList
-               //Seq.toList DoKeyList
-        //ResizeArray<SendDoKey> DoKeyList
-        //CSList 
  
-    let bCreateKeysList = 
-        let x = new KeysList(GetList) 
-        x 
-
     let GetSendKey (keysList:list<SendKey>, key:string, predicate:(SendKey -> bool)) =
         let result = List.tryFind predicate keysList 
         match result with
@@ -52,3 +44,4 @@ module DoKeyModule =
             | _ -> { send = ""; trigger = ""; isCaps = false } 
 
         
+

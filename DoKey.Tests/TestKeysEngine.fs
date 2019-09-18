@@ -5,6 +5,13 @@ open Xunit
 open DoKey.FS
 open DoKey.FS.Domain
 open TrayApp2  
+ 
+let GetStr(keysEngineResult : KeysEngineResult) =  
+     let str = keysEngineResult .send 
+     let modif = keysEngineResult .appState.Modificators.ToStr 
+     let str' = if keysEngineResult.preventKeyProcess then str else str + "{GO}" 
+     let str'' = match modif with | "" -> str' | _ -> str' + "(" + modif + ")"
+     str''
 
 
 let ProcessKey(key:string, modif:string, state:State, firstStep:string) = 
@@ -63,7 +70,7 @@ let TestChageState(expected:State, key:string, modif:string, state:State)=
 [<InlineData("", "u")>]
 [<InlineData("", "i")>]
 let TestStateNormal(expected:string, key:string) =      
-    let str = ProcessKey(key, "", State.Normal, "").GetStr()
+    let str = ProcessKey(key, "", State.Normal, "") |> GetStr
     Assert.Equal(expected, str)
 
  
@@ -88,7 +95,7 @@ let TestStateNormal(expected:string, key:string) =
 [<InlineData("{UP}(%+)", "k", "%+")>]
 [<InlineData("{RIGHT}(%+)", "l", "%+")>] 
 let TestStateNormalModif(expected:string, key:string, modif:string) =      
-    let str = ProcessKey(key, modif, State.Normal, "").GetStr()
+    let str = ProcessKey(key, modif, State.Normal, "") |> GetStr
     Assert.Equal(expected, str)
 
  
@@ -96,7 +103,7 @@ let TestStateNormalModif(expected:string, key:string, modif:string) =
 [<Theory>]  
 [<InlineData("{GO}", "f")>]
 let TestStateInsert(expected:string, key:string) =      
-    let str = ProcessKey(key, "", State.Insert, "").GetStr()
+    let str = ProcessKey(key, "", State.Insert, "") |> GetStr
     Assert.Equal(expected, str)
     
 //insert with modif
@@ -116,7 +123,7 @@ let TestStateInsert(expected:string, key:string) =
 
 
 let TestStateInsertModif(expected:string, key:string, modif:string) =      
-    let str = ProcessKey(key, modif, State.Insert, "").GetStr()
+    let str = ProcessKey(key, modif, State.Insert, "") |> GetStr
     Assert.Equal(expected, str)
 
 [<Theory>]   
@@ -131,7 +138,7 @@ let TestStateInsertModif(expected:string, key:string, modif:string) =
 [<InlineData("(c)", "capital", "")>]
 [<InlineData("(%c)", "capital", "%")>]
 let TestModif(expected:string, key:string, modif:string)=
-    let str = ProcessKey(key, modif, State.Insert, "").GetStr()
+    let str = ProcessKey(key, modif, State.Insert, "") |> GetStr
     Assert.Equal(expected, str)
    
 [<Theory>]   
@@ -161,6 +168,6 @@ let TestModif(expected:string, key:string, modif:string)=
 [<InlineData("^{F4}", "e", "d4")>] 
 [<InlineData("^[", "e", "oemopenbrackets")>] 
 let TestSecondStep(expected:string, firstStep:string, key:string)=
-    let str = ProcessKey(key, "", State.Normal, firstStep).GetStr()
+    let str = ProcessKey(key, "", State.Normal, firstStep) |> GetStr
     Assert.Equal(expected, str)
     

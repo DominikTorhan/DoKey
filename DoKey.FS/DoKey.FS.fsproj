@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="KeysOperations.fs" />
     <Compile Include="Domain.fs" />
     <Content Include="config.txt" />
     <Content Include="Settings.txt">

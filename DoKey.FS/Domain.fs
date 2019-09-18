@@ -9,8 +9,23 @@ module Domain =
         { trigger: string
           send: string 
           isCaps: bool }
+     
+    //type KeysEngineResult =
+    //    { appState: AppState
+    //      send: string
+    //      preventKeyProcess: bool }
 
- 
-    type KeysList(keyList:list<SendKey>) = 
-        member this.KeyList = keyList
+    //type AppState = 
+    //    { state: State
+    //      modificators: Modificators 
+    //      firstStep: string
+    //      preventEscOnCapsUp: bool
+    //    }
+
+    type Config =
+        { sendKeys: List<SendKey> }
+
+    type Session =
+        { config: Config }
+    
 

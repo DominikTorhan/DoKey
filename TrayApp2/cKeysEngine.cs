@@ -76,7 +76,7 @@ namespace TrayApp2
 
       var modif = this.AppState.Modificators.GetNextModificators(inputKey, isUp);
 
-      return new KeysEngineResult(new AppState(this.AppState.State, modif, "", preventEscOnNextCapitalUp), new SendKey("", sendKeys, false), true);
+      return new KeysEngineResult(new AppState(this.AppState.State, modif, "", preventEscOnNextCapitalUp), sendKeys, true);
 
     }
     
@@ -87,7 +87,7 @@ namespace TrayApp2
       if (!isCapital) return null;
       if (isUp) return null;
 
-      return new KeysEngineResult(new AppState(cUtils.GetNextState(AppState.State), this.AppState.Modificators, "", true), new SendKey("", "", false), true);
+      return new KeysEngineResult(new AppState(cUtils.GetNextState(AppState.State), this.AppState.Modificators, "", true), "", true);
 
     }
 
@@ -100,7 +100,7 @@ namespace TrayApp2
       if (isCapital) return null;
 
       return new KeysEngineResult(new AppState(cUtils.GetPrevState(AppState.State), this.AppState.Modificators, "", this.AppState.PreventEscOnCapsUp), 
-        new SendKey("", "", false), true);
+        "", true);
 
     }
 
@@ -120,7 +120,7 @@ namespace TrayApp2
       var preventKeyProcess = inputKey.IsLetterOrDigit || sendDoKey.send != "";
 
       return new KeysEngineResult(AppState = new AppState(this.AppState.State, this.AppState.Modificators, firstStepNext, this.AppState.PreventEscOnCapsUp),
-        sendDoKey, preventKeyProcess);
+        sendDoKey.send, preventKeyProcess);
 
     }
 
@@ -144,7 +144,7 @@ namespace TrayApp2
       if (isUp) return null;
       if (keys != Configuration.ModeOffKey) return null;
 
-      return new KeysEngineResult(AppState = new AppState(State.Off, this.AppState.Modificators, "", true), new SendKey("", "", false), true);
+      return new KeysEngineResult(AppState = new AppState(State.Off, this.AppState.Modificators, "", true), "", true);
 
     }
 
@@ -159,7 +159,7 @@ namespace TrayApp2
 
       if (sendKeys.send == "") return null;
 
-      return new KeysEngineResult(new AppState(this.AppState.State, this.AppState.Modificators, "", true), sendKeys, true);
+      return new KeysEngineResult(new AppState(this.AppState.State, this.AppState.Modificators, "", true), sendKeys.send, true);
 
     }
 

@@ -140,13 +140,13 @@ namespace TrayApp2
         e.Handled = true;
       }
 
-      if (output.sendKey != null && !string.IsNullOrEmpty(output.sendKey.send))
+      if (!string.IsNullOrEmpty(output.send))
       {
         //Log(output.sendDoKey.ToLog);
 
         //mSendDoKeyLast = output.sendKey;
         IsSending = true;
-        SendKeys.Send(output.sendKey.send);
+        SendKeys.Send(output.send);
         IsSending = false;
       }
 

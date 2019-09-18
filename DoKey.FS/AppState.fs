@@ -10,4 +10,4 @@ type AppState(state:State, modificators:Modificators, firstStep:string, preventE
     member this.FirstStep = firstStep 
     member this.PreventEscOnCapsUp = preventEscOnCapsUp
 
-    member this.ToLog() = state.ToString() + " " + modificators.ToLog + " " + firstStep
+    //member this.ToLog() = state.ToString() + " " + modificators.ToLog + " " + firstStep

@@ -15,10 +15,8 @@ type Configuration() =
         let keysCustom = ReadKeysFromFile(path) 
         List.append keys keysCustom
 
-    member this.x = ""  
     member this.FilePath = "Settings.txt"
     member this.Keys = CreateKeys(this.FilePath)
-    member this.test = ReadKeysFromFile(this.FilePath)
     member this.ModeChangeKey = "f"
     member this.ModeOffKey = "q"
  
