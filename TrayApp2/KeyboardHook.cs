@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace TrayApp2 {
+namespace DoKey {
 
   //[StructLayout(LayoutKind.Sequential)]
   //public struct LowLevelKeyboardInputEvent {
@@ -28,7 +28,7 @@ namespace TrayApp2 {
   //}
 
   //Based on https://gist.github.com/Stasonix
-  class cKeyboardHook : IDisposable {
+  class KeyboardHook : IDisposable {
 
 
     [DllImport("kernel32.dll")]
@@ -58,7 +58,7 @@ namespace TrayApp2 {
     const int KfAltdown = 0x2000;
     public const int LlkhfAltdown = (KfAltdown >> 8);
 
-    ~cKeyboardHook()
+    ~KeyboardHook()
     {
       Dispose(false);
     }
@@ -69,7 +69,7 @@ namespace TrayApp2 {
       GC.SuppressFinalize(this);
     }
 
-    public cKeyboardHook() {
+    public KeyboardHook() {
       _windowsHookHandle = IntPtr.Zero;
       _user32LibraryHandle = IntPtr.Zero;
       _hookProc = LowLevelKeyboardProc; // we must keep alive _hookProc, because GC is not aware about SetWindowsHookEx behaviour.

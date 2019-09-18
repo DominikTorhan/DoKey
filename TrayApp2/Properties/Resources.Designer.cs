@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TrayApp2.Properties {
+namespace DoKey.Properties {
     using System;
     
     

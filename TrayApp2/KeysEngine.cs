@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using DoKey.FS;
 using static DoKey.FS.Domain;
 
-namespace TrayApp2
+namespace DoKey
 {
 
-  public class cKeysEngine
+  public class KeysEngine
   {
 
     public Configuration Configuration { get; set; }
@@ -87,7 +87,7 @@ namespace TrayApp2
       if (!isCapital) return null;
       if (isUp) return null;
 
-      return new KeysEngineResult(new AppState(cUtils.GetNextState(AppState.State), this.AppState.Modificators, "", true), "", true);
+      return new KeysEngineResult(new AppState(Utils.GetNextState(AppState.State), this.AppState.Modificators, "", true), "", true);
 
     }
 
@@ -99,7 +99,7 @@ namespace TrayApp2
       if (isUp) return null;
       if (isCapital) return null;
 
-      return new KeysEngineResult(new AppState(cUtils.GetPrevState(AppState.State), this.AppState.Modificators, "", this.AppState.PreventEscOnCapsUp), 
+      return new KeysEngineResult(new AppState(Utils.GetPrevState(AppState.State), this.AppState.Modificators, "", this.AppState.PreventEscOnCapsUp), 
         "", true);
 
     }

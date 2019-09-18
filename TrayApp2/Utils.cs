@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static DoKey.FS.Domain;
 
-namespace TrayApp2 {
+namespace DoKey {
 
-  public class cUtils {
+  public class Utils {
 
     //oemcomma    ,
     //oemperiod   .

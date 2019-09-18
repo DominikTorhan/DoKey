@@ -4,7 +4,7 @@ open Xunit
 
 open DoKey.FS
 open DoKey.FS.Domain
-open TrayApp2  
+open DoKey
  
 let GetStr(keysEngineResult : KeysEngineResult) =  
      let str = keysEngineResult .send 
@@ -19,7 +19,7 @@ let ProcessKey(key:string, modif:string, state:State, firstStep:string) =
     let appState = AppState(state, modificators, firstStep, false)
     let configuration = new Configuration()
     let eventData = new KeyEventData(key, KeyEventType.Down)
-    let keysEngine = new cKeysEngine()
+    let keysEngine = new KeysEngine()
     keysEngine.Configuration <- configuration 
     keysEngine.AppState <- appState 
     keysEngine.KeyEventData <- eventData 
