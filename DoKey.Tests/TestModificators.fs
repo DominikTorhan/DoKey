@@ -1,7 +1,9 @@
 ﻿module TestModificators
 
 open Xunit 
-open DoKey.FS
+open DoKey.FS 
+open ModificatorsOperations 
+open Domain
 
 [<Theory>]  
 [<InlineData("%", "lmenu", false, "")>]
@@ -16,9 +18,9 @@ open DoKey.FS
 [<InlineData("c", "capital", false, "")>]
 let TestNext(expected:string, key:string, isUp:bool, modifStr:string) =
     let input = new InputKey (key) 
-    let modif = new Modificators(modifStr) 
-    let modif' = modif.GetNextModificators(input, isUp)
-    Assert.Equal(expected, modif'.ToStr)
+    let modif = CreateModificatorsByStr modifStr
+    let modif' = GetNextModificators(modif, input, isUp)
+    Assert.Equal(expected, ModificatorsToStr modif')
 
 
 

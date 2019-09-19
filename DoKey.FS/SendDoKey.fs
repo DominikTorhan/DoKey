@@ -20,20 +20,20 @@ module DoKeyModule =
             { send = "^+{TAB}"; trigger = "n"; isCaps = true } 
             ] 
  
-    let GetSendKey (keysList:list<SendKey>, key:string, predicate:(SendKey -> bool)) =
+    let GetSendKey (keysList:list<MappedKey>, key:string, predicate:(MappedKey -> bool)) =
         let result = List.tryFind predicate keysList 
         match result with
             | Some i -> i
             | None -> { send = ""; trigger = ""; isCaps = false } 
  
     let GetPredicate (isCaps:bool, key:string) =
-        let predicate (sendKey:SendKey) = sendKey.trigger = key.ToLower() && sendKey.isCaps = isCaps
+        let predicate (sendKey:MappedKey) = sendKey.trigger = key.ToLower() && sendKey.isCaps = isCaps
         predicate
 
-    let GetSendKeyNormal (keysList:list<SendKey>, key:string) = 
+    let GetSendKeyNormal (keysList:list<MappedKey>, key:string) = 
         GetSendKey (keysList, key, GetPredicate(false, key))
 
-    let GetSendKeyCaps (keysList:list<SendKey>, key:string) = 
+    let GetSendKeyCaps (keysList:list<MappedKey>, key:string) = 
         GetSendKey (keysList, key, GetPredicate(true, key))
  
     let CreateSendDoKeyByStr (str:string) =

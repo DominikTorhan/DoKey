@@ -16,7 +16,7 @@ namespace DoKey
     private KeyboardHook mKeyboardHook;
     private Configuration Configuration;
     private bool IsSending = false;
-    private AppState AppState = new AppState();
+    private AppState AppState = new AppState(State.Off, new Modificators(false,false,false,false,false), "", false);
 
     private Icon GetIconOff() => new Icon(Resources.Off, 40, 40);
     private Icon GetIconNormalMode() => new Icon(Resources.Normal, 40, 40);
@@ -50,7 +50,7 @@ namespace DoKey
       mKeyboardHook.KeyboardPressed += OnKeyPressed;
     }
 
-    private void SetIcon() => trayIcon.Icon = GetIcon(AppState.State);
+    private void SetIcon() => trayIcon.Icon = GetIcon(AppState.state);
 
     private KeyEventData CreateKetEventData(KeyboardHookEvent e)
     {
@@ -61,7 +61,7 @@ namespace DoKey
 
     private bool TryOpenSettingsFile(Keys key, AppState appState)
     {
-      if (!appState.Modificators.Caps) return false;
+      if (!appState.modificators.caps) return false;
       if (key != Keys.Oem2) return false;
       OpenSettings();
       return true;
@@ -70,7 +70,7 @@ namespace DoKey
 
     private bool TryExitApp(Keys key, AppState appState)
     {
-      if (!appState.Modificators.Caps) return false;
+      if (!appState.modificators.caps) return false;
       if (key != Keys.Back) return false;
       OnExit();
       return true;
@@ -163,7 +163,7 @@ namespace DoKey
     private void OpenSettings()
     {
 
-      Process.Start(Configuration.FilePath);
+      Process.Start(DoKey.FS.Domain.filePath);
 
     }
 

@@ -1,7 +1,8 @@
 ﻿namespace DoKey.FS
   
 open DoKeyModule 
-open System.IO
+open System.IO 
+open Domain
 
 type Configuration() =  
   
@@ -15,10 +16,7 @@ type Configuration() =
         let keysCustom = ReadKeysFromFile(path) 
         List.append keys keysCustom
 
-    member this.FilePath = "Settings.txt"
-    member this.Keys = CreateKeys(this.FilePath)
-    member this.ModeChangeKey = "f"
-    member this.ModeOffKey = "q"
+    member this.Keys = CreateKeys(filePath)
  
     member this.GetSendKeyNormal (key) = DoKeyModule.GetSendKeyNormal(this.Keys, key)
     member this.GetSendKeyCaps (key) = DoKeyModule.GetSendKeyCaps(this.Keys, key)

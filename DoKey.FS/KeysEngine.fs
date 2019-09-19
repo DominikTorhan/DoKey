@@ -1,6 +1,7 @@
 ﻿module KeysEngine
 
 open DoKey.FS
+open DoKey.FS.Domain
 
 let Perform(appState:AppState, inputKey: InputKey, configuration: Configuration) =
     appState

@@ -14,12 +14,10 @@
     <Compile Include="ConfigFileReader.fs" />
     <Compile Include="LowLevelKeyboardInputEvent.fs" />
     <Compile Include="InputKey.fs" />
-    <Compile Include="Modificators.fs" />
-    <Compile Include="AppState.fs" />
+    <Compile Include="ModificatorsOperations .fs" />
     <Compile Include="KeyEventData.fs" />
     <Compile Include="SendDoKey.fs" />
     <Compile Include="Configuration.fs" />
-    <Compile Include="KeysEngineResult.fs" />
     <Compile Include="KeysEngine.fs" />
   </ItemGroup>
 

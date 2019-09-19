@@ -4,19 +4,20 @@ open Xunit
 
 open DoKey.FS
 open DoKey.FS.Domain
+open DoKey.FS.ModificatorsOperations
 open DoKey
  
 let GetStr(keysEngineResult : KeysEngineResult) =  
-     let str = keysEngineResult .send 
-     let modif = keysEngineResult .appState.Modificators.ToStr 
+     let str = keysEngineResult.send 
+     let modif = ModificatorsToStr keysEngineResult.appState.modificators
      let str' = if keysEngineResult.preventKeyProcess then str else str + "{GO}" 
      let str'' = match modif with | "" -> str' | _ -> str' + "(" + modif + ")"
      str''
 
 
 let ProcessKey(key:string, modif:string, state:State, firstStep:string) = 
-    let modificators = new Modificators(modif)
-    let appState = AppState(state, modificators, firstStep, false)
+    let modificators = CreateModificatorsByStr modif
+    let appState = { state = state; modificators = modificators; firstStep = firstStep; preventEscOnCapsUp = false}
     let configuration = new Configuration()
     let eventData = new KeyEventData(key, KeyEventType.Down)
     let keysEngine = new KeysEngine()
@@ -36,7 +37,7 @@ let ProcessKey(key:string, modif:string, state:State, firstStep:string) =
 [<InlineData(State.Normal, "escape", "", State.Insert)>]
 let TestChageState(expected:State, key:string, modif:string, state:State)=
     let output = ProcessKey(key, modif, state, "")
-    Assert.Equal(expected, output.appState.State)
+    Assert.Equal(expected, output.appState.state)
 
 [<Theory>]  
 //[<InlineData("", "")>]
