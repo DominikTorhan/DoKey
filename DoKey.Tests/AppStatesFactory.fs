@@ -1,7 +1,7 @@
 ﻿module AppStatesFactory
 
-open DoKey.FS
-open DoKey.FS.Domain
+open DoKey.Core
+open DoKey.Core.Domain
 
 //let AppStateOff =
 //    new AppState()  

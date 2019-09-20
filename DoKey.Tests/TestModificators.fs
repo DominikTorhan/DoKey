@@ -1,7 +1,7 @@
 ﻿module TestModificators
 
 open Xunit 
-open DoKey.FS 
+open DoKey.Core 
 open ModificatorsOperations 
 open Domain
 

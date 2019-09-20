@@ -1,6 +1,6 @@
-﻿namespace DoKey.FS 
+﻿namespace DoKey.Core 
  
-open DoKey.FS.Domain
+open DoKey.Core.Domain
     
 module ModificatorsOperations = 
  

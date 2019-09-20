@@ -1,2 +1,405 @@
 ﻿//DoKey config
+  
+//CAPS  
+_CAPS_e {ESC}
+_CAPS_h {BKSP}
+_CAPS_l {DEL}
+_CAPS_d {DEL}
+_CAPS_j {ENTER}
+_CAPS_r {ENTER}
+_CAPS_t {TAB}
+_CAPS_g +{TAB}
+_CAPS_c +{F10}
+_CAPS_v ^+v
+_CAPS_n ^{TAB}
+_CAPS_oemperiod ^+{TAB}
 
+//common
+h {LEFT}//left arrow
+j {DOWN}
+k {UP}
+l {RIGHT}
+n {HOME}
+m {PGDN}
+oemcomma {PGUP}
+oemperiod {END}
+y ^{LEFT}
+o ^{RIGHT}
+
+z ^z
+x ^x
+c ^c
+v ^v
+ 
+fd1 {F1}
+fd2 {F2}
+fd3 {F3}
+fd4 {F4}
+fd5 {F5}
+fd6 {F6}
+fq {F7}
+fw {F8}
+fe {F9}
+fr {F10}
+ft {F11}
+ff {F12}
+
+//i
+ij {End}{ENTER}//Insert line below
+ik {UP}{End}{ENTER}//Insert line above
+
+//u
+uu ^m^m//VS ^m^m toggle outline
+uo ^m^o//VS ^m^o collapse to definition
+ue ^+{F12}//VS ^F12 go to next error
+uk ^k^c//VS ^k^c comment selection
+ui ^k^u//VS ^k^c uncomment selection
+up +%=//VS_ExpandSelection
+ul +%]//VS_EspandSelectionToBlock
+
+//f
+fb +{f5}//VS +F5 StopDebuging
+fc  %{f4}
+fd +{F12}//VS_findAllReferences
+fa %{F7}//VS_nextToolWindow
+fs +{ESC}
+  
+//q 
+qd1              %+{F1}
+qd2              %+{F2}
+qd3              %+{F3}
+qd4              %+{F4}
+qd5              %+{F5}
+qd6              %+{F6}
+qd7              %+{F7}
+qd8              %+{F8}
+qd9              %+{F9}
+qd0              %+{F10}
+qoemminus        %+-
+qoemplus         %+=
+qq               %+q
+qw               %+w
+qe               %+e
+qr               %+r
+qt               %+t
+qy               %+y
+qu               %+u
+qi               %+i
+qo               %+o
+qp               %+p
+qa               %+a
+qs               %+s
+qd               %+d
+qf               %+f
+qg               %+g
+qh               %+h
+qj               %+j
+qk               %+k
+ql               %+l
+qoem1            %+;
+qoem7            %+'
+qz               %+z
+qx               %+x
+qc               %+c
+qv               %+v
+qb               %+b
+qn               %+n
+qm               %+m
+qoemcomma        %+,
+qoemperiod       %+.
+qoem2            %+/
+qoemopenbrackets %+[
+qoem6            %+]
+qoem5            %+\
+
+
+//w 
+wd1              %{F1}
+wd2              %{F2}
+wd3              %{F3}
+wd4              %{F4}
+wd5              %{F5}
+wd6              %{F6}
+wd7              %{F7}
+wd8              %{F8}
+wd9              %{F9}
+wd0              %{F10}
+woemminus        %-
+woemplus         %=
+wq               %q
+ww               %w
+we               %e
+wr               %r
+wt               %t
+wy               %y
+wu               %u
+wi               %i
+wo               %o
+wp               %p
+wa               %a
+ws               %s
+wd               %d
+wf               %f
+wg               %g
+wh               %h
+wj               %j
+wk               %k
+wl               %l
+woem1            %;
+woem7            %'
+wz               %z
+wx               %x
+wc               %c
+wv               %v
+wb               %b
+wn               %n
+wm               %m 
+woemcomma        %,
+woemperiod       %.
+woem2            %/
+woemopenbrackets %[
+woem6            %]
+woem5            %\
+
+//e 
+ed1              ^{F1}
+ed2              ^{F2}
+ed3              ^{F3}
+ed4              ^{F4}
+ed5              ^{F5}
+ed6              ^{F6}
+ed7              ^{F7}
+ed8              ^{F8}
+ed9              ^{F9}
+ed0              ^{F10}
+eoemminus        ^-
+eoemplus         ^=
+eq               ^q
+ew               ^w
+ee               ^e
+er               ^r
+et               ^t
+ey               ^y
+eu               ^u
+ei               ^i
+eo               ^o
+ep               ^p
+ea               ^a
+es               ^s
+ed               ^d
+ef               ^f
+eg               ^g
+eh               ^h
+ej               ^j
+ek               ^k
+el               ^l
+eoem1            ^;
+eoem7            ^'
+eb               ^b
+en               ^n
+em               ^m 
+eoemcomma        ^,
+eoemperiod       ^.
+eoem2            ^/
+eoemopenbrackets ^[
+eoem6            ^]
+eoem5            ^\
+ 
+//r 
+rd1              +{F1}
+rd2              +{F2}
+rd3              +{F3}
+rd4              +{F4}
+rd5              +{F5}
+rd6              +{F6}
+rd7              +{F7}
+rd8              +{F8}
+rd9              +{F9}
+rd0              +{F10}
+roemminus        +-
+roemplus         +=
+rq               +q
+rw               +w
+re               +e
+rr               +r
+rt               +t
+ry               +y
+ru               +u
+ri               +i
+ro               +o
+rp               +p
+ra               +a
+rs               +s
+rd               +d
+rf               +f
+rg               +g
+rh               +h
+rj               +j
+rk               +k
+rl               +l
+roem1            +;
+roem7            +'
+rz               +z
+rx               +x
+rc               +c
+rv               +v
+rb               +b
+rn               +n
+rm               +m
+roemcomma        +,
+roemperiod       +.
+roem2            +/
+roemopenbrackets +[
+roem6            +]
+roem5            +\
+
+//t 
+td1              ^+{F1}
+td2              ^+{F2}
+td3              ^+{F3}
+td4              ^+{F4}
+td5              ^+{F5}
+td6              ^+{F6}
+td7              ^+{F7}
+td8              ^+{F8}
+td9              ^+{F9}
+td0              ^+{F10}
+toemminus        ^+-
+toemplus         ^+=
+tq               ^+q
+tw               ^+w
+te               ^+e
+tr               ^+r
+tt               ^+t
+ty               ^+y
+tu               ^+u
+ti               ^+i
+to               ^+o
+tp               ^+p
+ta               ^+a
+ts               ^+s
+td               ^+d
+tf               ^+f
+tg               ^+g
+th               ^+h
+tj               ^+j
+tk               ^+k
+tl               ^+l
+toem1            ^+;
+toem7            ^+'
+tz               ^+z
+tx               ^+x
+tc               ^+c
+tv               ^+v
+tb               ^+b
+tn               ^+n
+tm               ^+m
+toemcomma        ^+,
+toemperiod       ^+.
+toem2            ^+/
+toemopenbrackets ^+[
+toem6            ^+]
+toem5            ^+\
+ 
+//g 
+gd1              ^%{F1}
+gd2              ^%{F2}
+gd3              ^%{F3}
+gd4              ^%{F4}
+gd5              ^%{F5}
+gd6              ^%{F6}
+gd7              ^%{F7}
+gd8              ^%{F8}
+gd9              ^%{F9}
+gd0              ^%{F10}
+goemminus        ^%-
+goemplus         ^%=
+gq               ^%q
+gw               ^%w
+ge               ^%e
+gr               ^%r
+gt               ^%t
+gy               ^%y
+gu               ^%u
+gi               ^%i
+go               ^%o
+gp               ^%p
+ga               ^%a
+gs               ^%s
+gd               ^%d
+gf               ^%f
+gg               ^%g
+gh               ^%h
+gj               ^%j
+gk               ^%k
+gl               ^%l
+goem1            ^%;
+goem7            ^%'
+gz               ^%z
+gx               ^%x
+gc               ^%c
+gv               ^%v
+gb               ^%b
+gn               ^%n
+gm               ^%m
+goemcomma        ^%,
+goemperiod       ^%.
+goem2            ^%/
+goemopenbrackets ^%[
+goem6            ^%]
+goem5            ^%\
+ 
+b 
+bd1              ^%+{F1}
+bd2              ^%+{F2}
+bd3              ^%+{F3}
+bd4              ^%+{F4}
+bd5              ^%+{F5}
+bd6              ^%+{F6}
+bd7              ^%+{F7}
+bd8              ^%+{F8}
+bd9              ^%+{F9}
+bd0              ^%+{F10}
+boemminus        ^%+-
+boemplus         ^%+=
+bq               ^%+q
+bw               ^%+w
+be               ^%+e
+br               ^%+r
+bt               ^%+t
+by               ^%+y
+bu               ^%+u
+bi               ^%+i
+bo               ^%+o
+bp               ^%+p
+ba               ^%+a
+bs               ^%+s
+bd               ^%+d
+bf               ^%+f
+bg               ^%+g
+bh               ^%+h
+bj               ^%+j
+bk               ^%+k
+bl               ^%+l
+boem1            ^%+;
+boem7            ^%+'
+bz               ^%+z
+bx               ^%+x
+bc               ^%+c
+bv               ^%+v
+bb               ^%+b
+bn               ^%+n
+bm               ^%+m
+boemcomma        ^%+,
+boemperiod       ^%+.
+boem2            ^%+/
+boemopenbrackets ^%+[
+boem6            ^%+]
+boem5            ^%+\
+
+
+//d
+dh ^-//VsGoBack
+dl ^+- //VsGoForward
+de ^\e //VsErrorList
+dz ^{F7}^{F8}//EvernoteFocusListTrick

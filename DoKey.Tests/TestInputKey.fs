@@ -1,7 +1,7 @@
 ﻿module TestInputKey
 
 open Xunit 
-open DoKey.FS
+open DoKey.Core
  
 let InputKeyToStr (i:InputKey) = 
         let x = if i.IsModifier then "m" else "" 

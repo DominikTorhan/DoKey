@@ -1,10 +1,10 @@
 ﻿module KeysEngine
 
-open DoKey.FS
-open DoKey.FS.Domain
+open DoKey.Core
+open DoKey.Core.Domain
 
-let Perform(appState:AppState, inputKey: InputKey, configuration: Configuration) =
-    appState
+//let Perform(appState:AppState, inputKey: InputKey, configuration: Configuration) =
+//    appState
 
 
 //let PerformModificators(appState:AppState) =

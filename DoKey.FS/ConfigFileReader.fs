@@ -1,9 +1,10 @@
-﻿namespace DoKey.FS
+﻿namespace DoKey.Core
 
 module ConfigFileReader =
     
     open System  
-    open Domain
+    open Domain 
+    open System.IO
      
     let RemoveComment(line: string) =
         let idx = line.IndexOf("//")
@@ -15,7 +16,7 @@ module ConfigFileReader =
         let seq = str.Split([|"\n"|], StringSplitOptions.RemoveEmptyEntries) |> Array.toSeq   
         seq  
       
-    let LineToSendKey(line : string) =
+    let LineToMappedKey(line : string) =
         let strs = line.Split([|" "|], StringSplitOptions.RemoveEmptyEntries)     
         let trigger = match strs.Length with
             | 2 -> strs.[0]
@@ -26,11 +27,16 @@ module ConfigFileReader =
         let strCaps = "_CAPS_" 
         let trigger' = trigger.Replace(strCaps, "") 
         let isCaps = trigger.Contains strCaps
+        let send' = send.Replace("\n", "").Replace("\r", "")
         match trigger with
             | "" -> None
-            | _ -> Some {trigger = trigger'; send = send; isCaps = isCaps } 
+            | _ -> Some {trigger = trigger'; send = send'; isCaps = isCaps } 
      
-    let TextFileToKeys(text: string) =
+    let TextFileToMappedKeys(text: string) =
         let seq = SplitToLines text
-        let seq' = seq |> Seq.map RemoveComment |> Seq.map LineToSendKey |> Seq.choose id 
-        seq' 
+        let seq' = seq |> Seq.map RemoveComment |> Seq.map LineToMappedKey |> Seq.choose id 
+        seq'  
+ 
+    let CreateConfigByFile(path: string) =  
+        let text = File.ReadAllText path 
+        {mappedKeys= TextFileToMappedKeys text}

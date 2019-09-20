@@ -1,4 +1,4 @@
-﻿namespace DoKey.FS
+﻿namespace DoKey.Core
  
 type KeyEventType = Down|Up
 

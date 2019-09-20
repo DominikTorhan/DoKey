@@ -1,4 +1,4 @@
-﻿namespace DoKey.FS 
+﻿namespace DoKey.Core 
  
 
 module Domain =   
@@ -29,7 +29,7 @@ module Domain =
           preventKeyProcess: bool }
 
     type Config =
-        { sendKeys: List<MappedKey> }
+        { mappedKeys: seq<MappedKey> }
 
     type Session =
         { config: Config 
@@ -37,7 +37,9 @@ module Domain =
     
 
     let filePath = "Settings.txt"
+    let filePathNew = "config.txt"
     let modeChangeKey = "f"
-    let modeOffKey = "q"
+    let modeOffKey = "q" 
+    let twoStep = "qwertasdfgbui"
  
     //let IsTwoStep (key) = "qwertasdfgbui".Contains(key)

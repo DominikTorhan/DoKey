@@ -1,4 +1,4 @@
-﻿namespace DoKey.FS
+﻿namespace DoKey.Core
 
 open System
 open System.Runtime.InteropServices

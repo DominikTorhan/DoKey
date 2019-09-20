@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace DoKey
+namespace DoKey.App
 {
   class SysTrayApp : Form
   {

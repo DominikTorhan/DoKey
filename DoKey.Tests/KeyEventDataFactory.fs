@@ -1,5 +1,5 @@
 ﻿module KeyEventDataFactory
 
-open DoKey.FS
+open DoKey.Core
 
 let A = new KeyEventData("", KeyEventType.Down)

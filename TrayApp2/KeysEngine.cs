@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DoKey.FS;
-using static DoKey.FS.Domain;
+using DoKey.Core;
+using static DoKey.Core.Domain;
 
 namespace DoKey
 {
@@ -12,7 +12,8 @@ namespace DoKey
   public class KeysEngine
   {
 
-    public Configuration Configuration { get; set; }
+    //public Configuration Configuration { get; set; }
+    public Config config { get; set; }
     public KeyEventData KeyEventData { get; set; }
     public AppState AppState { get; set; }
 
@@ -84,7 +85,7 @@ namespace DoKey
     private KeysEngineResult ProcessModeChange()
     {
 
-      if (keys != DoKey.FS.Domain.modeChangeKey) return null;
+      if (keys != DoKey.Core.Domain.modeChangeKey) return null;
       if (!isCapital) return null;
       if (isUp) return null;
 
@@ -112,7 +113,7 @@ namespace DoKey
       if (isUp) return null;
       if (AppState.modificators.win) return null;
 
-      var isDownFirstStep = AppState.firstStep == "" && Configuration.IsTwoStep(keys);
+      var isDownFirstStep = AppState.firstStep == "" && DomainOperations.IsTwoStep(keys);
 
       var firstStepNext = isDownFirstStep ? keys : "";
 
@@ -132,7 +133,7 @@ namespace DoKey
 
       var trigger = AppState.firstStep + keys.ToString();
 
-      var doKey = Configuration.GetSendKeyNormal(trigger);
+      var doKey = DomainOperations.GetMappedKeyNormal(config.mappedKeys, trigger);
 
       return doKey;
 
@@ -143,7 +144,7 @@ namespace DoKey
 
       if (!isCapital) return null;
       if (isUp) return null;
-      if (keys != DoKey.FS.Domain.modeOffKey) return null;
+      if (keys != DoKey.Core.Domain.modeOffKey) return null;
 
       return new KeysEngineResult(AppState = new AppState(State.Off, this.AppState.modificators, "", true), "", true);
 
@@ -156,7 +157,7 @@ namespace DoKey
       if (!isCapital) return null;
       if (isUp) return null;
 
-      var sendKeys = Configuration.GetSendKeyCaps(keys.ToString());
+      var sendKeys = DomainOperations.GetMappedKeyCaps(config.mappedKeys, keys.ToString());
 
       if (sendKeys.send == "") return null;
 

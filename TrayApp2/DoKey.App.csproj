@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App.cs" />
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="KeysEngine.cs" />
     <Compile Include="Utils.cs" />
@@ -90,9 +91,9 @@
     <Content Include="Icons\Off.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DoKey.FS\DoKey.FS.fsproj">
+    <ProjectReference Include="..\DoKey.FS\DoKey.Core.fsproj">
       <Project>{cb8a3534-65ca-40a8-8abd-6d0bab72cc4d}</Project>
-      <Name>DoKey.FS</Name>
+      <Name>DoKey.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

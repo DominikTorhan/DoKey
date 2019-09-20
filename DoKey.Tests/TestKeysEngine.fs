@@ -2,9 +2,9 @@
 
 open Xunit 
 
-open DoKey.FS
-open DoKey.FS.Domain
-open DoKey.FS.ModificatorsOperations
+open DoKey.Core
+open DoKey.Core.Domain
+open DoKey.Core.ModificatorsOperations
 open DoKey
  
 let GetStr(keysEngineResult : KeysEngineResult) =  
@@ -16,12 +16,13 @@ let GetStr(keysEngineResult : KeysEngineResult) =
 
 
 let ProcessKey(key:string, modif:string, state:State, firstStep:string) = 
-    let modificators = CreateModificatorsByStr modif
+    let modificators = CreateModificatorsByStr modif 
+    let session = DomainOperations.CreateSession
     let appState = { state = state; modificators = modificators; firstStep = firstStep; preventEscOnCapsUp = false}
-    let configuration = new Configuration()
+    //let configuration = new Configuration()
     let eventData = new KeyEventData(key, KeyEventType.Down)
     let keysEngine = new KeysEngine()
-    keysEngine.Configuration <- configuration 
+    keysEngine.config <- session.config 
     keysEngine.AppState <- appState 
     keysEngine.KeyEventData <- eventData 
     let output = keysEngine.ProcessKey()

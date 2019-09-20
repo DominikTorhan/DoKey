@@ -1,7 +1,7 @@
 ﻿module TestModificatorsProcessor
 
 open Xunit 
-open DoKey.FS 
+open DoKey.Core 
   
 //[<Theory>] 
 //[<InlineData("", "")>] 

@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2016
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoKey", "TrayApp2\DoKey.csproj", "{446F9095-F793-4AD6-A1F5-8E9167420DB1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoKey.App", "TrayApp2\DoKey.App.csproj", "{446F9095-F793-4AD6-A1F5-8E9167420DB1}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "DoKey.FS", "DoKey.FS\DoKey.FS.fsproj", "{CB8A3534-65CA-40A8-8ABD-6D0BAB72CC4D}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "DoKey.Core", "DoKey.FS\DoKey.Core.fsproj", "{CB8A3534-65CA-40A8-8ABD-6D0BAB72CC4D}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "DoKey.Tests", "DoKey.Tests\DoKey.Tests.fsproj", "{E4FB0816-D6DB-49A0-AE29-0F51A5C2F44D}"
 EndProject

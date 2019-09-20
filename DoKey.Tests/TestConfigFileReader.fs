@@ -2,13 +2,13 @@
 
 open Xunit 
 open System  
-open DoKey.FS.ConfigFileReader
+open DoKey.Core.ConfigFileReader
  
 [<Theory>] 
 [<InlineData(1, "//x\r\n \r\nj {LEFT}")>] 
 [<InlineData(3, "//x\r\n \r\n//xxxx\r\nj {LEFT}\r\nk {UP}\r\n_CAPS_j {ENTER}")>] 
-let TestTextFileToKeys(expected: int, fileText: string) = 
-    let seq = TextFileToKeys fileText  
+let TestTextFileToMappedKeys(expected: int, fileText: string) = 
+    let seq = TextFileToMappedKeys fileText  
     let len = seq |> Seq.length
     Assert.Equal(expected, len) 
  
@@ -17,7 +17,8 @@ let TestTextFileToKeys(expected: int, fileText: string) =
 [<InlineData(" ", " ")>] 
 [<InlineData("", "//xxxx")>] 
 [<InlineData("aaa", "aaa//xxxx")>] 
-[<InlineData("aa aa", "aa aa//xxxx // adsfa")>] 
+[<InlineData("aa aa", "aa aa//xxxx // adsfa")>]  
+[<InlineData("eoem5            ^\ ", "eoem5            ^\ ")>]  
 let TestRemoveComment(expected: string, str: string) =     
     let str' = RemoveComment str
     Assert.Equal(expected, str' ) 
@@ -27,8 +28,9 @@ let TestRemoveComment(expected: string, str: string) =
 [<InlineData("", "x")>] 
 [<InlineData("j{LEFT}False", "j {LEFT}")>] 
 [<InlineData("j{ENTER}True", "_CAPS_j {ENTER}")>] 
-let TestLineToSendKey(expected: string, line: string) = 
-    let str = match LineToSendKey line with
+[<InlineData("eoem5^\False", "eoem5            ^\ ")>] 
+let TestLineToMappedKey(expected: string, line: string) = 
+    let str = match LineToMappedKey line with
         | Some(sendKey) -> sendKey.trigger + sendKey.send + sendKey.isCaps.ToString()
         | None -> ""
     Assert.Equal(expected, str) 

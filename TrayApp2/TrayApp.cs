@@ -1,12 +1,12 @@
-﻿using DoKey.FS;
+﻿using DoKey.Core;
 using DoKey.Properties;
 using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using static DoKey.FS.Domain;
+using static DoKey.Core.Domain;
 
-namespace DoKey
+namespace DoKey.App
 {
   internal class TrayApp : Form
   {
@@ -14,7 +14,8 @@ namespace DoKey
     private NotifyIcon trayIcon;
     private ContextMenu trayMenu;
     private KeyboardHook mKeyboardHook;
-    private Configuration Configuration;
+    private App _app;
+
     private bool IsSending = false;
     private AppState AppState = new AppState(State.Off, new Modificators(false,false,false,false,false), "", false);
 
@@ -25,12 +26,10 @@ namespace DoKey
     public TrayApp()
     {
 
-      Configuration = new Configuration();
-
       trayMenu = new ContextMenu();
       trayMenu.MenuItems.Add("Exit", (s, e) => OnExit());
       trayMenu.MenuItems.Add("Open Settings", (s, e) => OpenSettings());
-      trayMenu.MenuItems.Add("Reload Settings", (s, e) => ReloadSettings());
+      //trayMenu.MenuItems.Add("Reload Settings", (s, e) => ReloadSettings());
 
       trayIcon = new NotifyIcon
       {
@@ -41,6 +40,9 @@ namespace DoKey
       };
 
       SetupKeyboardHooks();
+
+      _app = new App();
+      _app.Initialize();
 
     }
 
@@ -93,25 +95,20 @@ namespace DoKey
 
       KeyEventData keyEventData = CreateKetEventData(e);
 
-      var output = ProcessKey(keyEventData);
+      //KeysEngineResult output = ProcessKey(keyEventData); 
+      var output = _app.Work(keyEventData);
 
       if (output == null) return;
 
       AppState = output.appState;
 
-      //Log(output.AppState.ToLog());
-
       if (output.preventKeyProcess)
       {
-        //Log("  prevent");
         e.Handled = true;
       }
 
       if (!string.IsNullOrEmpty(output.send))
       {
-        //Log(output.sendDoKey.ToLog);
-
-        //mSendDoKeyLast = output.sendKey;
         IsSending = true;
         SendKeys.Send(output.send);
         IsSending = false;
@@ -123,17 +120,17 @@ namespace DoKey
 
     }
 
-    private KeysEngineResult ProcessKey(KeyEventData keyEventData)
-    {
+    //private KeysEngineResult ProcessKey(KeyEventData keyEventData)
+    //{
 
-      return new KeysEngine
-      {
-        AppState = AppState,
-        KeyEventData = keyEventData,
-        Configuration = Configuration,
-      }.ProcessKey();
+    //  return new KeysEngine
+    //  {
+    //    AppState = AppState,
+    //    KeyEventData = keyEventData,
+    //    Configuration = Configuration,
+    //  }.ProcessKey();
 
-    }
+    //}
 
 
     private Icon GetIcon(State xState)
@@ -163,14 +160,14 @@ namespace DoKey
     private void OpenSettings()
     {
 
-      Process.Start(DoKey.FS.Domain.filePath);
+      Process.Start(DoKey.Core.Domain.filePath);
 
     }
 
-    private void ReloadSettings()
-    {
-      Configuration = new Configuration();
-    }
+    //private void ReloadSettings()
+    //{
+    //  Configuration = new Configuration();
+    //}
 
     protected override void Dispose(bool isDisposing)
     {

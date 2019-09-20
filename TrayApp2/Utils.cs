@@ -1,11 +1,11 @@
-﻿using DoKey.FS;
+﻿using DoKey.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static DoKey.FS.Domain;
+using static DoKey.Core.Domain;
 
 namespace DoKey {
 
@@ -54,18 +54,18 @@ namespace DoKey {
           return true;
       }
 
-      if (modifiers == Keys.Control) {
-        switch (key) {
-          case Keys.C:
-          case Keys.X:
-          case Keys.Z:
-          case Keys.V:
-          case Keys.F:
-          case Keys.R:
-          case Keys.T:
-            return true;
-        }
-      }
+      //if (modifiers == Keys.Control) {
+      //  switch (key) {
+      //    case Keys.C:
+      //    case Keys.X:
+      //    case Keys.Z:
+      //    case Keys.V:
+      //    case Keys.F:
+      //    case Keys.R:
+      //    case Keys.T:
+      //      return true;
+      //  }
+      //}
 
       return false;
 

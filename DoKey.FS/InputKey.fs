@@ -1,6 +1,6 @@
-﻿namespace DoKey.FS
+﻿namespace DoKey.Core
  
-open DoKey.FS.KeysOperations
+open DoKey.Core.KeysOperations
 
 type InputKey(key:string) =  
 
