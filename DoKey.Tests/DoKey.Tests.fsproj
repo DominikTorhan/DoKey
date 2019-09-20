@@ -25,8 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DoKey.FS\DoKey.Core.fsproj" />
-    <ProjectReference Include="..\TrayApp2\DoKey.App.csproj" />
+    <ProjectReference Include="..\DoKey.App\DoKey.App.csproj" />
+    <ProjectReference Include="..\DoKey.Core\DoKey.Core.fsproj" />
   </ItemGroup>
 
 </Project>
