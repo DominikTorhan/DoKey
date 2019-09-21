@@ -10,11 +10,11 @@ module ModificatorsOperations =
         
 
     let GetNextModificators(modif: Modificators, input: InputKey, isUp:bool)= 
-        let alt = match input.IsAlt with | true -> not isUp | false -> modif.alt
-        let con = match input.IsControl with | true -> not isUp | false -> modif.control
-        let sht = match input.IsShift with | true -> not isUp | false -> modif.shift
-        let win = match input.IsWin with | true -> not isUp | false -> modif.win
-        let cap = match input.IsCapital with | true -> not isUp | false -> modif.caps
+        let alt = match input.isAlt with | true -> not isUp | false -> modif.alt
+        let con = match input.isControl with | true -> not isUp | false -> modif.control
+        let sht = match input.isShift with | true -> not isUp | false -> modif.shift
+        let win = match input.isWin with | true -> not isUp | false -> modif.win
+        let cap = match input.isCaps with | true -> not isUp | false -> modif.caps
         { alt = alt; control = con; shift = sht; win = win; caps = cap}
          
     let ModificatorsToStr(modif:Modificators) = 

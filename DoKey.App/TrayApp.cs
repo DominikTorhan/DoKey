@@ -58,7 +58,8 @@ namespace DoKey.App
     {
       var key = (Keys)e.KeyboardData.VirtualCode;
       var x = e.IsUp ? KeyEventType.Up : KeyEventType.Down;
-      return new KeyEventData(key.ToString(), x);
+      var inputKey = Core.DomainOperations.CreateInputKey(key.ToString());
+      return new KeyEventData(inputKey, x);
     }
 
     private bool TryOpenSettingsFile(Keys key, AppState appState)

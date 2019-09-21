@@ -4,6 +4,7 @@ open Xunit
 open DoKey.Core 
 open ModificatorsOperations 
 open Domain
+open DomainOperations
 
 [<Theory>]  
 [<InlineData("%", "lmenu", false, "")>]
@@ -17,7 +18,7 @@ open Domain
 [<InlineData("w", "lwin", false, "")>]
 [<InlineData("c", "capital", false, "")>]
 let TestNext(expected:string, key:string, isUp:bool, modifStr:string) =
-    let input = new InputKey (key) 
+    let input = CreateInputKey key
     let modif = CreateModificatorsByStr modifStr
     let modif' = GetNextModificators(modif, input, isUp)
     Assert.Equal(expected, ModificatorsToStr modif')

@@ -13,7 +13,6 @@
     <Compile Include="TestConfiguration.fs" />
     <Compile Include="TestModificators.fs" />
     <Compile Include="TestKeysEngine.fs" />
-    <Compile Include="KeyEventDataFactory.fs" />
     <Compile Include="TestInputKey.fs" />
     <Compile Include="Tests.fs" />
   </ItemGroup>

@@ -4,6 +4,22 @@
 module Domain =   
   
     type State = Off = 0 | Normal = 1 | Insert = 2
+    type KeyEventType = Down|Up
+
+    type InputKey = 
+      { key :string
+        isCaps: bool
+        isAlt:bool
+        isControl:bool
+        isShift:bool
+        isWin:bool
+        isModif:bool
+        isEsc:bool
+        isLetterOrDigit:bool }
+
+    type KeyEventData =
+      { inputKey:InputKey
+        keyEventType:KeyEventType }
 
     type MappedKey =
         { trigger: string

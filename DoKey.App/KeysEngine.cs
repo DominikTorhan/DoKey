@@ -17,16 +17,16 @@ namespace DoKey
     public KeyEventData KeyEventData { get; set; }
     public AppState AppState { get; set; }
 
-    private InputKey inputKey => KeyEventData.InputKey;
-    private string keys => inputKey.Key;
-    private bool isUp => KeyEventData.KeyEventType.IsUp;
+    private InputKey inputKey => KeyEventData.inputKey;
+    private string keys => inputKey.key;
+    private bool isUp => KeyEventData.keyEventType.IsUp;
     private bool isCapital => AppState.modificators.caps;
 
     public KeysEngineResult ProcessKey()
     {
 
-      if (inputKey.IsCapital) return ProcessCapital();
-      if (inputKey.IsModifier) return ProcessModificators();
+      if (inputKey.isCaps) return ProcessCapital();
+      if (inputKey.isModif) return ProcessModificators();
 
       var output = ProcessSetModeOff();
       if (output != null) return output;
@@ -96,7 +96,7 @@ namespace DoKey
     private KeysEngineResult ProcessEsc()
     {
 
-      if (!inputKey.IsEsc) return null;
+      if (!inputKey.isEsc) return null;
       if (AppState.state != State.Insert) return null;
       if (isUp) return null;
       if (isCapital) return null;
@@ -119,7 +119,7 @@ namespace DoKey
 
       var sendDoKey = GetSendDoKey(isDownFirstStep);
 
-      var preventKeyProcess = inputKey.IsLetterOrDigit || sendDoKey.send != "";
+      var preventKeyProcess = inputKey.isLetterOrDigit || sendDoKey.send != "";
 
       return new KeysEngineResult(AppState = new AppState(this.AppState.state, this.AppState.modificators, firstStepNext, this.AppState.preventEscOnCapsUp),
         sendDoKey.send, preventKeyProcess);
@@ -133,7 +133,7 @@ namespace DoKey
 
       var trigger = AppState.firstStep + keys.ToString();
 
-      var doKey = DomainOperations.GetMappedKeyNormal(config.mappedKeys, trigger);
+      var doKey = DoKey.Core.KeysEngine.GetMappedKeyNormal(config.mappedKeys, trigger);
 
       return doKey;
 
@@ -157,7 +157,7 @@ namespace DoKey
       if (!isCapital) return null;
       if (isUp) return null;
 
-      var sendKeys = DomainOperations.GetMappedKeyCaps(config.mappedKeys, keys.ToString());
+      var sendKeys = DoKey.Core.KeysEngine.GetMappedKeyCaps(config.mappedKeys, keys.ToString());
 
       if (sendKeys.send == "") return null;
 
