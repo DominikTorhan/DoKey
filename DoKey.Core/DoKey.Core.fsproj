@@ -8,17 +8,12 @@
     <Content Include="config.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Settings.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Compile Include="KeysOperations.fs" />
     <Compile Include="Domain.fs" />
     <Compile Include="ConfigFileReader.fs" />
     <Compile Include="DomainOperations.fs" />
     <Compile Include="LowLevelKeyboardInputEvent.fs" />
-    <Compile Include="InputKey.fs" />
     <Compile Include="ModificatorsOperations .fs" />
-    <Compile Include="KeyEventData.fs" />
     <Compile Include="KeysEngine.fs" />
   </ItemGroup>
 

@@ -1,8 +1,28 @@
 ﻿//DoKey config
+
+//oemcomma    ,
+//oemperiod   .
+//oem2        / 
+//oem1        ;
+//oem7        '
+//oem4        [
+//oem6        ]
+//oem5        \
+//oemminus    -
+//oemplus     =
+
+//Commands
+_COMMAND__CAPS_back #exit           //exit app
+_COMMAND__CAPS_oem2 #config         //show config file
+
+
+
+//Keys
   
 //CAPS  
 _CAPS_e {ESC}
 _CAPS_h {BKSP}
+_CAPS_y ^{BKSP}
 _CAPS_l {DEL}
 _CAPS_d {DEL}
 _CAPS_j {ENTER}
@@ -204,7 +224,7 @@ eoemperiod       ^.
 eoem2            ^/
 eoemopenbrackets ^[
 eoem6            ^]
-eoem5            ^\
+eoem5            ^\ 
  
 //r 
 rd1              +{F1}

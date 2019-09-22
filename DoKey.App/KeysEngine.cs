@@ -12,15 +12,10 @@ namespace DoKey
   public class KeysEngine
   {
 
-    //public Configuration Configuration { get; set; }
     public Config config { get; set; }
-    public KeyEventData KeyEventData { get; set; }
     public AppState AppState { get; set; }
-
-    private InputKey inputKey => KeyEventData.inputKey;
-    private string keys => inputKey.key;
-    private bool isUp => KeyEventData.keyEventType.IsUp;
-    private bool isCapital => AppState.modificators.caps;
+    public InputKey inputKey { get; set; }
+    public bool isUp { get; set; }
 
     public KeysEngineResult ProcessKey()
     {
@@ -85,11 +80,11 @@ namespace DoKey
     private KeysEngineResult ProcessModeChange()
     {
 
-      if (keys != DoKey.Core.Domain.modeChangeKey) return null;
-      if (!isCapital) return null;
+      if (inputKey.key != DoKey.Core.Domain.modeChangeKey) return null;
+      if (!AppState.modificators.caps) return null;
       if (isUp) return null;
 
-      return new KeysEngineResult(new AppState(Utils.GetNextState(AppState.state), this.AppState.modificators, "", true), "", true);
+      return new KeysEngineResult(new AppState(GetNextState(AppState.state), this.AppState.modificators, "", true), "", true);
 
     }
 
@@ -99,9 +94,9 @@ namespace DoKey
       if (!inputKey.isEsc) return null;
       if (AppState.state != State.Insert) return null;
       if (isUp) return null;
-      if (isCapital) return null;
+      if (AppState.modificators.caps) return null;
 
-      return new KeysEngineResult(new AppState(Utils.GetPrevState(AppState.state), this.AppState.modificators, "", this.AppState.preventEscOnCapsUp), 
+      return new KeysEngineResult(new AppState(GetPrevState(AppState.state), this.AppState.modificators, "", this.AppState.preventEscOnCapsUp), 
         "", true);
 
     }
@@ -113,11 +108,11 @@ namespace DoKey
       if (isUp) return null;
       if (AppState.modificators.win) return null;
 
-      var isDownFirstStep = AppState.firstStep == "" && DomainOperations.IsTwoStep(keys);
+      var isDownFirstStep = AppState.firstStep == "" && DomainOperations.IsTwoStep(inputKey.key);
 
-      var firstStepNext = isDownFirstStep ? keys : "";
+      var firstStepNext = isDownFirstStep ? inputKey.key : "";
 
-      var sendDoKey = GetSendDoKey(isDownFirstStep);
+      var sendDoKey = DoKey.Core.KeysEngine.GetMappedKeyNormal(AppState.firstStep, inputKey.key.ToString(), config.mappedKeys);
 
       var preventKeyProcess = inputKey.isLetterOrDigit || sendDoKey.send != "";
 
@@ -126,25 +121,12 @@ namespace DoKey
 
     }
 
-    private MappedKey GetSendDoKey(bool isDownFirstStep)
-    {
-
-      if (isDownFirstStep) return new MappedKey("", "", false);
-
-      var trigger = AppState.firstStep + keys.ToString();
-
-      var doKey = DoKey.Core.KeysEngine.GetMappedKeyNormal(config.mappedKeys, trigger);
-
-      return doKey;
-
-    }
-
     private KeysEngineResult ProcessSetModeOff()
     {
 
-      if (!isCapital) return null;
+      if (!AppState.modificators.caps) return null;
       if (isUp) return null;
-      if (keys != DoKey.Core.Domain.modeOffKey) return null;
+      if (inputKey.key != DoKey.Core.Domain.modeOffKey) return null;
 
       return new KeysEngineResult(AppState = new AppState(State.Off, this.AppState.modificators, "", true), "", true);
 
@@ -153,15 +135,31 @@ namespace DoKey
     private KeysEngineResult ProcessNormalAndInsertWithCapital()
     {
 
-      if (AppState.state == State.Off) return null;
-      if (!isCapital) return null;
-      if (isUp) return null;
-
-      var sendKeys = DoKey.Core.KeysEngine.GetMappedKeyCaps(config.mappedKeys, keys.ToString());
+      var sendKeys = DoKey.Core.KeysEngine.GetMappedKeyNormalAndInsertWithCapital(AppState, inputKey.key.ToString(), config.mappedKeys, isUp);
 
       if (sendKeys.send == "") return null;
 
       return new KeysEngineResult(new AppState(this.AppState.state, this.AppState.modificators, "", true), sendKeys.send, true);
+
+    }
+
+    public static State GetNextState(State state)
+    {
+
+      if (state == State.Insert) return State.Insert;
+      if (state == State.Normal) return State.Insert;
+
+      return State.Normal;
+
+    }
+
+    public static State GetPrevState(State state)
+    {
+
+      if (state == State.Insert) return State.Normal;
+      if (state == State.Normal) return State.Normal;
+
+      return State.Off;
 
     }
 

@@ -11,13 +11,13 @@ namespace DoKey.App
   internal class TrayApp : Form
   {
 
-    private NotifyIcon trayIcon;
-    private ContextMenu trayMenu;
+    private readonly NotifyIcon trayIcon;
+    private readonly ContextMenu trayMenu;
     private KeyboardHook mKeyboardHook;
-    private App _app;
+    private readonly App _app;
 
     private bool IsSending = false;
-    private AppState AppState = new AppState(State.Off, new Modificators(false,false,false,false,false), "", false);
+    private AppState AppState = new AppState(State.Off, new Modificators(false, false, false, false, false), "", false);
 
     private Icon GetIconOff() => new Icon(Resources.Off, 40, 40);
     private Icon GetIconNormalMode() => new Icon(Resources.Normal, 40, 40);
@@ -89,16 +89,13 @@ namespace DoKey.App
 
       if (Control.IsKeyLocked(Keys.CapsLock) && key == Keys.Capital) return;
 
-      if (TryOpenSettingsFile(key, AppState)) { e.Handled = true; return; }
-      if (TryExitApp(key, AppState)) { e.Handled = true; return; }
-
-      if (Utils.IsIgnoredKey(key, Control.ModifierKeys)) return;
-
       KeyEventData keyEventData = CreateKetEventData(e);
 
-      //KeysEngineResult output = ProcessKey(keyEventData); 
       var output = _app.Work(keyEventData);
 
+      if (TryOpenSettingsFile(key, AppState)) { e.Handled = true; return; }
+      if (TryExitApp(key, AppState)) { e.Handled = true; return; }
+      
       if (output == null) return;
 
       AppState = output.appState;
@@ -120,19 +117,6 @@ namespace DoKey.App
       return;
 
     }
-
-    //private KeysEngineResult ProcessKey(KeyEventData keyEventData)
-    //{
-
-    //  return new KeysEngine
-    //  {
-    //    AppState = AppState,
-    //    KeyEventData = keyEventData,
-    //    Configuration = Configuration,
-    //  }.ProcessKey();
-
-    //}
-
 
     private Icon GetIcon(State xState)
     {
@@ -161,7 +145,7 @@ namespace DoKey.App
     private void OpenSettings()
     {
 
-      Process.Start(DoKey.Core.Domain.filePath);
+      Process.Start(DoKey.Core.Domain.filePathNew);
 
     }
 
@@ -178,9 +162,10 @@ namespace DoKey.App
       if (isDisposing)
       {
         trayIcon.Dispose();
+        trayMenu.Dispose();
       }
 
-      base.Dispose(isDisposing); 
+      base.Dispose(isDisposing);
 
     }
 

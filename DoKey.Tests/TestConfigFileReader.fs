@@ -28,9 +28,18 @@ let TestRemoveComment(expected: string, str: string) =
 [<InlineData("", "x")>] 
 [<InlineData("j{LEFT}False", "j {LEFT}")>] 
 [<InlineData("j{ENTER}True", "_CAPS_j {ENTER}")>] 
-[<InlineData("eoem5^\False", "eoem5            ^\ ")>] 
+[<InlineData("eoem5^\False", "eoem5            ^\ \r\n")>] 
 let TestLineToMappedKey(expected: string, line: string) = 
     let str = match LineToMappedKey line with
-        | Some(sendKey) -> sendKey.trigger + sendKey.send + sendKey.isCaps.ToString()
-        | None -> ""
+                | Some(mappedKey) -> mappedKey.trigger + mappedKey.send + mappedKey.isCaps.ToString()
+                | None -> ""
+    Assert.Equal(expected, str) 
+
+[<Theory>] 
+[<InlineData("", "")>] 
+[<InlineData("back#exit", "_COMMAND__CAPS_back #exit           ")>] 
+let TestLineToCommandKey(expected: string, line: string) = 
+    let str = match LineToCommandKey line with
+                | Some(commandKey) -> commandKey.trigger + commandKey.run
+                | None -> ""
     Assert.Equal(expected, str) 

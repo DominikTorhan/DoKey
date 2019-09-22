@@ -26,6 +26,10 @@ module Domain =
           send: string 
           isCaps: bool }
      
+    type CommandKey =
+        { trigger: string
+          run: string}
+
     type Modificators = 
         { alt:bool
           control:bool
@@ -45,14 +49,14 @@ module Domain =
           preventKeyProcess: bool }
 
     type Config =
-        { mappedKeys: seq<MappedKey> }
+        { mappedKeys: seq<MappedKey> 
+          commandKeys: seq<CommandKey> }
 
     type Session =
         { config: Config 
           appState: AppState}
     
 
-    let filePath = "Settings.txt"
     let filePathNew = "config.txt"
     let modeChangeKey = "f"
     let modeOffKey = "q" 

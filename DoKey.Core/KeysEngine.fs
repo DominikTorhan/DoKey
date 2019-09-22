@@ -3,77 +3,32 @@
 module KeysEngine = 
 
     open Domain
+    open DomainOperations
 
-    let GetSendKey (keysList:seq<MappedKey>, predicate:(MappedKey -> bool)) =
-        let result = Seq.tryFind predicate keysList 
+    let EmptyMappedKey = { send = ""; trigger = ""; isCaps = false } 
+
+    let GetMappedKey isCaps (trigger:string) keys =
+        let predicate (mappedKey:MappedKey) = mappedKey.trigger = trigger.ToLower() && mappedKey.isCaps = isCaps
+        let result = Seq.tryFind predicate keys
         match result with
             | Some i -> i
-            | None -> { send = ""; trigger = ""; isCaps = false } 
-   
-    let GetPredicate (isCaps:bool, trigger:string) =
-        let predicate (sendKey:MappedKey) = sendKey.trigger = trigger.ToLower() && sendKey.isCaps = isCaps
-        predicate
-  
-    //let GetSendKeyNormal (keysList:seq<MappedKey>, key:string) = 
-    //    GetSendKey (keysList, GetPredicate(false, key))
-  
-    //let GetSendKeyCaps (keysList:seq<MappedKey>, key:string) = 
-    //    GetSendKey (keysList, GetPredicate(true, key))
+            | None -> EmptyMappedKey 
 
-    let GetMappedKeyNormal keys trigger = GetSendKey (keys, GetPredicate(false, trigger))
-    let GetMappedKeyCaps keys trigger = GetSendKey (keys, GetPredicate(true, trigger))
+    let IsDownFirstStep firstStep key =
+        firstStep = "" && IsTwoStep key
 
-    let GetMappedKey isDownFirstStep keys =
+    let GetMappedKeyNormal firstStep key keys =
+        let isDownFirstStep = IsDownFirstStep firstStep key
         match isDownFirstStep with
-            | false -> { send = ""; trigger = ""; isCaps = false } 
-            | true -> GetMappedKeyNormal keys ""
-        
-
+            | true-> EmptyMappedKey 
+            | _ -> GetMappedKey false (firstStep + key) keys 
     
-    //let ProcessModificators =
-    //    ModificatorsOperations.GetNextModificators
-
-    //private KeysEngineResult ProcessModificators()
-    //{
-
-    //  //var modificators = this.AppState.Modificators.GetNextModificators(inputKey, isUp);
-    //  var modificators = ModificatorsOperations.GetNextModificators(this.AppState.modificators, inputKey, isUp);
-
-    //  return new KeysEngineResult(new AppState(this.AppState.state, modificators, this.AppState.firstStep, this.AppState.preventEscOnCapsUp), "", false);
-
-    //}
-
-
-//let Perform(appState:AppState, inputKey: InputKey, configuration: Configuration) =
-//    appState
-
-
-//let PerformModificators(appState:AppState) =
-//    let modif = appState.Modificators.GetNextModificators(null, "")
-//    let appState' = {appState with modificators = modif }
-//    appState'
-
-    //private cOutput ProcessModificators()
-    //{
-
-    //  var modificators = this.modificators.GetNextModificators(inputKey, isUp);
-
-    //  return new cOutput
-    //  {
-    //    AppState = new AppState(this.AppState.State, modificators, this.AppState.FirstStep, this.AppState.PreventEscOnCapsUp)
-    //  };
-
-    //}
-
-    //private MappedKey GetSendDoKey(bool isDownFirstStep)
-    //{
-
-    //  if (isDownFirstStep) return new MappedKey("", "", false);
-
-    //  var trigger = AppState.firstStep + keys.ToString();
-
-    //  var doKey = DomainOperations.GetMappedKeyNormal(config.mappedKeys, trigger);
-
-    //  return doKey;
-
-    //}
+    let GetMappedKeyNormalAndInsertWithCapital appState key keys isUp=
+        match isUp with
+            | true -> EmptyMappedKey
+            | _ -> match appState.state with 
+                   | State.Off -> EmptyMappedKey
+                   | _ -> match appState.modificators.caps with
+                          | false -> EmptyMappedKey
+                          | _ -> GetMappedKey true (appState.firstStep + key) keys 
+        

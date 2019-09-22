@@ -20,11 +20,12 @@ let ProcessKey(key:string, modif:string, state:State, firstStep:string) =
     let modificators = CreateModificatorsByStr modif 
     let session = CreateSession
     let appState = { state = state; modificators = modificators; firstStep = firstStep; preventEscOnCapsUp = false}
-    let eventData = {inputKey = CreateInputKey key; keyEventType = KeyEventType.Down}
+    let inputKey = CreateInputKey key
     let keysEngine = new KeysEngine()
     keysEngine.config <- session.config 
     keysEngine.AppState <- appState 
-    keysEngine.KeyEventData <- eventData 
+    keysEngine.inputKey <- inputKey 
+    keysEngine.isUp <- false
     let output = keysEngine.ProcessKey()
     output
   
