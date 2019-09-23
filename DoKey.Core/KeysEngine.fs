@@ -23,12 +23,12 @@ module KeysEngine =
             | true-> EmptyMappedKey 
             | _ -> GetMappedKey false (firstStep + key) keys 
     
-    let GetMappedKeyNormalAndInsertWithCapital appState key keys isUp=
-        match isUp with
-            | true -> EmptyMappedKey
-            | _ -> match appState.state with 
-                   | State.Off -> EmptyMappedKey
-                   | _ -> match appState.modificators.caps with
-                          | false -> EmptyMappedKey
-                          | _ -> GetMappedKey true (appState.firstStep + key) keys 
+    let GetMappedKeyNormalAndInsertWithCapital appState key keys =
+        match appState.state with 
+            | State.Off -> EmptyMappedKey
+            | _ -> match appState.modificators.caps with
+                   | false -> EmptyMappedKey
+                   | _ -> GetMappedKey true (appState.firstStep + key) keys 
         
+    let ProcessStateChange appState inputKey =
+        None

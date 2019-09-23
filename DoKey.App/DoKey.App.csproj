@@ -68,7 +68,6 @@
     <Compile Include="App.cs" />
     <Compile Include="KeyboardHook.cs" />
     <Compile Include="KeysEngine.cs" />
-    <Compile Include="Utils.cs" />
     <Compile Include="Program.cs">
       <SubType>Form</SubType>
     </Compile>

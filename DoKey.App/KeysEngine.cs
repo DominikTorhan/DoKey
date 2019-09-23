@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DoKey.Core;
+﻿using DoKey.Core;
 using static DoKey.Core.Domain;
 
 namespace DoKey
@@ -23,14 +18,16 @@ namespace DoKey
       if (inputKey.isCaps) return ProcessCapital();
       if (inputKey.isModif) return ProcessModificators();
 
+      if (isUp) return new KeysEngineResult(AppState, "", false);
+
+      //------------------
       var output = ProcessSetModeOff();
       if (output != null) return output;
-
       output = ProcessModeChange();
       if (output != null) return output;
-
       output = ProcessEsc();
       if (output != null) return output;
+      //------------------------
 
       if (AppState.state == State.Off) return new KeysEngineResult(AppState, "", false);
 
@@ -42,6 +39,7 @@ namespace DoKey
 
       return new KeysEngineResult(AppState, "", false);
     }
+
 
     private KeysEngineResult ProcessModificators()
     {
@@ -76,15 +74,29 @@ namespace DoKey
       return new KeysEngineResult(new AppState(this.AppState.state, modif, "", preventEscOnNextCapitalUp), sendKeys, true);
 
     }
-    
+
+
+    private KeysEngineResult ProcessSetModeOff()
+    {
+
+      if (!AppState.modificators.caps) return null;
+      if (inputKey.key != DoKey.Core.Domain.modeOffKey) return null;
+
+      var appState = new AppState(State.Off, this.AppState.modificators, "", true);
+
+      return DomainOperations.CreateEngineResultChangeAppState(appState);
+
+    }
+
     private KeysEngineResult ProcessModeChange()
     {
 
       if (inputKey.key != DoKey.Core.Domain.modeChangeKey) return null;
       if (!AppState.modificators.caps) return null;
-      if (isUp) return null;
 
-      return new KeysEngineResult(new AppState(GetNextState(AppState.state), this.AppState.modificators, "", true), "", true);
+      var appState = new AppState(GetNextState(AppState.state), this.AppState.modificators, "", true);
+
+      return DomainOperations.CreateEngineResultChangeAppState(appState);
 
     }
 
@@ -93,53 +105,11 @@ namespace DoKey
 
       if (!inputKey.isEsc) return null;
       if (AppState.state != State.Insert) return null;
-      if (isUp) return null;
       if (AppState.modificators.caps) return null;
 
-      return new KeysEngineResult(new AppState(GetPrevState(AppState.state), this.AppState.modificators, "", this.AppState.preventEscOnCapsUp), 
-        "", true);
+      var appState = new AppState(GetPrevState(AppState.state), this.AppState.modificators, "", this.AppState.preventEscOnCapsUp);
 
-    }
-
-    private KeysEngineResult ProcessNormalMode()
-    {
-
-      if (AppState.state != State.Normal) return null;
-      if (isUp) return null;
-      if (AppState.modificators.win) return null;
-
-      var isDownFirstStep = AppState.firstStep == "" && DomainOperations.IsTwoStep(inputKey.key);
-
-      var firstStepNext = isDownFirstStep ? inputKey.key : "";
-
-      var sendDoKey = DoKey.Core.KeysEngine.GetMappedKeyNormal(AppState.firstStep, inputKey.key.ToString(), config.mappedKeys);
-
-      var preventKeyProcess = inputKey.isLetterOrDigit || sendDoKey.send != "";
-
-      return new KeysEngineResult(AppState = new AppState(this.AppState.state, this.AppState.modificators, firstStepNext, this.AppState.preventEscOnCapsUp),
-        sendDoKey.send, preventKeyProcess);
-
-    }
-
-    private KeysEngineResult ProcessSetModeOff()
-    {
-
-      if (!AppState.modificators.caps) return null;
-      if (isUp) return null;
-      if (inputKey.key != DoKey.Core.Domain.modeOffKey) return null;
-
-      return new KeysEngineResult(AppState = new AppState(State.Off, this.AppState.modificators, "", true), "", true);
-
-    }
-
-    private KeysEngineResult ProcessNormalAndInsertWithCapital()
-    {
-
-      var sendKeys = DoKey.Core.KeysEngine.GetMappedKeyNormalAndInsertWithCapital(AppState, inputKey.key.ToString(), config.mappedKeys, isUp);
-
-      if (sendKeys.send == "") return null;
-
-      return new KeysEngineResult(new AppState(this.AppState.state, this.AppState.modificators, "", true), sendKeys.send, true);
+      return DomainOperations.CreateEngineResultChangeAppState(appState);
 
     }
 
@@ -160,6 +130,36 @@ namespace DoKey
       if (state == State.Normal) return State.Normal;
 
       return State.Off;
+
+    }
+
+
+    private KeysEngineResult ProcessNormalMode()
+    {
+
+      if (AppState.state != State.Normal) return null;
+      if (AppState.modificators.win) return null;
+
+      var isDownFirstStep = AppState.firstStep == "" && DomainOperations.IsTwoStep(inputKey.key);
+
+      var firstStepNext = isDownFirstStep ? inputKey.key : "";
+
+      var sendDoKey = DoKey.Core.KeysEngine.GetMappedKeyNormal(AppState.firstStep, inputKey.key.ToString(), config.mappedKeys);
+
+      var preventKeyProcess = inputKey.isLetterOrDigit || sendDoKey.send != "";
+
+      return new KeysEngineResult(new AppState(this.AppState.state, this.AppState.modificators, firstStepNext, this.AppState.preventEscOnCapsUp), sendDoKey.send, preventKeyProcess);
+
+    }
+
+    private KeysEngineResult ProcessNormalAndInsertWithCapital()
+    {
+
+      var sendKeys = DoKey.Core.KeysEngine.GetMappedKeyNormalAndInsertWithCapital(AppState, inputKey.key.ToString(), config.mappedKeys);
+
+      if (sendKeys.send == "") return null;
+
+      return new KeysEngineResult(new AppState(this.AppState.state, this.AppState.modificators, "", true), sendKeys.send, true);
 
     }
 

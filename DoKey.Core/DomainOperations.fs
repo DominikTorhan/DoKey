@@ -23,3 +23,6 @@ module DomainOperations =
 
     let IsTwoStep (key) = twoStep.Contains(key)
   
+
+    let CreateEngineResultChangeAppState(appState:AppState)=
+        {appState = appState; send =""; preventKeyProcess= true}
