@@ -23,7 +23,7 @@ let ProcessKey(key:string, modif:string, state:State, firstStep:string) =
     let inputKey = CreateInputKey key
     let keysEngine = new KeysEngine()
     keysEngine.config <- session.config 
-    keysEngine.AppState <- appState 
+    keysEngine.AppStateX <- appState 
     keysEngine.inputKey <- inputKey 
     keysEngine.isUp <- false
     let output = keysEngine.ProcessKey()

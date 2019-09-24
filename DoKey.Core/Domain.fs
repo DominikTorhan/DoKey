@@ -62,4 +62,25 @@ module Domain =
     let modeOffKey = "q" 
     let twoStep = "qwertasdfgbui"
  
+    let GetNextState state =
+        match state with
+            | State.Insert -> State.Insert
+            | State.Normal -> State.Insert
+            | _ -> State.Normal
+
+    let GetPrevState state =
+        match state with
+            | State.Insert -> State.Normal
+            | State.Normal -> State.Normal
+            | _ -> State.Off
+
+
+    let GetNextStateByKey key state =
+        match key with
+            | txt when txt = modeOffKey -> Some State.Off
+            | txt when txt = modeChangeKey -> Some (GetNextState state)
+            | _ -> None
+
+
+
     //let IsTwoStep (key) = "qwertasdfgbui".Contains(key)

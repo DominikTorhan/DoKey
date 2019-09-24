@@ -37,7 +37,7 @@ namespace DoKey.App
 
       return new KeysEngine
       {
-        AppState = _session.appState,
+        AppStateX = _session.appState,
         inputKey = keyEventData.inputKey,
         isUp = keyEventData.keyEventType.IsUp,
         config = _session.config,
