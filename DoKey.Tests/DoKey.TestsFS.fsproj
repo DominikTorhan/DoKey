@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DoKey.App\DoKey.App.csproj" />
-    <ProjectReference Include="..\DoKey.Core\DoKey.Core.fsproj" />
+    <ProjectReference Include="..\DoKey.Core\DoKey.CoreFS.fsproj" />
   </ItemGroup>
 
 </Project>

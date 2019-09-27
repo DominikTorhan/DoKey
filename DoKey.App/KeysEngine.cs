@@ -14,7 +14,7 @@ namespace DoKey
 
     public KeysEngineResult ProcessKey()
     {
-
+      
       if (inputKey.isCaps) return ProcessCapital();
       if (inputKey.isModif) return ProcessModificators();
 

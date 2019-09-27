@@ -117,9 +117,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DoKey.Core\DoKey.Core.fsproj">
+    <ProjectReference Include="..\DoKey.Core\DoKey.CoreFS.fsproj">
       <Project>{bc8303c8-ea25-48d2-a746-449ba05d1376}</Project>
-      <Name>DoKey.Core</Name>
+      <Name>DoKey.CoreFS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
