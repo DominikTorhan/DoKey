@@ -424,3 +424,4 @@ dh ^-//VsGoBack
 dl ^+- //VsGoForward
 de ^\e //VsErrorList
 dz ^{F7}^{F8}//EvernoteFocusListTrick
+//dc ^%vl//VsLocals

@@ -9,7 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoKey.App", "DoKey.App\DoKe
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "DoKey.CoreFS", "DoKey.Core\DoKey.CoreFS.fsproj", "{BC8303C8-EA25-48D2-A746-449BA05D1376}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoKey.CoreCS", "DoKey.CoreCS\DoKey.CoreCS.csproj", "{834F877C-9183-4007-85CA-A2CDA9029C8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoKey.CoreCS", "DoKey.CoreCS\DoKey.CoreCS.csproj", "{834F877C-9183-4007-85CA-A2CDA9029C8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoKey.TestsCS", "DoKey.TestsCS\DoKey.TestsCS.csproj", "{AF61B2D8-C430-4D59-B200-717D94A59392}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{834F877C-9183-4007-85CA-A2CDA9029C8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{834F877C-9183-4007-85CA-A2CDA9029C8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{834F877C-9183-4007-85CA-A2CDA9029C8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF61B2D8-C430-4D59-B200-717D94A59392}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF61B2D8-C430-4D59-B200-717D94A59392}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF61B2D8-C430-4D59-B200-717D94A59392}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF61B2D8-C430-4D59-B200-717D94A59392}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

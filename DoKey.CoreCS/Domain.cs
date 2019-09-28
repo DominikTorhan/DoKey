@@ -8,21 +8,21 @@ namespace DoKey.CoreCS
 
   public class InputKey
   {
-    string key;
-    bool isCaps;
-    bool isAlt;
-    bool isControl;
-    bool isShift;
-    bool isWin;
-    bool isModif;
-    bool isEsc;
-    bool isLetterOrDigit;
+    public string key;
+    public bool isCaps;
+    public bool isAlt;
+    public bool isControl;
+    public bool isShift;
+    public bool isWin;
+    public bool isModif;
+    public bool isEsc;
+    public bool isLetterOrDigit;
   }
 
   public class KeyEventData
   {
-    InputKey inputKey;
-    KeyEventType keyEventType;
+    public InputKey inputKey;
+    public KeyEventType keyEventType;
   }
 
   public class MappedKey
@@ -34,33 +34,33 @@ namespace DoKey.CoreCS
 
   public class CommandKey
   {
-    string trigger;
-    string run;
+    public string trigger;
+    public string run;
   }
 
   public class Modificators
   {
-    bool alt;
-    bool control;
-    bool shift;
-    bool win;
-    bool caps;
+    public bool alt;
+    public bool control;
+    public bool shift;
+    public bool win;
+    public bool caps;
   }
 
 
   public class AppState
   {
-    State state;
-    Modificators modificators;
-    string firstStep;
-    bool eventEscOnCapsUp;
+    public State state;
+    public Modificators modificators;
+    public string firstStep;
+    public bool preventEscOnCapsUp;
   }
 
   public class KeysEngineResult
   {
-    AppState appState;
-    string send;
-    bool preventKeyProcess;
+    public AppState appState;
+    public string send;
+    public bool preventKeyProcess;
   }
 
   public class Config
@@ -71,38 +71,8 @@ namespace DoKey.CoreCS
 
   public class Session
   {
-    Config config;
-    AppState appState;
-  }
-
-  public class Domain
-  {
-    public const string filePathNew = "config.txt";
-    public const string modeChangeKey = "f";
-    public const string modeOffKey = "q";
-    public const string twoStep = "qwertasdfgbui";
-
-    State GetNextState(State state)
-    {
-      if (state == State.Insert) return State.Insert;
-      if (state == State.Normal) return State.Insert;
-      return State.Normal;
-    }
-
-    State GetPrevState(State state)
-    {
-      if (state == State.Insert) return State.Normal;
-      if (state == State.Normal) return State.Normal;
-      return State.Off;
-    }
-
-    State? GetNextStateByKey(State state, string key)
-    {
-      if (key == modeOffKey) return State.Off;
-      if (key == modeChangeKey) return GetNextState(state);
-      return null;
-    }
-
+    public Config config;
+    public AppState appState;
   }
 
 }

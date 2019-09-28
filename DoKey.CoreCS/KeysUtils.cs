@@ -1,18 +1,18 @@
 ﻿namespace DoKey.CoreCS
 {
-  class KeysUtils
+  public static class KeysUtils
   {
 
-    public bool isCaps(string str) => str == "capital";
+    public static bool isCaps(string str) => str == "capital";
 
-    public bool isAlt(string str)
+    public static bool isAlt(string str)
     {
       if (str == "lmenu") return true;
       if (str == "rmenu") return true;
       return false;
     }
 
-    public bool isShift(string str)
+    public static bool isShift(string str)
     {
       if (str == "lshiftkey") return true;
       if (str == "rshiftkey") return true;
@@ -20,7 +20,7 @@
       return false;
     }
 
-    public bool isControl(string str)
+    public static bool isControl(string str)
     {
       if (str == "controlkey") return true;
       if (str == "lcontrolkey") return true;
@@ -28,14 +28,14 @@
       return false;
     }
 
-    public bool isWin(string str)
+    public static bool isWin(string str)
     {
       if (str == "lwin") return true;
       if (str == "rwin") return true;
       return false;
     }
 
-    public bool isModifier(string str)
+    public static bool isModifier(string str)
     {
       if (isAlt(str)) return true;
       if (isShift(str)) return true;
@@ -45,9 +45,9 @@
       return false;
     }
 
-    public bool isEsc(string str) => str == "escape" || isCaps(str);
+    public static bool isEsc(string str) => str == "escape" || isCaps(str);
 
-    public bool isLetterOrDigit(string str)
+    public static bool isLetterOrDigit(string str)
     {
       switch (str)
       {

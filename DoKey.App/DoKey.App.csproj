@@ -100,6 +100,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="config.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icons\Insert.ico" />
     <Content Include="Icons\Normal.ico" />
     <Content Include="Icons\Off.ico" />
@@ -117,6 +120,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DoKey.CoreCS\DoKey.CoreCS.csproj">
+      <Project>{834f877c-9183-4007-85ca-a2cda9029c8a}</Project>
+      <Name>DoKey.CoreCS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DoKey.Core\DoKey.CoreFS.fsproj">
       <Project>{bc8303c8-ea25-48d2-a746-449ba05d1376}</Project>
       <Name>DoKey.CoreFS</Name>

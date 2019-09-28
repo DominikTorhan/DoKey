@@ -5,19 +5,19 @@ using System.Linq;
 
 namespace DoKey.CoreCS
 {
-  class ConfigFileReader
+  public class ConfigFileReader
   {
 
-    private readonly string _path;
+    private readonly Func<string> _funcReadText;
 
     string capsSymbol = "_CAPS_";
     string commadSymbol = "_COMMAND_";
 
-    public ConfigFileReader(string path)
+    public ConfigFileReader(Func<string> funcReadText)
     {
-      _path = path;
+      _funcReadText = funcReadText;
     }
-
+    
     private string RemoveComment(string line)
     {
       var idx = line.IndexOf("//");
@@ -73,7 +73,7 @@ namespace DoKey.CoreCS
 
     private IEnumerable<MappedKey> TextFileToMappedKeys(string text)
     {
-      return SplitToLines(text).Select(RemoveComment).Select(LineToMappedKey);
+      return SplitToLines(text).Select(RemoveComment).Select(LineToMappedKey).Where(k => k != null);
     }
 
     //let TextFileToCommandKeys text =
@@ -81,7 +81,7 @@ namespace DoKey.CoreCS
 
     public Config CreateConfigByFile()
     {
-      var text = File.ReadAllText(_path);
+      var text = _funcReadText();
       return new Config
       {
         mappedKeys = TextFileToMappedKeys(text),
