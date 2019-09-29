@@ -54,6 +54,12 @@
 
     }
 
+    private KeysEngineResult XX()
+    {
+      return new MappedKeysProcessor(_inputKey, _appState, _config.mappedKeys).
+
+    }
+
     private KeysEngineResult ProcessModifChange()
     {
       return new ModificatorsAndCapsChangeProcessor(_appState, _inputKey, _isUp).ProcessKey();
