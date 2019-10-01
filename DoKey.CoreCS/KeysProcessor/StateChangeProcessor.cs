@@ -35,7 +35,7 @@ namespace DoKey.CoreCS.KeysProcessor
     private AppState GetNextAppStateByESC()
     {
       if (!_inputKey.isEsc) return null;
-      if (_appState.state == State.Insert) return null;
+      if (_appState.state != State.Insert) return null;
       var prevState = GetPrevState(_appState.state);
       return new AppState
       {

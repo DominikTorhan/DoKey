@@ -31,8 +31,8 @@ _CAPS_t {TAB}
 _CAPS_g +{TAB}
 _CAPS_c +{F10}
 _CAPS_v ^+v
-_CAPS_oemperiod ^{TAB}
-_CAPS_n ^+{TAB}
+_CAPS_m ^{TAB}
+_CAPS_oemcomma ^+{TAB}
 
 
 //common

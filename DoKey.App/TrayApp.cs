@@ -4,7 +4,10 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
+//using DoKey.CoreCS;
+using DoKey.Core;
 using static DoKey.Core.Domain;
+//using static DoKey.Core.Domain;
 
 namespace DoKey.App
 {
@@ -17,11 +20,18 @@ namespace DoKey.App
     private readonly App _app;
 
     private bool IsSending = false;
-    private AppState AppState = new AppState(State.Off, new Modificators(false, false, false, false, false), "", false);
+    //private AppState AppState = new AppState(State.Off, new Modificators(false, false, false, false, false), "", false);
 
     private Icon GetIconOff() => new Icon(Resources.Off, 40, 40);
     private Icon GetIconNormalMode() => new Icon(Resources.Normal, 40, 40);
     private Icon GetIconInsertMode() => new Icon(Resources.Insert, 40, 40);
+
+    private string GetConfigTxt()
+    {
+
+      //return System.IO.File.ReadAllText(DomainUtils.filePathNew);
+      return "";
+    }
 
     public TrayApp()
     {
@@ -42,7 +52,7 @@ namespace DoKey.App
       SetupKeyboardHooks();
 
       _app = new App();
-      _app.Initialize();
+      _app.Initialize(GetConfigTxt);
 
     }
 
@@ -52,7 +62,7 @@ namespace DoKey.App
       mKeyboardHook.KeyboardPressed += OnKeyPressed;
     }
 
-    private void SetIcon() => trayIcon.Icon = GetIcon(AppState.state);
+    private void SetIcon(State state) => trayIcon.Icon = GetIcon(state);
 
     private KeyEventData CreateKetEventData(KeyboardHookEvent e)
     {
@@ -60,6 +70,8 @@ namespace DoKey.App
       var x = e.IsUp ? KeyEventType.Up : KeyEventType.Down;
       var inputKey = Core.DomainOperations.CreateInputKey(key.ToString());
       return new KeyEventData(inputKey, x);
+      //var inputKey = DomainUtils.CreateInputKey(key.ToString());
+      //return new KeyEventData { inputKey = inputKey, keyEventType = x };
     }
 
     private bool TryOpenSettingsFile(Keys key, AppState appState)
@@ -92,13 +104,13 @@ namespace DoKey.App
       KeyEventData keyEventData = CreateKetEventData(e);
 
       var output = _app.Work(keyEventData);
-
-      if (TryOpenSettingsFile(key, AppState)) { e.Handled = true; return; }
-      if (TryExitApp(key, AppState)) { e.Handled = true; return; }
-      
       if (output == null) return;
 
-      AppState = output.appState;
+      if (TryOpenSettingsFile(key, output.appState)) { e.Handled = true; return; }
+      if (TryExitApp(key, output.appState)) { e.Handled = true; return; }
+      
+
+      //AppState = output.appState;
 
       if (output.preventKeyProcess)
       {
@@ -112,7 +124,7 @@ namespace DoKey.App
         IsSending = false;
       }
 
-      SetIcon();
+      SetIcon(output.appState.state);
 
       return;
 

@@ -39,7 +39,7 @@
     public KeysEngineResult ProcessKey()
     {
       var result = ProcessModifChange();
-      if (result == null) return result;
+      if (result != null) return result;
       //------------------
       result = ProcessStateChange();
       if (result != null) return result;
@@ -47,18 +47,20 @@
 
       if (_appState.state == State.Off) return CreateEmptyKeysEngineResult();
 
-      result = ProcessNormalAndInsertWithCapital();
-      if (result != null) return result;
+      return new MappedKeysProcessor(_inputKey, _appState, _config.mappedKeys).Process();
 
-      return null;
+      //result = ProcessNormalAndInsertWithCapital();
+      //if (result != null) return result;
 
-    }
-
-    private KeysEngineResult XX()
-    {
-      return new MappedKeysProcessor(_inputKey, _appState, _config.mappedKeys).
+      //return null;
 
     }
+
+    //private KeysEngineResult XX()
+    //{
+    //  return new MappedKeysProcessor(_inputKey, _appState, _config.mappedKeys).
+
+    //}
 
     private KeysEngineResult ProcessModifChange()
     {
