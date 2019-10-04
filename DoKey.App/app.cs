@@ -11,15 +11,15 @@ namespace DoKey.App
 {
   class App
   {
-    private Session _session; 
- 
+    private Session _session;
+
     public void Initialize(Func<string> GetConfigText)
     {
 
       _session = DomainOperations.CreateSession;
 
-    } 
- 
+    }
+
     public KeysEngineResult Work(KeyEventData keyEventData)
     {
 
@@ -49,6 +49,7 @@ namespace DoKey.App
 
 
   }
+
   //CS
   //class App
   //{

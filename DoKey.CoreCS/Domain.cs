@@ -40,11 +40,20 @@ namespace DoKey.CoreCS
 
   public class Modificators
   {
-    public bool alt;
     public bool control;
     public bool shift;
+    public bool alt;
     public bool win;
     public bool caps;
+    public override string ToString()
+    {
+      var con = this.control ? "^" : "";
+      var sht = this.shift ? "+" : "";
+      var alt = this.alt ? "%" : "";
+      var win = this.win? "w" : "";
+      var cap = this.caps ? "c" : "";
+      return con + sht + alt + win + cap;
+    }
   }
 
 
@@ -54,6 +63,10 @@ namespace DoKey.CoreCS
     public Modificators modificators;
     public string firstStep;
     public bool preventEscOnCapsUp;
+    public override string ToString()
+    {
+      return $"{(int)state} {modificators} {firstStep} {preventEscOnCapsUp}";
+    }
   }
 
   public class KeysEngineResult
@@ -61,6 +74,10 @@ namespace DoKey.CoreCS
     public AppState appState;
     public string send;
     public bool preventKeyProcess;
+    public override string ToString()
+    {
+      return $"{appState} {send} {preventKeyProcess}";
+    }
   }
 
   public class Config

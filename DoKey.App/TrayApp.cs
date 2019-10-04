@@ -7,7 +7,6 @@ using System.Windows.Forms;
 //using DoKey.CoreCS;
 using DoKey.Core;
 using static DoKey.Core.Domain;
-//using static DoKey.Core.Domain;
 
 namespace DoKey.App
 {
@@ -28,8 +27,7 @@ namespace DoKey.App
 
     private string GetConfigTxt()
     {
-
-      //return System.IO.File.ReadAllText(DomainUtils.filePathNew);
+      return System.IO.File.ReadAllText(DoKey.CoreCS.DomainUtils.filePathNew);
       return "";
     }
 

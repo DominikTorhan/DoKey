@@ -25,8 +25,8 @@ namespace DoKey.CoreCS.KeysProcessor
     {
       var mappedKey = GetMappedKeyNormalAndInsertWithCapital();
       if (mappedKey == null) return null;
-
-      var nextAppState = new AppState
+      if (mappedKey.send == "") return null;
+        var nextAppState = new AppState
       {
         state = _appState.state,
         modificators = _appState.modificators,
@@ -44,14 +44,8 @@ namespace DoKey.CoreCS.KeysProcessor
 
     private MappedKey GetMappedKeyNormalAndInsertWithCapital()
     {
-      if (!_appState.modificators.caps) return null;
+      if (!_appState.modificators.caps) return CreateEmptyMappedKey();
       return GetMappedKey();
-      //match appState.state with
-      //      | State.Off -> EmptyMappedKey
-      //      | _ -> match appState.modificators.caps with
-      //             | false -> EmptyMappedKey
-      //             | _ -> GetMappedKey true (appState.firstStep + key) keys
-
     }
 
     private string GetTrigger() => _appState.firstStep + _inputKey.key;
@@ -76,15 +70,19 @@ namespace DoKey.CoreCS.KeysProcessor
       return GetMappedKey();
     }
 
-    private bool IsDownFirstStep() => _appState.firstStep == "" && DomainUtils.IsTwoStep(_inputKey.key);
+    private MappedKey CreateEmptyMappedKey()
+    {
+      return new MappedKey { isCaps = false, send = "", trigger = "" };
+    }
 
+    private bool IsDownFirstStep() => _appState.firstStep == "" && DomainUtils.IsTwoStep(_inputKey.key);
 
     private KeysEngineResult ProcessNormalMode()
     {
       var isDownFirstStep = _appState.firstStep == "" && DomainUtils.IsTwoStep(_inputKey.key);
       var nextFirstStep = isDownFirstStep ? _inputKey.key : "";
       var mappedKey = GetMappedKeyNormal();
-      if (mappedKey == null) return null;
+      if (mappedKey == null) mappedKey = CreateEmptyMappedKey();
       var preventKeyProcess = _inputKey.isLetterOrDigit || mappedKey.send != "";
       var nextAppState = new AppState
       {
@@ -100,62 +98,6 @@ namespace DoKey.CoreCS.KeysProcessor
         preventKeyProcess = preventKeyProcess
       };
     }
-
-    //  let ProcessNormalMode appState inputKey keys =
-    //      let isDownFirstStep = appState.firstStep = "" && IsTwoStep inputKey.key
-    //      let firstStepNext = if isDownFirstStep then inputKey.key else ""
-    //      let sendDoKey = GetMappedKeyNormal appState.firstStep inputKey.key keys
-    //      let preventKeyProcess = inputKey.isLetterOrDigit || sendDoKey.send <> ""
-    //      let nextAppState = { state = appState.state; modificators = appState.modificators; firstStep = firstStepNext; preventEscOnCapsUp = appState.preventEscOnCapsUp}
-    //      {appState = nextAppState ; send = sendDoKey.send ; preventKeyProcess = preventKeyProcess
-    //}
-
-    //let GetMappedKey isCaps(trigger:string) keys =
-    //    let predicate(mappedKey:MappedKey) = mappedKey.trigger = trigger.ToLower() && mappedKey.isCaps = isCaps
-    //   let result = Seq.tryFind predicate keys
-    //   match result with
-    //        | Some i -> i
-    //        | None -> EmptyMappedKey
-
-
-
-    //let GetMappedKeyNormalAndInsertWithCapital appState key keys =
-    //      match appState.state with
-    //          | State.Off -> EmptyMappedKey
-    //          | _ -> match appState.modificators.caps with
-    //                 | false -> EmptyMappedKey
-    //                 | _ -> GetMappedKey true (appState.firstStep + key) keys
-
-    //let GetNextAppStateByStateChange key appState =
-    //    let nextState = Domain.GetNextStateByKey key appState.state
-    //    match nextState with
-    //        | None -> None
-    //        | _-> Some { state = nextState.Value; modificators = appState.modificators; firstStep = ""; preventEscOnCapsUp = true}
-
-    //let GetNextAppStateByESC inputKey appState =
-    //    match inputKey.isEsc with
-    //        | false -> None
-    //        | _ -> match appState.state with
-    //                | State.Insert -> Some {
-    //  state = GetPrevState appState.state; modificators = appState.modificators;
-    //  firstStep = ""; preventEscOnCapsUp = appState.preventEscOnCapsUp}
-    //                | _ -> None
-
-
-    //let CanProcessNormalMode appState =
-    //    match appState.state with
-    //        | State.Normal -> match appState.modificators.win with
-    //                            | true -> false 
-    //                            | _ -> true
-    //        | _ -> false
-
-
-
-    //let ProcessKey appState inputKey keys =
-    //      if CanProcessNormalMode appState
-    //      then ProcessNormalMode appState inputKey keys
-    //      else {appState = appState; send = ""; preventKeyProcess = false}
-
 
   }
 }

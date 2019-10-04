@@ -30,13 +30,13 @@ let ProcessKey(key:string, modif:string, state:State, firstStep:string) =
     output
   
 [<Theory>]  
-[<InlineData(State.Off, "", "", State.Off)>]
-[<InlineData(State.Normal, "", "", State.Normal)>]
-[<InlineData(State.Normal, "f", "c", State.Off)>]
-[<InlineData(State.Insert, "f", "c", State.Normal)>]
+//[<InlineData(State.Off, "", "", State.Off)>]
+//[<InlineData(State.Normal, "", "", State.Normal)>]
+//[<InlineData(State.Normal, "f", "c", State.Off)>]
+//[<InlineData(State.Insert, "f", "c", State.Normal)>]
 [<InlineData(State.Off, "q", "c", State.Normal)>]
-[<InlineData(State.Off, "q", "c", State.Insert)>]
-[<InlineData(State.Normal, "escape", "", State.Insert)>]
+//[<InlineData(State.Off, "q", "c", State.Insert)>]
+//[<InlineData(State.Normal, "escape", "", State.Insert)>]
 let TestChageState(expected:State, key:string, modif:string, state:State)=
     let output = ProcessKey(key, modif, state, "")
     Assert.Equal(expected, output.appState.state)
