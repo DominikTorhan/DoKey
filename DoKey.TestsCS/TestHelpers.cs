@@ -36,5 +36,11 @@ namespace DoKey.TestsCS
       };
     }
 
+    public static Config CreateConfig()
+    {
+      string path = @"C:\Users\dominik\Source\Repos\DoKey\DoKey.App\config.txt";
+      return new ConfigFileReader(() => System.IO.File.ReadAllText(path)).CreateConfigByFile();
+    }
+
   }
 }

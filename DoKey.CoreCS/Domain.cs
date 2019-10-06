@@ -17,6 +17,7 @@ namespace DoKey.CoreCS
     public bool isModif;
     public bool isEsc;
     public bool isLetterOrDigit;
+    public bool isFirstStep;
   }
 
   public class KeyEventData

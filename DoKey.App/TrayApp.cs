@@ -1,12 +1,12 @@
-﻿using DoKey.Core;
+﻿//using DoKey.Core;
 using DoKey.Properties;
 using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-//using DoKey.CoreCS;
+using DoKey.CoreCS;
 using DoKey.Core;
-using static DoKey.Core.Domain;
+//using static DoKey.Core.Domain;
 
 namespace DoKey.App
 {
@@ -66,10 +66,10 @@ namespace DoKey.App
     {
       var key = (Keys)e.KeyboardData.VirtualCode;
       var x = e.IsUp ? KeyEventType.Up : KeyEventType.Down;
-      var inputKey = Core.DomainOperations.CreateInputKey(key.ToString());
-      return new KeyEventData(inputKey, x);
-      //var inputKey = DomainUtils.CreateInputKey(key.ToString());
-      //return new KeyEventData { inputKey = inputKey, keyEventType = x };
+      //var inputKey = Core.DomainOperations.CreateInputKey(key.ToString());
+      //return new KeyEventData(inputKey, x);
+      var inputKey = DomainUtils.CreateInputKey(key.ToString());
+      return new KeyEventData { inputKey = inputKey, keyEventType = x };
     }
 
     private bool TryOpenSettingsFile(Keys key, AppState appState)

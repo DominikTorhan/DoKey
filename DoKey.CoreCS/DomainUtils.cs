@@ -44,7 +44,8 @@ namespace DoKey.CoreCS
         isWin = isWin(str),
         isLetterOrDigit = isLetterOrDigit(str),
         isModif = isModifier(str),
-        isEsc = isEsc(str)
+        isEsc = isEsc(str),
+        isFirstStep = IsTwoStep(str)
       };
     }
 
@@ -77,7 +78,7 @@ namespace DoKey.CoreCS
       return new Session { config = config, appState = CreateAppState() };
     }
 
-    public static bool IsTwoStep(string key) => twoStep.Contains(key);
+    private static bool IsTwoStep(string key) => twoStep.Contains(key);
 
 
   }

@@ -47,20 +47,15 @@
 
       if (_appState.state == State.Off) return CreateEmptyKeysEngineResult();
 
+      result = new SingleStepProcessor(_inputKey, _appState, _config.mappedKeys).TryGetSingleStep();
+      if (result != null) return result;
+      result = new DoubleStepProcessor(_inputKey, _appState, _config.mappedKeys).TryGetSingleStep();
+      if (result != null) return result;
+
+
       return new MappedKeysProcessor(_inputKey, _appState, _config.mappedKeys).Process();
 
-      //result = ProcessNormalAndInsertWithCapital();
-      //if (result != null) return result;
-
-      //return null;
-
     }
-
-    //private KeysEngineResult XX()
-    //{
-    //  return new MappedKeysProcessor(_inputKey, _appState, _config.mappedKeys).
-
-    //}
 
     private KeysEngineResult ProcessModifChange()
     {
@@ -72,14 +67,6 @@
       var appState = new StateChangeProcessor(_appState, _inputKey).ProcessStateChange();
       if (appState == null) return null;
       return CreateEngineResultChangeAppState(appState);
-    }
-
-    private KeysEngineResult ProcessNormalAndInsertWithCapital()
-    {
-      return null;
-      //var sendKeys = DoKey..GetMappedKeyNormalAndInsertWithCapital(_appState, _inputKey.key.ToString(), config.mappedKeys);
-      //if (sendKeys.send == "") return null;
-      //return new KeysEngineResult(new AppState(_appState.state, _appState.modificators, "", true), sendKeys.send, true);
     }
 
   }
