@@ -50,10 +50,5 @@ namespace DoKey.CoreCS.KeysProcessor
       return mappedKeys.FirstOrDefault(key => key.isCaps == true && key.trigger == inputKey.key);
     }
 
-    //private MappedKey CreateEmptyMappedKey()
-    //{
-    //  return new MappedKey { isCaps = false, send = "", trigger = "" };
-    //}
-
   }
 }

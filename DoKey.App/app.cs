@@ -2,9 +2,12 @@
 using DoKey.CoreCS;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 //using static DoKey.Core.Domain;
 
 namespace DoKey.App
@@ -54,13 +57,67 @@ namespace DoKey.App
   class App
   {
     private Session _session;
+    private KeyboardHook keyboardHook;
+    private bool isSending;
+    private Action<State> actionRefreshIcon;
+    private Action actionExit;
 
-    public void Initialize(Func<string> GetConfigText)
+    public void Initialize(Action<State> actionRefreshIcon, Action actionExit)
     {
+      isSending = false;
+      _session = DomainUtils.CreateSession(() => File.ReadAllText(DomainUtils.filePathNew));
+      SetupKeyboardHooks();
+      this.actionRefreshIcon = actionRefreshIcon;
+      this.actionExit = actionExit;
+    }
 
-      _session = DomainUtils.CreateSession(GetConfigText);
+    public void SetupKeyboardHooks()
+    {
+      keyboardHook = new KeyboardHook();
+      keyboardHook.KeyboardPressed += OnKeyPressed;
+    }
+
+    private KeyEventData CreateKetEventData(KeyboardHookEvent e)
+    {
+      KeyEventType keyEventType = KeyEventType.Down;
+      if (e.KeyboardState == KeyboardState.KeyUp) keyEventType = KeyEventType.Up;
+      if (e.KeyboardState == KeyboardState.KeyUp) keyEventType = KeyEventType.Up;
+      var key = (Keys)e.KeyboardData.VirtualCode;
+      var inputKey = DomainUtils.CreateInputKey(key.ToString());
+      return new KeyEventData { inputKey = inputKey, keyEventType = keyEventType };
+    }
+
+    private void OnKeyPressed(object sender, KeyboardHookEvent e)
+    {
+      if (isSending) return;
+      Keys key = (Keys)e.KeyboardData.VirtualCode;
+
+      if (Control.IsKeyLocked(Keys.CapsLock) && key == Keys.Capital) return;
+
+      KeyEventData keyEventData = CreateKetEventData(e);
+
+      var output = Work(keyEventData);
+      if (output == null) return;
+
+      if (output.preventKeyProcess)
+      {
+        e.Handled = true;
+      }
+
+      if (!string.IsNullOrEmpty(output.send))
+      {
+        isSending = true;
+        SendKeys.Send(output.send);
+        isSending = false;
+      }
+
+      actionRefreshIcon(_session.appState.state);
+
+      if (TryOpenSettingsFile(key, output.appState)) { e.Handled = true; return; }
+      if (TryExitApp(key, output.appState)) { e.Handled = true; return; }
 
     }
+
 
     public KeysEngineResult Work(KeyEventData keyEventData)
     {
@@ -88,7 +145,32 @@ namespace DoKey.App
 
     }
 
+    private bool TryExitApp(Keys key, AppState appState)
+    {
+      if (!appState.modificators.caps) return false;
+      if (key != Keys.Back) return false;
+      actionExit();
+      return true;
+    }
 
+    private bool TryOpenSettingsFile(Keys key, AppState appState)
+    {
+      if (!appState.modificators.caps) return false;
+      if (key != Keys.Oem2) return false;
+      OpenSettings();
+      return true;
+
+    }
+
+    private void OpenSettings()
+    {
+      Process.Start(DomainUtils.filePathNew);
+    }
+
+    internal void Dispose()
+    {
+      keyboardHook?.Dispose();
+    }
   }
 
 

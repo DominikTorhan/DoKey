@@ -1,34 +1,45 @@
-﻿using DoKey.Core;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace DoKey {
+namespace DoKey
+{
 
-  //[StructLayout(LayoutKind.Sequential)]
-  //public struct LowLevelKeyboardInputEvent {
-  //  public int VirtualCode;
-  //  public int HardwareScanCode;
-  //  public int Flags;
-  //  public int TimeStamp;
-  //  public IntPtr AdditionalInformation;
-  //}
+  public enum KeyboardState
+  {
+    KeyDown = 256,
+    KeyUp = 257,
+    SysKeyDown = 260,
+    SysKeyUp = 261
+  }
 
-  //class cKeyboardHookEvent : HandledEventArgs {
-  //  public KeyboardState KeyboardState { get; private set; }
-  //  public LowLevelKeyboardInputEvent KeyboardData { get; private set; }
 
-  //  public cKeyboardHookEvent(
-  //      LowLevelKeyboardInputEvent keyboardData,
-  //      KeyboardState keyboardState) {
-  //    KeyboardData = keyboardData;
-  //    KeyboardState = keyboardState;
-  //  }
-  //}
+  [StructLayout(LayoutKind.Sequential)]
+  public struct LowLevelKeyboardInputEvent
+  {
+    public int VirtualCode;
+    public int HardwareScanCode;
+    public int Flags;
+    public int TimeStamp;
+    public IntPtr AdditionalInformation;
+  }
+
+  class KeyboardHookEvent : HandledEventArgs
+  {
+    public KeyboardState KeyboardState { get; private set; }
+    public LowLevelKeyboardInputEvent KeyboardData { get; private set; }
+
+    public KeyboardHookEvent(LowLevelKeyboardInputEvent keyboardData, KeyboardState keyboardState)
+    {
+      KeyboardData = keyboardData;
+      KeyboardState = keyboardState;
+    }
+  }
 
   //Based on https://gist.github.com/Stasonix
-  class KeyboardHook : IDisposable {
+  class KeyboardHook : IDisposable
+  {
 
 
     [DllImport("kernel32.dll")]
@@ -69,29 +80,36 @@ namespace DoKey {
       GC.SuppressFinalize(this);
     }
 
-    public KeyboardHook() {
+    public KeyboardHook()
+    {
       _windowsHookHandle = IntPtr.Zero;
       _user32LibraryHandle = IntPtr.Zero;
       _hookProc = LowLevelKeyboardProc; // we must keep alive _hookProc, because GC is not aware about SetWindowsHookEx behaviour.
 
       _user32LibraryHandle = LoadLibrary("User32");
-      if (_user32LibraryHandle == IntPtr.Zero) {
+      if (_user32LibraryHandle == IntPtr.Zero)
+      {
         int errorCode = Marshal.GetLastWin32Error();
         throw new Win32Exception(errorCode, $"Failed to load library 'User32.dll'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
       }
-           
+
       _windowsHookHandle = SetWindowsHookEx(WH_KEYBOARD_LL, _hookProc, _user32LibraryHandle, 0);
-      if (_windowsHookHandle == IntPtr.Zero) {
+      if (_windowsHookHandle == IntPtr.Zero)
+      {
         int errorCode = Marshal.GetLastWin32Error();
         throw new Win32Exception(errorCode, $"Failed to adjust keyboard hooks for '{Process.GetCurrentProcess().ProcessName}'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
       }
     }
 
-    protected virtual void Dispose(bool disposing) {
-      if (disposing) {
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
         // because we can unhook only in the same thread, not in garbage collector thread
-        if (_windowsHookHandle != IntPtr.Zero) {
-          if (!UnhookWindowsHookEx(_windowsHookHandle)) {
+        if (_windowsHookHandle != IntPtr.Zero)
+        {
+          if (!UnhookWindowsHookEx(_windowsHookHandle))
+          {
             int errorCode = Marshal.GetLastWin32Error();
             throw new Win32Exception(errorCode, $"Failed to remove keyboard hooks for '{Process.GetCurrentProcess().ProcessName}'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
           }
@@ -102,7 +120,8 @@ namespace DoKey {
         }
       }
 
-      if (_user32LibraryHandle != IntPtr.Zero) {
+      if (_user32LibraryHandle != IntPtr.Zero)
+      {
         if (!FreeLibrary(_user32LibraryHandle)) // reduces reference to library by 1.
         {
           int errorCode = Marshal.GetLastWin32Error();
@@ -112,12 +131,14 @@ namespace DoKey {
       }
     }
 
-    private IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam) { 
+    private IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam)
+    {
 
       bool fEatKeyStroke = false;
 
       var wparamTyped = wParam.ToInt32();
-      if (Enum.IsDefined(typeof(KeyboardState), wparamTyped)) {
+      if (Enum.IsDefined(typeof(KeyboardState), wparamTyped))
+      {
         object o = Marshal.PtrToStructure(lParam, typeof(LowLevelKeyboardInputEvent));
         LowLevelKeyboardInputEvent p = (LowLevelKeyboardInputEvent)o;
 

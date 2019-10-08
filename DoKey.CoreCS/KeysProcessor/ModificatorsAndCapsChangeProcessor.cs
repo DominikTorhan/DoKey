@@ -6,42 +6,27 @@ namespace DoKey.CoreCS.KeysProcessor
 {
 public  class ModificatorsAndCapsChangeProcessor
   {
-    public readonly AppState _appState;
-    public readonly InputKey _inputKey;
-    public readonly bool _isUp;
+    public readonly AppState appState;
+    public readonly InputKey inputKey;
+    public readonly bool isUp;
 
     public ModificatorsAndCapsChangeProcessor(AppState appState, InputKey inputKey, bool isUp)
     {
-      _appState = appState;
-      _inputKey = inputKey;
-      _isUp = isUp;
+      this.appState = appState;
+      this.inputKey = inputKey;
+      this.isUp = isUp;
     }
 
     public KeysEngineResult ProcessKey()
     {
-
-      if (_inputKey.isCaps) return ProcessCapital();
-      if (_inputKey.isModif) return ProcessModificators();
-
-      if (_isUp) return CreateEmptyKeysEngineResult();
-
+      if (inputKey.isCaps) return ProcessCapital();
+      if (inputKey.isModif) return ProcessModificators();
       return null;
-
-    }
-
-    private KeysEngineResult CreateEmptyKeysEngineResult()
-    {
-      return new KeysEngineResult
-      {
-        appState = _appState,
-        send = "",
-        preventKeyProcess = false
-      };
     }
 
     private Modificators GetNextModificators()
     {
-      return new ModificatorsManager(_appState.modificators, _inputKey, _isUp).GetNextModificators();
+      return new ModificatorsManager(appState.modificators, inputKey, isUp).GetNextModificators();
     }
 
     private KeysEngineResult ProcessModificators()
@@ -49,10 +34,10 @@ public  class ModificatorsAndCapsChangeProcessor
       var modificators = GetNextModificators();
       var appState = new AppState
       {
-        state = _appState.state,
+        state = this.appState.state,
         modificators = modificators,
-        firstStep = _appState.firstStep,
-        preventEscOnCapsUp = _appState.preventEscOnCapsUp
+        firstStep = this.appState.firstStep,
+        preventEscOnCapsUp = this.appState.preventEscOnCapsUp
       };
       return new KeysEngineResult
       {
@@ -62,25 +47,27 @@ public  class ModificatorsAndCapsChangeProcessor
       };
     }
 
+    private string GetSendESC()
+    {
+      if (!isUp) return "";
+      if (appState.preventEscOnCapsUp) return "";
+      return "{ESC}";
+    }
+
+    private bool GetPreventEscOnCapsUp()
+    {
+      if (isUp && appState.preventEscOnCapsUp) return false;
+      return appState.preventEscOnCapsUp;
+    }
+
     private KeysEngineResult ProcessCapital()
     {
-      var sendKeys = "";
-      var preventEscOnNextCapitalUp = _appState.preventEscOnCapsUp;
-      if (_isUp)
-      {
-        if (_appState.preventEscOnCapsUp)
-        {
-          preventEscOnNextCapitalUp = false;
-        }
-        else
-        {
-          sendKeys = "{ESC}";
-        }
-      }
+      var sendKeys = GetSendESC();
+      var preventEscOnNextCapitalUp = GetPreventEscOnCapsUp();
       var modificators = GetNextModificators();
       var appState = new AppState
       {
-        state = _appState.state,
+        state = this.appState.state,
         modificators = modificators,
         firstStep = "",
         preventEscOnCapsUp = preventEscOnNextCapitalUp
