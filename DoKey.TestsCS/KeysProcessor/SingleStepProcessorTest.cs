@@ -24,6 +24,7 @@ namespace DoKey.TestsCS.KeysProcessor
     [InlineData("1   False ^c True", "1 null m=", "c")]
     [InlineData("1   False ^v True", "1 null m=", "v")]
     [InlineData("1   False ^z True", "1 null m=", "z")]
+    [InlineData("1 %  False {DOWN} True", "1 null m=%", "j")]
     [InlineData("", "1 null m=", "f")]
     [InlineData("", "1 i m=", "j")]
     [InlineData("", "0 null m=", "j")]

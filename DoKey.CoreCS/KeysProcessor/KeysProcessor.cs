@@ -15,27 +15,6 @@
       this.config = config;
     }
 
-    private KeysEngineResult CreateEmptyKeysEngineResult()
-    {
-      return new KeysEngineResult
-      {
-        appState = appState,
-        send = "",
-        preventKeyProcess = false
-      };
-    }
-
-    public KeysEngineResult CreateEngineResultChangeAppState(AppState appState)
-    {
-      return new KeysEngineResult
-      {
-        appState = appState,
-        send = "",
-        preventKeyProcess = true
-      };
-    }
-
-
     public KeysEngineResult ProcessKey()
     {
       //modificatorsChange
@@ -67,6 +46,26 @@
       var appState = new StateChangeProcessor(this.appState, inputKey).ProcessStateChange();
       if (appState == null) return null;
       return CreateEngineResultChangeAppState(appState);
+    }
+
+    private KeysEngineResult CreateEmptyKeysEngineResult()
+    {
+      return new KeysEngineResult
+      {
+        appState = appState,
+        send = "",
+        preventKeyProcess = false
+      };
+    }
+
+    private KeysEngineResult CreateEngineResultChangeAppState(AppState appState)
+    {
+      return new KeysEngineResult
+      {
+        appState = appState,
+        send = "",
+        preventKeyProcess = true
+      };
     }
 
   }

@@ -1,14 +1,8 @@
-﻿//using DoKey.Core;
-using DoKey.CoreCS;
+﻿using DoKey.CoreCS;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-//using static DoKey.Core.Domain;
 
 namespace DoKey.App
 {
@@ -62,7 +56,7 @@ namespace DoKey.App
     private Action<State> actionRefreshIcon;
     private Action actionExit;
 
-    public void Initialize(Action<State> actionRefreshIcon, Action actionExit)
+    public App(Action<State> actionRefreshIcon, Action actionExit)
     {
       isSending = false;
       _session = DomainUtils.CreateSession(() => File.ReadAllText(DomainUtils.filePathNew));
@@ -71,7 +65,7 @@ namespace DoKey.App
       this.actionExit = actionExit;
     }
 
-    public void SetupKeyboardHooks()
+    private void SetupKeyboardHooks()
     {
       keyboardHook = new KeyboardHook();
       keyboardHook.KeyboardPressed += OnKeyPressed;
@@ -89,9 +83,14 @@ namespace DoKey.App
 
     private void OnKeyPressed(object sender, KeyboardHookEvent e)
     {
-      if (isSending) return;
-      Keys key = (Keys)e.KeyboardData.VirtualCode;
+      OnKeyPressed(e);
+    }
 
+    private void OnKeyPressed(KeyboardHookEvent e)
+    {
+      if (isSending) return;
+
+      Keys key = (Keys)e.KeyboardData.VirtualCode;
       if (Control.IsKeyLocked(Keys.CapsLock) && key == Keys.Capital) return;
 
       KeyEventData keyEventData = CreateKetEventData(e);
@@ -99,10 +98,7 @@ namespace DoKey.App
       var output = Work(keyEventData);
       if (output == null) return;
 
-      if (output.preventKeyProcess)
-      {
-        e.Handled = true;
-      }
+      e.Handled = output.preventKeyProcess;
 
       if (!string.IsNullOrEmpty(output.send))
       {
@@ -118,8 +114,7 @@ namespace DoKey.App
 
     }
 
-
-    public KeysEngineResult Work(KeyEventData keyEventData)
+    private KeysEngineResult Work(KeyEventData keyEventData)
     {
 
       KeysEngineResult output = ProcessKey(keyEventData);
@@ -171,7 +166,7 @@ namespace DoKey.App
     {
       keyboardHook?.Dispose();
     }
-  }
 
+  }
 
 }

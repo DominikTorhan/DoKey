@@ -32,8 +32,8 @@ namespace DoKey.CoreCS.KeysProcessor
 
     private MappedKey TryGetMappedKey()
     {
-      if (appState.state != State.Normal) return null;
       if (appState.modificators.caps) return null;
+      if (appState.state != State.Normal) return null;
       if (appState.modificators.win) return null;
       if (appState.firstStep != "") return null;
       if (inputKey.isFirstStep) return null;
