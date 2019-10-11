@@ -31,6 +31,9 @@
       //doubleStepKey
       result = new DoubleStepProcessor(inputKey, appState, config.mappedKeys).TryGetSingleStep();
       if (result != null) return result;
+      //commandKey
+      result = new CommandKeysProcessor(inputKey, appState, config.commandKeys).Process();
+      if (result != null) return result;
       //capitalKey
       return new MappedKeysProcessor(inputKey, appState, config.mappedKeys).Process();
     }

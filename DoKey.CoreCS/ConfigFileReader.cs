@@ -49,8 +49,10 @@ namespace DoKey.CoreCS
 
     private MappedKey LineToMappedKey(string line)
     {
+      //j {DOWN}
       var strs = SplitLine(line);
       var trigger = GetStringByIdx(strs, 0);
+      if (trigger.Contains(commadSymbol)) return null;
       var send = NormalizeString(GetStringByIdx(strs, 1));
       var trigger_ = trigger.Replace(capsSymbol, "");
       var isCaps = trigger.Contains(capsSymbol);
@@ -58,26 +60,27 @@ namespace DoKey.CoreCS
       return new MappedKey { trigger = trigger_, send = send, isCaps = isCaps };
     }
 
-
-    //private CommandKey LineToCommandKey(line:string) =
-    //    let strs = SplitLine line
-    //    let trigger = GetStringByIdx strs 0
-    //    let run = GetStringByIdx strs 1
-    //    let trigger' = trigger.Replace(commadSymbol, "").Replace(capsSymbol, "")  
-    //    match trigger.Contains commadSymbol with
-    //        | false -> None
-    //        | _ -> match trigger with
-    //                | "" -> None
-    //                | _ -> Some {
-    //  trigger = trigger'; run = run } 
+    private CommandKey LineToCommandKey(string line)
+    {
+      var strs = SplitLine(line);
+      var trigger = GetStringByIdx(strs, 0);
+      if (!trigger.Contains(capsSymbol)) return null;
+      if (!trigger.Contains(commadSymbol)) return null;
+      var run = NormalizeString(GetStringByIdx(strs, 1));
+      var trigger_ = trigger.Replace(capsSymbol, "").Replace(commadSymbol, "");
+      if (trigger == "") return null;
+      return new CommandKey { trigger = trigger_, run = run };
+    }
 
     private IEnumerable<MappedKey> TextFileToMappedKeys(string text)
     {
       return SplitToLines(text).Select(RemoveComment).Select(LineToMappedKey).Where(k => k != null);
     }
 
-    //let TextFileToCommandKeys text =
-    //    SplitToLines text |> Seq.map RemoveComment |> Seq.map LineToCommandKey |> Seq.choose id
+    private IEnumerable<CommandKey> TextFileToCommandKeys(string text)
+    {
+      return SplitToLines(text).Select(RemoveComment).Select(LineToCommandKey).Where(k => k != null);
+    }
 
     public Config CreateConfigByFile()
     {
@@ -85,7 +88,7 @@ namespace DoKey.CoreCS
       return new Config
       {
         mappedKeys = TextFileToMappedKeys(text),
-        commandKeys = new List<CommandKey>()
+        commandKeys = TextFileToCommandKeys(text)
       };
     }
 
