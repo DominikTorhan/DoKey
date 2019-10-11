@@ -22,7 +22,7 @@ namespace DoKey.App
         ContextMenu = trayMenu,
         Visible = true
       };
-      app = new App(RefreshIcon, Exit);
+      app = new App(RefreshIcon, Exit, new Logger());
     }
 
     private void RefreshIcon(State state)

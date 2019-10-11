@@ -51,27 +51,30 @@ namespace DoKey.App
   class App
   {
     private Session _session;
-    private KeyboardHook keyboardHook;
     private bool isSending;
-    private Action<State> actionRefreshIcon;
-    private Action actionExit;
+    private readonly Action<State> actionRefreshIcon;
+    private readonly KeyboardHook keyboardHook;
+    private readonly Action actionExit;
+    private readonly Logger logger;
 
-    public App(Action<State> actionRefreshIcon, Action actionExit)
+    public App(Action<State> actionRefreshIcon, Action actionExit, Logger logger)
     {
       isSending = false;
       _session = DomainUtils.CreateSession(() => File.ReadAllText(DomainUtils.filePathNew));
-      SetupKeyboardHooks();
+      this.keyboardHook = CreateKeyboardHook();
       this.actionRefreshIcon = actionRefreshIcon;
       this.actionExit = actionExit;
+      this.logger = logger;
     }
 
-    private void SetupKeyboardHooks()
+    private KeyboardHook CreateKeyboardHook()
     {
-      keyboardHook = new KeyboardHook();
+      var keyboardHook = new KeyboardHook();
       keyboardHook.KeyboardPressed += OnKeyPressed;
+      return keyboardHook;
     }
 
-    private KeyEventData CreateKetEventData(KeyboardHookEvent e)
+    private KeyEventData CreateKetEventData(KeyboardHookEventArgs e)
     {
       KeyEventType keyEventType = KeyEventType.Down;
       if (e.KeyboardState == KeyboardState.KeyUp) keyEventType = KeyEventType.Up;
@@ -81,12 +84,12 @@ namespace DoKey.App
       return new KeyEventData { inputKey = inputKey, keyEventType = keyEventType };
     }
 
-    private void OnKeyPressed(object sender, KeyboardHookEvent e)
+    private void OnKeyPressed(object sender, KeyboardHookEventArgs e)
     {
       OnKeyPressed(e);
     }
 
-    private void OnKeyPressed(KeyboardHookEvent e)
+    private void OnKeyPressed(KeyboardHookEventArgs e)
     {
       if (isSending) return;
 
@@ -103,14 +106,15 @@ namespace DoKey.App
       if (!string.IsNullOrEmpty(output.send))
       {
         isSending = true;
+        logger.Log($"{keyEventData} send: {output.send} {output.preventKeyProcess}");
         SendKeys.Send(output.send);
         isSending = false;
       }
 
       actionRefreshIcon(_session.appState.state);
 
-      if (TryOpenSettingsFile(key, output.appState)) { e.Handled = true; return; }
-      if (TryExitApp(key, output.appState)) { e.Handled = true; return; }
+      //if (TryOpenSettingsFile(key, output.appState)) { e.Handled = true; return; }
+      //if (TryExitApp(key, output.appState)) { e.Handled = true; return; }
 
     }
 

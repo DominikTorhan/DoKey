@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace DoKey
+namespace DoKey.App
 {
 
   public enum KeyboardState
@@ -14,33 +14,9 @@ namespace DoKey
     SysKeyUp = 261
   }
 
-
-  [StructLayout(LayoutKind.Sequential)]
-  public struct LowLevelKeyboardInputEvent
-  {
-    public int VirtualCode;
-    public int HardwareScanCode;
-    public int Flags;
-    public int TimeStamp;
-    public IntPtr AdditionalInformation;
-  }
-
-  class KeyboardHookEvent : HandledEventArgs
-  {
-    public KeyboardState KeyboardState { get; private set; }
-    public LowLevelKeyboardInputEvent KeyboardData { get; private set; }
-
-    public KeyboardHookEvent(LowLevelKeyboardInputEvent keyboardData, KeyboardState keyboardState)
-    {
-      KeyboardData = keyboardData;
-      KeyboardState = keyboardState;
-    }
-  }
-
   //Based on https://gist.github.com/Stasonix
   class KeyboardHook : IDisposable
   {
-
 
     [DllImport("kernel32.dll")]
     private static extern IntPtr LoadLibrary(string lpFileName);
@@ -61,7 +37,7 @@ namespace DoKey
     private IntPtr _user32LibraryHandle;
     private HookProc _hookProc;
 
-    public event EventHandler<KeyboardHookEvent> KeyboardPressed;
+    public event EventHandler<KeyboardHookEventArgs> KeyboardPressed;
     delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
 
     public const int WH_KEYBOARD_LL = 13;
@@ -142,9 +118,9 @@ namespace DoKey
         object o = Marshal.PtrToStructure(lParam, typeof(LowLevelKeyboardInputEvent));
         LowLevelKeyboardInputEvent p = (LowLevelKeyboardInputEvent)o;
 
-        var eventArguments = new KeyboardHookEvent(p, (KeyboardState)wparamTyped);
+        var eventArguments = new KeyboardHookEventArgs(p, (KeyboardState)wparamTyped);
 
-        EventHandler<KeyboardHookEvent> handler = KeyboardPressed;
+        EventHandler<KeyboardHookEventArgs> handler = KeyboardPressed;
         handler?.Invoke(this, eventArguments);
 
         fEatKeyStroke = eventArguments.Handled;

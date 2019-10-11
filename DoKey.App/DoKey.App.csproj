@@ -67,7 +67,10 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Icons.cs" />
-    <Compile Include="KeyboardHook.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="LowLevelKeyboard\KeyboardHook.cs" />
+    <Compile Include="LowLevelKeyboard\KeyboardHookEventArgs.cs" />
+    <Compile Include="LowLevelKeyboard\LowLevelKeyboardInputEvent.cs" />
     <Compile Include="Program.cs">
       <SubType>Form</SubType>
     </Compile>

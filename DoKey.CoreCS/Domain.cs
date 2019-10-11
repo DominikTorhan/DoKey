@@ -24,6 +24,10 @@ namespace DoKey.CoreCS
   {
     public InputKey inputKey;
     public KeyEventType keyEventType;
+    public override string ToString()
+    {
+      return $"{keyEventType} {inputKey.key}";
+    }
   }
 
   public class MappedKey
