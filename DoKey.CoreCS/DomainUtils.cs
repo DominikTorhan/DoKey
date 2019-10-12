@@ -5,7 +5,6 @@ namespace DoKey.CoreCS
 {
   public static class DomainUtils
   {
-    public const string filePathNew = "config.txt";
     public const string modeChangeKey = "f";
     public const string modeOffKey = "q";
     public const string twoStep = "qwertasdfgbui";

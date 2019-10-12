@@ -35,11 +35,14 @@ namespace DoKey.TestsCS
         preventEscOnCapsUp = str.Contains("prevent")
       };
     }
-
-    public static Config CreateConfig()
+    public static Func<string> GetFuncGetConfig()
     {
       string path = @"C:\Users\dominik\Source\Repos\DoKey\DoKey.App\config.txt";
-      return new ConfigFileReader(() => System.IO.File.ReadAllText(path)).CreateConfigByFile();
+      return () => System.IO.File.ReadAllText(path);
+    }
+    public static Config CreateConfig()
+    {
+      return new ConfigFileReader(GetFuncGetConfig()).CreateConfigByFile();
     }
 
   }

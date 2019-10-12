@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using DoKey.CoreCS;
 
@@ -9,12 +11,13 @@ namespace DoKey.App
     private readonly NotifyIcon trayIcon;
     private readonly ContextMenu trayMenu;
     private readonly App app;
+    private readonly string configFile = "config.txt";
 
     public TrayApp()
     {
       trayMenu = new ContextMenu();
       trayMenu.MenuItems.Add("Exit", (s, e) => Exit());
-      //trayMenu.MenuItems.Add("Open Settings", (s, e) => OpenSettings());
+      trayMenu.MenuItems.Add("ShowConfigFile", (s, e) => ShowConfigFile());
       trayIcon = new NotifyIcon
       {
         Text = "DoKey",
@@ -22,7 +25,20 @@ namespace DoKey.App
         ContextMenu = trayMenu,
         Visible = true
       };
-      app = new App(RefreshIcon, Exit, new Logger());
+      app = new App(CreateAppConfig());
+    }
+
+    private AppConfig CreateAppConfig()
+    {
+      return new AppConfig
+      {
+        actionExit = Exit,
+        actionShowConfigFile = ShowConfigFile,
+        actionRefreshIcon = RefreshIcon,
+        actionSend = SendKeys.Send,
+        funcGetConfigText = () => File.ReadAllText(configFile),
+        actionLog = log => Debug.WriteLine(log), 
+      };
     }
 
     private void RefreshIcon(State state)
@@ -33,6 +49,11 @@ namespace DoKey.App
     private void Exit()
     {
       Application.Exit();
+    }
+
+    private void ShowConfigFile()
+    {
+      Process.Start(configFile);
     }
 
     protected override void OnLoad(EventArgs e)

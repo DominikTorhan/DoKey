@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace DoKey.App
+namespace DoKey.App.LowLevelKeyboard
 {
   class KeyboardHookEventArgs : HandledEventArgs
   {

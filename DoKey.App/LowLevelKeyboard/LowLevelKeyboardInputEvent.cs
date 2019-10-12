@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace DoKey.App
+namespace DoKey.App.LowLevelKeyboard
 {
   [StructLayout(LayoutKind.Sequential)]
   public struct LowLevelKeyboardInputEvent

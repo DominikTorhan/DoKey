@@ -3,9 +3,8 @@ using System.Windows.Forms;
 
 namespace DoKey.App
 {
-  class SysTrayApp : Form
+  class Program 
   {
-
     [STAThread]
     public static void Main()
     {
@@ -18,6 +17,5 @@ namespace DoKey.App
         Application.Exit();
       }
     }
-
   }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace DoKey.App
+namespace DoKey.App.LowLevelKeyboard
 {
 
   public enum KeyboardState
@@ -37,7 +37,7 @@ namespace DoKey.App
     private IntPtr _user32LibraryHandle;
     private HookProc _hookProc;
 
-    public event EventHandler<KeyboardHookEventArgs> KeyboardPressed;
+    private event EventHandler<KeyboardHookEventArgs> KeyboardPressed;
     delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
 
     public const int WH_KEYBOARD_LL = 13;
@@ -56,7 +56,7 @@ namespace DoKey.App
       GC.SuppressFinalize(this);
     }
 
-    public KeyboardHook()
+    public KeyboardHook(EventHandler<KeyboardHookEventArgs> eventHandler)
     {
       _windowsHookHandle = IntPtr.Zero;
       _user32LibraryHandle = IntPtr.Zero;
@@ -75,6 +75,9 @@ namespace DoKey.App
         int errorCode = Marshal.GetLastWin32Error();
         throw new Win32Exception(errorCode, $"Failed to adjust keyboard hooks for '{Process.GetCurrentProcess().ProcessName}'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
       }
+
+      KeyboardPressed += eventHandler;
+
     }
 
     protected virtual void Dispose(bool disposing)
@@ -120,13 +123,18 @@ namespace DoKey.App
 
         var eventArguments = new KeyboardHookEventArgs(p, (KeyboardState)wparamTyped);
 
-        EventHandler<KeyboardHookEventArgs> handler = KeyboardPressed;
-        handler?.Invoke(this, eventArguments);
+        InvokeKeyboardPressed(eventArguments);
 
         fEatKeyStroke = eventArguments.Handled;
       }
 
       return fEatKeyStroke ? (IntPtr)1 : CallNextHookEx(IntPtr.Zero, nCode, wParam, lParam);
     }
+
+    private void InvokeKeyboardPressed(KeyboardHookEventArgs eventArgs)
+    {
+      KeyboardPressed?.Invoke(this, eventArgs);
+    }
+
   }
 }
