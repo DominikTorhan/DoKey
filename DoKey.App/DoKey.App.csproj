@@ -124,10 +124,6 @@
       <Project>{834f877c-9183-4007-85ca-a2cda9029c8a}</Project>
       <Name>DoKey.CoreCS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DoKey.Core\DoKey.CoreFS.fsproj">
-      <Project>{bc8303c8-ea25-48d2-a746-449ba05d1376}</Project>
-      <Name>DoKey.CoreFS</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions />
