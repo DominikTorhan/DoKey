@@ -63,15 +63,15 @@ namespace DoKey.App
       base.OnLoad(e);
     }
 
-    protected override void Dispose(bool isDisposing)
+    protected override void Dispose(bool disposing)
     {
-      app.Dispose();
-      if (isDisposing)
+      app.DisposeKeyboardHook();
+      if (disposing)
       {
         trayIcon.Dispose();
         trayMenu.Dispose();
       }
-      base.Dispose(isDisposing);
+      base.Dispose(disposing);
     }
 
   }

@@ -23,13 +23,7 @@ namespace DoKey.CoreCS.KeysProcessor
     {
       var nextState = GetNextStateByKey(_appState.state, _inputKey.key);
       if (!nextState.HasValue) return null;
-      return new AppState
-      {
-        state = nextState.Value,
-        modificators = _appState.modificators,
-        firstStep = "",
-        preventEscOnCapsUp = true
-      };
+      return new AppState(nextState.Value, _appState.modificators, "", true);
     }
 
     private AppState GetNextAppStateByESC()
@@ -37,13 +31,7 @@ namespace DoKey.CoreCS.KeysProcessor
       if (!_inputKey.isEsc) return null;
       if (_appState.state != State.Insert) return null;
       var prevState = GetPrevState(_appState.state);
-      return new AppState
-      {
-        state = prevState,
-        modificators = _appState.modificators,
-        firstStep = "",
-        preventEscOnCapsUp = _appState.preventEscOnCapsUp
-      };
+      return new AppState(prevState, _appState.modificators, "", _appState.preventEscOnCapsUp);
     }
 
   }

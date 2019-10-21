@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace DoKey.App
 {
-  class Program 
+  internal static class Program
   {
     [STAThread]
     public static void Main()

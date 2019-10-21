@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace DoKey.App.LowLevelKeyboard
 {
@@ -10,6 +9,5 @@ namespace DoKey.App.LowLevelKeyboard
     public int HardwareScanCode;
     public int Flags;
     public int TimeStamp;
-    public IntPtr AdditionalInformation;
   }
 }

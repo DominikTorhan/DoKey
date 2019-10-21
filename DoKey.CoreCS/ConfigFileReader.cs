@@ -8,15 +8,14 @@ namespace DoKey.CoreCS
   {
 
     private readonly Func<string> _funcReadText;
-
-    string capsSymbol = "_CAPS_";
-    string commadSymbol = "_COMMAND_";
+    private readonly string capsSymbol = "_CAPS_";
+    private readonly string commadSymbol = "_COMMAND_";
 
     public ConfigFileReader(Func<string> funcReadText)
     {
       _funcReadText = funcReadText;
     }
-    
+
     private string RemoveComment(string line)
     {
       var idx = line.IndexOf("//");
@@ -48,7 +47,6 @@ namespace DoKey.CoreCS
 
     private MappedKey LineToMappedKey(string line)
     {
-      //j {DOWN}
       var strs = SplitLine(line);
       var trigger = GetStringByIdx(strs, 0);
       if (trigger.Contains(commadSymbol)) return null;
@@ -56,7 +54,7 @@ namespace DoKey.CoreCS
       var trigger_ = trigger.Replace(capsSymbol, "");
       var isCaps = trigger.Contains(capsSymbol);
       if (trigger == "") return null;
-      return new MappedKey { trigger = trigger_, send = send, isCaps = isCaps };
+      return new MappedKey(trigger_, send, isCaps);
     }
 
     private CommandKey LineToCommandKey(string line)
@@ -68,7 +66,7 @@ namespace DoKey.CoreCS
       var run = NormalizeString(GetStringByIdx(strs, 1));
       var trigger_ = trigger.Replace(capsSymbol, "").Replace(commadSymbol, "");
       if (trigger == "") return null;
-      return new CommandKey { trigger = trigger_, run = run };
+      return new CommandKey(trigger_, run);
     }
 
     private IEnumerable<MappedKey> TextFileToMappedKeys(string text)
@@ -84,11 +82,9 @@ namespace DoKey.CoreCS
     public Config CreateConfigByFile()
     {
       var text = _funcReadText();
-      return new Config
-      {
-        mappedKeys = TextFileToMappedKeys(text),
-        commandKeys = TextFileToCommandKeys(text)
-      };
+      var mappedKeys = TextFileToMappedKeys(text);
+      var commandKeys = TextFileToCommandKeys(text);
+      return new Config(mappedKeys, commandKeys);
     }
 
   }

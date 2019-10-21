@@ -3,7 +3,10 @@
   public static class KeysUtils
   {
 
-    public static bool isCaps(string str) => str == "capital";
+    public static bool isCaps(string str)
+    {
+      return str == "capital";
+    }
 
     public static bool isAlt(string str)
     {
@@ -45,7 +48,10 @@
       return false;
     }
 
-    public static bool isEsc(string str) => str == "escape" || isCaps(str);
+    public static bool isEsc(string str)
+    {
+      return str == "escape" || isCaps(str);
+    }
 
     public static bool isLetterOrDigit(string str)
     {

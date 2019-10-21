@@ -5,62 +5,46 @@ namespace DoKey.CoreCS.KeysProcessor
 {
   public class DoubleStepProcessor
   {
-    private readonly InputKey inputKey;
-    private readonly AppState appState;
-    private readonly IEnumerable<MappedKey> mappedKeys;
+    private readonly InputKey _inputKey;
+    private readonly AppState _appState;
+    private readonly IEnumerable<MappedKey> _mappedKeys;
 
     public DoubleStepProcessor(InputKey inputKey, AppState appState, IEnumerable<MappedKey> mappedKeys)
     {
-      this.inputKey = inputKey;
-      this.appState = appState;
-      this.mappedKeys = mappedKeys;
+      _inputKey = inputKey;
+      _appState = appState;
+      _mappedKeys = mappedKeys;
     }
 
-    public KeysEngineResult TryGetSingleStep()
+    public KeysProcessorResult TryGetSingleStep()
     {
-      if (appState.state != State.Normal) return null;
-      if (appState.modificators.caps) return null;
-      if (appState.modificators.win) return null;
+      if (_appState.state != State.Normal) return null;
+      if (_appState.modificators.caps) return null;
+      if (_appState.modificators.win) return null;
       var result = TryProcessFirstStep();
       if (result != null) return result;
-      if (appState.firstStep == "") return null;
+      if (_appState.firstStep == "") return null;
       var send = TryGetMappedKey();
-      return new KeysEngineResult
-      {
-        appState = CreateAppStateWithFirstStep(""),//clear first step
-        send = send,
-        preventKeyProcess = true
-      };
+      return new KeysProcessorResult(CreateAppStateWithFirstStep(""), send, true);
     }
 
     private AppState CreateAppStateWithFirstStep(string firstStep)
     {
-      return new AppState
-      {
-        firstStep = firstStep,
-        modificators = appState.modificators,
-        state = appState.state,
-        preventEscOnCapsUp = appState.preventEscOnCapsUp,
-      };
+      return new AppState(_appState.state, _appState.modificators, firstStep, _appState.preventEscOnCapsUp);
     }
 
-    private KeysEngineResult TryProcessFirstStep()
+    private KeysProcessorResult TryProcessFirstStep()
     {
-      if (appState.firstStep != "") return null;
-      if (!inputKey.isFirstStep) return null;
-      var nextAppState = CreateAppStateWithFirstStep(inputKey.key);
-      return new KeysEngineResult
-      {
-        appState = nextAppState,
-        send = "",
-        preventKeyProcess = inputKey.isLetterOrDigit
-      };
+      if (_appState.firstStep != "") return null;
+      if (!_inputKey.isFirstStep) return null;
+      var nextAppState = CreateAppStateWithFirstStep(_inputKey.key);
+      return new KeysProcessorResult(nextAppState, "", _inputKey.isLetterOrDigit);
     }
 
     private string TryGetMappedKey()
     {
-      var trigger = appState.firstStep + inputKey.key;
-      var mappedKey = mappedKeys.FirstOrDefault(key => key.isCaps == false && key.trigger == trigger);
+      var trigger = _appState.firstStep + _inputKey.key;
+      var mappedKey = _mappedKeys.FirstOrDefault(key => !key.isCaps && key.trigger == trigger);
       return mappedKey?.send ?? "";
     }
 

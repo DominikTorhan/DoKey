@@ -4,8 +4,8 @@ namespace DoKey.App.LowLevelKeyboard
 {
   class KeyboardHookEventArgs : HandledEventArgs
   {
-    public KeyboardState KeyboardState { get; private set; }
-    public LowLevelKeyboardInputEvent KeyboardData { get; private set; }
+    public readonly KeyboardState KeyboardState;
+    public readonly LowLevelKeyboardInputEvent KeyboardData;
 
     public KeyboardHookEventArgs(LowLevelKeyboardInputEvent keyboardData, KeyboardState keyboardState)
     {

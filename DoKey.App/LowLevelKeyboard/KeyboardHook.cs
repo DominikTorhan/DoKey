@@ -82,21 +82,17 @@ namespace DoKey.App.LowLevelKeyboard
 
     protected virtual void Dispose(bool disposing)
     {
-      if (disposing)
+      if (disposing && _windowsHookHandle != IntPtr.Zero)
       {
         // because we can unhook only in the same thread, not in garbage collector thread
-        if (_windowsHookHandle != IntPtr.Zero)
+        if (!UnhookWindowsHookEx(_windowsHookHandle))
         {
-          if (!UnhookWindowsHookEx(_windowsHookHandle))
-          {
-            int errorCode = Marshal.GetLastWin32Error();
-            throw new Win32Exception(errorCode, $"Failed to remove keyboard hooks for '{Process.GetCurrentProcess().ProcessName}'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
-          }
-          _windowsHookHandle = IntPtr.Zero;
-
-          // ReSharper disable once DelegateSubtraction
-          _hookProc -= LowLevelKeyboardProc;
+          int errorCode = Marshal.GetLastWin32Error();
+          throw new Win32Exception(errorCode, $"Failed to remove keyboard hooks for '{Process.GetCurrentProcess().ProcessName}'. Error {errorCode}: {new Win32Exception(Marshal.GetLastWin32Error()).Message}.");
         }
+        _windowsHookHandle = IntPtr.Zero;
+        // ReSharper disable once DelegateSubtraction
+        _hookProc -= LowLevelKeyboardProc;
       }
 
       if (_user32LibraryHandle != IntPtr.Zero)

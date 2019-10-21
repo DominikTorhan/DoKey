@@ -1,10 +1,10 @@
 ﻿using DoKey.App.LowLevelKeyboard;
-using System.Windows.Forms;
 using DoKey.CoreCS;
+using System.Windows.Forms;
 
 namespace DoKey.App
 {
-  class App
+  internal class App
   {
     private readonly KeyboardHook keyboardHook;
     private bool isSending;
@@ -34,7 +34,7 @@ namespace DoKey.App
       isSending = false;
       if (output == null) return;
       e.Handled = output.preventKeyProcess;
-      session = new Session { config = session.config, appState = output.appState };
+      session = new Session(session.config, output.appState);
     }
 
     private KeyEvent CreateKeyEvent(KeyboardHookEventArgs e)
@@ -43,11 +43,7 @@ namespace DoKey.App
       var isUp = false;
       if (e.KeyboardState == KeyboardState.KeyUp) isUp = true;
       if (e.KeyboardState == KeyboardState.SysKeyUp) isUp = true;
-      return new KeyEvent
-      {
-        key = key,
-        isUp = isUp
-      };
+      return new KeyEvent(key, isUp);
     }
 
     private bool IsSystemCapsLock(KeyboardHookEventArgs e)
@@ -58,7 +54,7 @@ namespace DoKey.App
       return true;
     }
 
-    public void Dispose()
+    public void DisposeKeyboardHook()
     {
       keyboardHook?.Dispose();
     }

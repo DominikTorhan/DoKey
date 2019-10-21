@@ -1,43 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DoKey.CoreCS.KeysProcessor
 {
   public class SingleStepProcessor
   {
-    private readonly InputKey inputKey;
-    private readonly AppState appState;
-    private readonly IEnumerable<MappedKey> mappedKeys;
+    private readonly InputKey _inputKey;
+    private readonly AppState _appState;
+    private readonly IEnumerable<MappedKey> _mappedKeys;
 
     public SingleStepProcessor(InputKey inputKey, AppState appState, IEnumerable<MappedKey> mappedKeys)
     {
-      this.inputKey = inputKey;
-      this.appState = appState;
-      this.mappedKeys = mappedKeys;
+      _inputKey = inputKey;
+      _appState = appState;
+      _mappedKeys = mappedKeys;
     }
 
-    public KeysEngineResult TryGetSingleStep()
+    public KeysProcessorResult TryGetSingleStep()
     {
       var mappedKey = TryGetMappedKey();
       if (mappedKey == null) return null;
-      return new KeysEngineResult
-      {
-        appState = appState,
-        send = mappedKey.send,
-        preventKeyProcess = true
-      };
+      return new KeysProcessorResult(_appState, mappedKey.send, true);
     }
 
     private MappedKey TryGetMappedKey()
     {
-      if (appState.modificators.caps) return null;
-      if (appState.state != State.Normal) return null;
-      if (appState.modificators.win) return null;
-      if (appState.firstStep != "") return null;
-      if (inputKey.isFirstStep) return null;
-      var mappedKey = mappedKeys.FirstOrDefault(key => key.isCaps == false && key.trigger == inputKey.key);
+      if (_appState.modificators.caps) return null;
+      if (_appState.state != State.Normal) return null;
+      if (_appState.modificators.win) return null;
+      if (_appState.firstStep != "") return null;
+      if (_inputKey.isFirstStep) return null;
+      var mappedKey = _mappedKeys.FirstOrDefault(key => !key.isCaps && key.trigger == _inputKey.key);
       return mappedKey;
     }
 

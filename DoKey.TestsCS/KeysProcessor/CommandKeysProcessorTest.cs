@@ -7,8 +7,37 @@ using Xunit;
 
 namespace DoKey.TestsCS.KeysProcessor
 {
+
+  public class CommandKeysProcessorTheoryData<T> : TheoryData<T>
+  {
+    public CommandKeysProcessorTheoryData(IEnumerable<T> data)
+    {
+      foreach (var d in data)
+      {
+        Add(d);
+      }
+    }
+  }
+
+  public class CommandKeysProcessorData : TheoryData{
+    public readonly InputKey inputKey;
+    public readonly AppState appState;
+    public readonly Config config;
+  }
+
   public class CommandKeysProcessorTest
   {
+
+    public static CommandKeysProcessorTheoryData<CommandKeysProcessorData> p = new CommandKeysProcessorTheoryData<CommandKeysProcessorData>(null);
+
+    [Theory]
+    [MemberData(nameof(p))]
+    public void TestX(CommandKeysProcessorData data)
+    {
+
+
+    }
+
     [Theory]
     [InlineData("1 c  True #exit True", "1 null m=c", "back")]
     [InlineData("1 c  True #config True", "1 null m=c", "oem2")]

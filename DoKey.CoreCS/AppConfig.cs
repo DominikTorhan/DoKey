@@ -4,12 +4,12 @@ namespace DoKey.CoreCS
 {
   public class AppConfig
   {
-    public Action<State> actionRefreshIcon;
-    public Action actionExit;
-    public Action actionShowConfigFile;
-    public Action<string> actionLog;
-    public Func<string> funcGetConfigText;
-    public Action<string> actionSend;
+    public Action<State> actionRefreshIcon { get; set; }
+    public Action actionExit { get; set; }
+    public Action actionShowConfigFile { get; set; }
+    public Action<string> actionLog { get; set; }
+    public Func<string> funcGetConfigText { get; set; }
+    public Action<string> actionSend { get; set; }
   }
 
 }

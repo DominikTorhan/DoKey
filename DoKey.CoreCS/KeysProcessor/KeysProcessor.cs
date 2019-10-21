@@ -2,73 +2,58 @@
 {
   public class KeysProcessor
   {
-    public readonly AppState appState;
-    public readonly InputKey inputKey;
-    public readonly bool isUp;
-    public readonly Config config;
+    public readonly AppState _appState;
+    public readonly InputKey _inputKey;
+    public readonly bool _isUp;
+    public readonly Config _config;
 
     public KeysProcessor(AppState appState, InputKey inputKey, bool isUp, Config config)
     {
-      this.appState = appState;
-      this.inputKey = inputKey;
-      this.isUp = isUp;
-      this.config = config;
+      _appState = appState;
+      _inputKey = inputKey;
+      _isUp = isUp;
+      _config = config;
     }
 
-    public KeysEngineResult ProcessKey()
+    public KeysProcessorResult ProcessKey()
     {
       //modificatorsChange
       var result = ProcessModifChange();
       if (result != null) return result;
-      if (isUp) return CreateEmptyKeysEngineResult();
+      if (_isUp) return CreateEmptyKeysEngineResult();
       //stateChange
       result = ProcessStateChange();
       if (result != null) return result;
-      if (appState.state == State.Off) return CreateEmptyKeysEngineResult();
+      if (_appState.state == State.Off) return CreateEmptyKeysEngineResult();
       //sigleStepKey
-      result = new SingleStepProcessor(inputKey, appState, config.mappedKeys).TryGetSingleStep();
+      result = new SingleStepProcessor(_inputKey, _appState, _config.mappedKeys).TryGetSingleStep();
       if (result != null) return result;
       //doubleStepKey
-      result = new DoubleStepProcessor(inputKey, appState, config.mappedKeys).TryGetSingleStep();
+      result = new DoubleStepProcessor(_inputKey, _appState, _config.mappedKeys).TryGetSingleStep();
       if (result != null) return result;
       //commandKey
-      result = new CommandKeysProcessor(inputKey, appState, config.commandKeys).Process();
+      result = new CommandKeysProcessor(_inputKey, _appState, _config.commandKeys).Process();
       if (result != null) return result;
       //capitalKey
-      return new MappedKeysProcessor(inputKey, appState, config.mappedKeys).Process();
+      return new MappedKeysProcessor(_inputKey, _appState, _config.mappedKeys).Process();
     }
 
-    private KeysEngineResult ProcessModifChange()
+    private KeysProcessorResult ProcessModifChange()
     {
-      var processor = new ModificatorsAndCapsChangeProcessor(appState, inputKey, isUp);
+      var processor = new ModificatorsAndCapsChangeProcessor(_appState, _inputKey, _isUp);
       return processor.ProcessKey();
     }
 
-    private KeysEngineResult ProcessStateChange()
+    private KeysProcessorResult ProcessStateChange()
     {
-      var appState = new StateChangeProcessor(this.appState, inputKey).ProcessStateChange();
+      var appState = new StateChangeProcessor(_appState, _inputKey).ProcessStateChange();
       if (appState == null) return null;
-      return CreateEngineResultChangeAppState(appState);
+      return new KeysProcessorResult(appState, "", true);
     }
 
-    private KeysEngineResult CreateEmptyKeysEngineResult()
+    private KeysProcessorResult CreateEmptyKeysEngineResult()
     {
-      return new KeysEngineResult
-      {
-        appState = appState,
-        send = "",
-        preventKeyProcess = false
-      };
-    }
-
-    private KeysEngineResult CreateEngineResultChangeAppState(AppState appState)
-    {
-      return new KeysEngineResult
-      {
-        appState = appState,
-        send = "",
-        preventKeyProcess = true
-      };
+      return new KeysProcessorResult(_appState, "", false);
     }
 
   }

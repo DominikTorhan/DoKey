@@ -33,53 +33,30 @@ namespace DoKey.CoreCS
     public static InputKey CreateInputKey(string stra)
     {
       string str = stra.ToLower();
-      return new InputKey
-      {
-        key = str,
-        isAlt = isAlt(str),
-        isCaps = isCaps(str),
-        isControl = isControl(str),
-        isShift = isShift(str),
-        isWin = isWin(str),
-        isLetterOrDigit = isLetterOrDigit(str),
-        isModif = isModifier(str),
-        isEsc = isEsc(str),
-        isFirstStep = IsTwoStep(str)
-      };
+      return new InputKey(str, isCaps(str), isAlt(str), isControl(str), isShift(str), isWin(str),
+        isModifier(str), isEsc(str), isLetterOrDigit(str), IsTwoStep(str));
     }
 
     public static Modificators CreateMoficators()
     {
-      return new Modificators
-      {
-        alt = false,
-        control = false,
-        shift = false,
-        win = false,
-        caps = false
-      };
+      return new Modificators(false, false, false, false, false);
     }
 
     public static AppState CreateAppState()
     {
-      return new AppState
-      {
-        state = State.Off,
-        modificators = CreateMoficators(),
-        firstStep = "",
-        preventEscOnCapsUp = false
-      };
+      return new AppState(State.Off, CreateMoficators(), "", false);
     }
 
     public static Session CreateSession(Func<string> funcReadText)
     {
       var config = new ConfigFileReader(funcReadText).CreateConfigByFile();
-      return new Session { config = config, appState = CreateAppState() };
+      return new Session(config, CreateAppState());
     }
 
-    private static bool IsTwoStep(string key) => twoStep.Contains(key);
-
-
+    private static bool IsTwoStep(string key)
+    {
+      return twoStep.Contains(key);
+    }
   }
 
 }

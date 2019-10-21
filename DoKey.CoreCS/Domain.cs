@@ -8,77 +8,119 @@ namespace DoKey.CoreCS
 
   public class InputKey
   {
-    public string key;
-    public bool isCaps;
-    public bool isAlt;
-    public bool isControl;
-    public bool isShift;
-    public bool isWin;
-    public bool isModif;
-    public bool isEsc;
-    public bool isLetterOrDigit;
-    public bool isFirstStep;
-  }
+    public readonly string key;
+    public readonly bool isCaps;
+    public readonly bool isAlt;
+    public readonly bool isControl;
+    public readonly bool isShift;
+    public readonly bool isWin;
+    public readonly bool isModif;
+    public readonly bool isEsc;
+    public readonly bool isLetterOrDigit;
+    public readonly bool isFirstStep;
 
-  public class KeyEventData
-  {
-    public InputKey inputKey;
-    public KeyEventType keyEventType;
-    public override string ToString()
+    public InputKey(string key, bool isCaps, bool isAlt, bool isControl, bool isShift, bool isWin, bool isModif, bool isEsc, bool isLetterOrDigit, bool isFirstStep)
     {
-      return $"{keyEventType} {inputKey.key}";
+      this.key = key;
+      this.isCaps = isCaps;
+      this.isAlt = isAlt;
+      this.isControl = isControl;
+      this.isShift = isShift;
+      this.isWin = isWin;
+      this.isModif = isModif;
+      this.isEsc = isEsc;
+      this.isLetterOrDigit = isLetterOrDigit;
+      this.isFirstStep = isFirstStep;
     }
   }
 
   public class MappedKey
   {
-    public string trigger;
-    public string send;
-    public bool isCaps;
+    public readonly string trigger;
+    public readonly string send;
+    public readonly bool isCaps;
+
+    public MappedKey(string trigger, string send, bool isCaps)
+    {
+      this.trigger = trigger;
+      this.send = send;
+      this.isCaps = isCaps;
+    }
   }
 
   public class CommandKey
   {
-    public string trigger;
-    public string run;
+    public readonly string trigger;
+    public readonly string run;
+
+    public CommandKey(string trigger, string run)
+    {
+      this.trigger = trigger;
+      this.run = run;
+    }
   }
 
   public class Modificators
   {
-    public bool control;
-    public bool shift;
-    public bool alt;
-    public bool win;
-    public bool caps;
+    public readonly bool control;
+    public readonly bool shift;
+    public readonly bool alt;
+    public readonly bool win;
+    public readonly bool caps;
+
+    public Modificators(bool control, bool shift, bool alt, bool win, bool caps)
+    {
+      this.control = control;
+      this.shift = shift;
+      this.alt = alt;
+      this.win = win;
+      this.caps = caps;
+    }
+
     public override string ToString()
     {
-      var con = this.control ? "^" : "";
-      var sht = this.shift ? "+" : "";
-      var alt = this.alt ? "%" : "";
-      var win = this.win? "w" : "";
-      var cap = this.caps ? "c" : "";
-      return con + sht + alt + win + cap;
+      var conStr = control ? "^" : "";
+      var shtStr = shift ? "+" : "";
+      var altStr = alt ? "%" : "";
+      var winStr = win ? "w" : "";
+      var capStr = caps ? "c" : "";
+      return conStr + shtStr + altStr + winStr + capStr;
     }
   }
 
-
   public class AppState
   {
-    public State state;
-    public Modificators modificators;
-    public string firstStep;
-    public bool preventEscOnCapsUp;
+    public readonly State state;
+    public readonly Modificators modificators;
+    public readonly string firstStep;
+    public readonly bool preventEscOnCapsUp;
+    public AppState(State state, Modificators modificators, string firstStep, bool preventEscOnCapsUp)
+    {
+      this.state = state;
+      this.modificators = modificators;
+      this.firstStep = firstStep;
+      this.preventEscOnCapsUp = preventEscOnCapsUp;
+    }
+
     public override string ToString()
     {
       return $"{(int)state} {modificators} {firstStep} {preventEscOnCapsUp}";
     }
   }
 
-  public class KeysEngineResult
+  public class KeysProcessorResult
   {
-    public AppState appState;
-    public string send;
-    public bool preventKeyProcess;
+    public readonly AppState appState;
+    public readonly string send;
+    public readonly bool preventKeyProcess;
+
+    public KeysProcessorResult(AppState appState, string send, bool preventKeyProcess)
+    {
+      this.appState = appState;
+      this.send = send;
+      this.preventKeyProcess = preventKeyProcess;
+    }
+
     public override string ToString()
     {
       return $"{appState} {send} {preventKeyProcess}";
@@ -87,14 +129,25 @@ namespace DoKey.CoreCS
 
   public class Config
   {
-    public IEnumerable<MappedKey> mappedKeys;
-    public IEnumerable<CommandKey> commandKeys;
+    public readonly IEnumerable<MappedKey> mappedKeys;
+    public readonly IEnumerable<CommandKey> commandKeys;
+
+    public Config(IEnumerable<MappedKey> mappedKeys, IEnumerable<CommandKey> commandKeys)
+    {
+      this.mappedKeys = mappedKeys;
+      this.commandKeys = commandKeys;
+    }
   }
 
   public class Session
   {
-    public Config config;
-    public AppState appState;
+    public readonly Config config;
+    public readonly AppState appState;
+    public Session(Config config, AppState appState)
+    {
+      this.config = config;
+      this.appState = appState;
+    }
   }
 
 }
