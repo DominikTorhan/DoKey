@@ -50,7 +50,9 @@
       var sendKeys = GetSendESC();
       var preventEscOnNextCapitalUp = GetPreventEscOnCapsUp();
       var modificators = GetNextModificators();
-      var nextAppState = new AppState(_appState.state, modificators, "", preventEscOnNextCapitalUp);
+      var state = _appState.state;
+      if (sendKeys != "") state = DomainUtils.GetPrevState(_appState.state);//prev state at esc
+      var nextAppState = new AppState(state, modificators, "", preventEscOnNextCapitalUp);
       return new KeysProcessorResult(nextAppState, sendKeys, true);
     }
 
