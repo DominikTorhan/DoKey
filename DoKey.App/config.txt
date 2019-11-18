@@ -73,8 +73,6 @@ ik {UP}{End}{ENTER}//Insert line above
 uu ^m^m//VS ^m^m toggle outline
 uo ^m^o//VS ^m^o collapse to definition
 ue ^+{F12}//VS ^F12 go to next error
-uk ^k^c//VS ^k^c comment selection
-ui ^k^u//VS ^k^c uncomment selection
 
 //f
 fb +{f5}//VS +F5 StopDebuging
