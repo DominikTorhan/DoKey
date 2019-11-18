@@ -3,7 +3,7 @@ using Xunit;
 
 namespace DoKey.TestsCS
 {
-  public class appCoreTest
+  public class AppCoreTest
   {
     private AppConfig CreateAppConfig()
     {

@@ -30,7 +30,7 @@ namespace DoKey.TestsCS
 
     public static Func<string> GetFuncGetConfig()
     {
-      string path = @"C:\Users\dominik\Source\Repos\DoKey\DoKey.App\config.txt";
+      string path = @"config.txt";
       return () => System.IO.File.ReadAllText(path);
     }
 
@@ -40,4 +40,4 @@ namespace DoKey.TestsCS
     }
 
   }
-}
+}     
