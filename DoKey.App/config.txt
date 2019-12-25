@@ -75,8 +75,6 @@ uo ^m^o//VS ^m^o collapse to definition
 ue ^+{F12}//VS ^F12 go to next error
 
 //f
-fb +{f5}//VS +F5 StopDebuging
-fc  %{f4}
 fd +{F12}//VS_findAllReferences
 fa %{F7}//VS_nextToolWindow
 fs +{ESC}
