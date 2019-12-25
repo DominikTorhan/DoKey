@@ -10,7 +10,8 @@ namespace DoKey.TestsCS
     [InlineData("", "0 null m=", "f", false)]
     [InlineData("0 %  False  False", "0 null m=", "lmenu", false)]
     [InlineData("0 %c  False  True", "0 null m=%", "capital", false)]
-    [InlineData("1 %  False {ESC} True", "2 null m=%", "capital", true)]
+    [InlineData("1 %  False  True", "2 null m=%", "capital", true)]//esc for change state I->N
+    [InlineData("1 %  False {ESC} True", "1 null m=%", "capital", true)]//esc in N mode
     [InlineData("0 %wc  False  False", "0 null m=wc", "rmenu", false)]
     [InlineData("0 +%wc  False  False", "0 null m=^%+wc", "controlkey", true)]
     [InlineData("0 ^+%c  False  False", "0 null m=^%+wc", "lwin", true)]

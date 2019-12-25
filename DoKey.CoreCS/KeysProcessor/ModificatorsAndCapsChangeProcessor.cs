@@ -51,7 +51,11 @@
       var preventEscOnNextCapitalUp = GetPreventEscOnCapsUp();
       var modificators = GetNextModificators();
       var state = _appState.state;
-      if (sendKeys != "") state = DomainUtils.GetPrevState(_appState.state);//prev state at esc
+      if (sendKeys != "" && state == State.Insert)
+      {
+        sendKeys = "";
+        state = DomainUtils.GetPrevState(_appState.state);//prev state at esc
+      }
       var nextAppState = new AppState(state, modificators, "", preventEscOnNextCapitalUp);
       return new KeysProcessorResult(nextAppState, sendKeys, true);
     }
